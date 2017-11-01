@@ -68,6 +68,9 @@ bool DatabasePrivate::open(bool update)
     connectionName = q->metaObject()->className()
                      + QString::number(DatabasePrivate::lastId);
 
+    if (driver == "QODBC" || driver == "QODBC3"){
+      databaseName = QString("DRIVER={SQL Server};SERVER=%1;DATABASE=%2;").arg(hostName).arg(databaseName);
+    }
     db = QSqlDatabase::addDatabase(driver, connectionName);
     db.setHostName(hostName);
     db.setDatabaseName(databaseName);
@@ -88,7 +91,13 @@ bool DatabasePrivate::open(bool update)
             ok = db.open();
             qDebug("Creating database");
             if (ok) {
-                db.exec("CREATE DATABASE " + databaseName);
+              if (driver == "QODBC" || driver == "QODBC3"){
+                  QRegExp dname("DATABASE=(.*);");
+                  dname.indexIn(databaseName);
+                  db.exec("CREATE DATABASE " + dname.cap(1));
+              }else{
+                  db.exec("CREATE DATABASE " + databaseName);
+              }              
                 db.close();
 
                 if (db.lastError().type() != QSqlError::NoError)
