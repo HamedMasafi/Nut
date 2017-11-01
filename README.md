@@ -9,13 +9,13 @@
  - Support PosgtreSQL, MySQL, SQLite and Microsoft Sql Server
  - Automatically create and update database
  - IDE auto complete support, No hard-code nedded
- - Table join detect 
+ - Table join detect
 
 ## Sample Codes
 ### Read data from database:
 
 ```cpp
-auto q = db.posts()->createQuery();
+auto q = db.posts()->query();
 q->setWhere(Post::idField() == postId);
 auto posts = q->toList();
 // now posts is a QList<Post*> contain all posts in
@@ -42,7 +42,7 @@ db.saveChanges();
 
 ### Modify database data:
 ```cpp
-auto q = db.posts()->createQuery();
+auto q = db.posts()->query();
 q->setWhere(Post::idField() == postId);
 Post *post = q->first();
 
