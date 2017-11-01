@@ -54,6 +54,11 @@ DatabasePrivate::DatabasePrivate(Database *parent) : q_ptr(parent)
 {
 }
 
+bool DatabasePrivate::isLive(){
+  Q_Q(Database);
+  return db.exec("SELECT 1").isActive();
+}
+
 bool DatabasePrivate::open(bool update)
 {
     Q_Q(Database);
@@ -456,6 +461,11 @@ void Database::databaseUpdated(int oldMajor, int oldMinor, int newMajor,
 bool Database::open()
 {
     return open(true);
+}
+
+bool Database::isLive(){
+    Q_D(Database);
+    return d->isLive();
 }
 
 bool Database::open(bool updateDatabase)

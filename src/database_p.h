@@ -38,6 +38,7 @@ public:
     DatabasePrivate(Database *parent);
 
     bool open(bool updateDatabase);
+    bool isLive();
 
     bool updateDatabase();
     void createChangeLogs();
