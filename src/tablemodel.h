@@ -36,7 +36,6 @@ struct FieldModel{
     explicit FieldModel() : name(QString()), length(0), defaultValue(QString()),
         notNull(false), isPrimaryKey(false), isAutoIncrement(false), isUnique(false)
     {
-
     }
 
     explicit FieldModel(const QJsonObject &json);
