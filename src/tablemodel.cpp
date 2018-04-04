@@ -20,7 +20,9 @@
 
 #include <QtCore/QMetaObject>
 #include <QtCore/QMetaProperty>
+#ifdef QT_DEBUG
 #include <QtCore/QDebug>
+#endif // QT_DEBUG
 
 #include <QJsonArray>
 #include <QJsonObject>

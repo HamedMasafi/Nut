@@ -90,7 +90,9 @@ QString PostgreSqlGenerator::fieldType(FieldModel *field)
         break;
 
     default:
+#ifdef QT_DEBUG
         qDebug() << "Type for " << (int)field->type << field->type << "(" << QMetaType::typeName(field->type) << ")" << "nut supported";
+#endif // QT_DEBUG
         dbType = QString();
     }
 

@@ -22,7 +22,9 @@
 #define QUERY_H
 
 #include <QtCore/QVariant>
+#ifdef QT_DEBUG
 #include <QtCore/QDebug>
+#endif // QT_DEBUG
 #include <QtCore/QScopedPointer>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QMetaObject>
@@ -121,7 +123,9 @@ template <class T>
 Q_OUTOFLINE_TEMPLATE Query<T>::~Query()
 {
     Q_D(Query);
+#ifdef QT_DEBUG
     qDebug() << "~Query";// << d->sql;
+#endif // QT_DEBUG
     delete d;
 }
 
@@ -139,7 +143,9 @@ Q_OUTOFLINE_TEMPLATE QList<T *> Query<T>::toList(int count)
 
     QSqlQuery q = d->database->exec(d->sql);
     if (q.lastError().isValid()) {
+#ifdef QT_DEBUG
         qDebug() << q.lastError().text();
+#endif // QT_DEBUG
         return returnList;
     }
 
@@ -414,10 +420,11 @@ Q_OUTOFLINE_TEMPLATE Query<T> *Query<T>::join(const QString &className)
     if (!rel)
         rel = d->database->model()
                 .relationByClassNames(className, d->className);
-
     if (!rel) {
+#ifdef QT_DEBUG
         qDebug() << "No relation between" << d->className
                 << "and" << className;
+#endif // QT_DEBUG
         return this;
     }
 
@@ -543,8 +550,9 @@ Q_OUTOFLINE_TEMPLATE QSqlQueryModel *Query<T>::toModal()
         QString displayName = dbModel.tableByClassName(pd->className)
                 ->field(pd->fieldName)->displayName;
 
-        qDebug() << "Display name for"<<pd->className<<pd->fieldName
-                 <<"="<<displayName;
+#ifdef QT_DEBUG
+        qDebug() << "Display name for" << pd->className << pd->fieldName << "=" << displayName;
+#endif // QT_DEBUG
         model->setHeaderData(fieldIndex++,
                              Qt::Horizontal,
                              displayName);

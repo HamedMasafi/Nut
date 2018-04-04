@@ -20,11 +20,15 @@
 
 #include "phrase.h"
 
+#ifdef QT_DEBUG
 #include <QDebug>
+#endif // QT_DEBUG
 
 NUT_BEGIN_NAMESPACE
 
+#ifdef QT_DEBUG
 #define LOG(s) qDebug() << __func__ << s
+#endif // QT_DEBUG
 
 PhraseData::PhraseData() :
     className(""), fieldName(""),
@@ -65,7 +69,9 @@ PhraseData::PhraseData(PhraseData *l, PhraseData::Condition o, QVariant r)
 
 PhraseData *PhraseData::operator =(PhraseData *other)
 {
+#ifdef QT_DEBUG
     LOG("");
+#endif // QT_DEBUG
     other->parents++;
     return other;
 }
@@ -111,8 +117,9 @@ PhraseData::~PhraseData()
 
 //    if (left && !--left->parents)
 //        delete left;
-
+#ifdef QT_DEBUG
     LOG("");
+#endif // QT_DEBUG
 }
 
 void PhraseData::cleanUp()
@@ -135,30 +142,36 @@ AbstractFieldPhrase::AbstractFieldPhrase(const char *className,
                                          const char *fieldName)
     :data(new PhraseData(className, fieldName))
 {
+#ifdef QT_DEBUG
     qDebug() <<"AbstractFieldPhrase created"<<className<<fieldName;
+#endif // QT_DEBUG
 }
 
 AbstractFieldPhrase::AbstractFieldPhrase(const AbstractFieldPhrase &other)
 {
     data = other.data;
     data->parents++;
+#ifdef QT_DEBUG
     qDebug() <<"Copy ctor"<<other.data->toString()<<other.data->parents;
+#endif // QT_DEBUG
 }
 
 AbstractFieldPhrase::AbstractFieldPhrase(AbstractFieldPhrase &&other)
 {
     data = other.data;
     data->parents++;
-    other.data = 0;
+    other.data = nullptr;
 }
 
 AbstractFieldPhrase::~AbstractFieldPhrase()
 {
+#ifdef QT_DEBUG
     if (data) {
         LOG(data->toString()) << data->parents;
     } else {
         LOG("");
     }
+#endif // QT_DEBUG
 
     if (data) {
         --data->parents;
@@ -232,14 +245,18 @@ PhraseList::PhraseList() : isValid(false)
 
 PhraseList::PhraseList(const PhraseList &other) : isValid(true)
 {
+#ifdef QT_DEBUG
     LOG("");
+#endif // QT_DEBUG
     data = qMove(other.data);
     const_cast<PhraseList&>(other).data.clear();
 }
 
 PhraseList::PhraseList(PhraseList &&other)
 {
+#ifdef QT_DEBUG
     LOG("");
+#endif // QT_DEBUG
     data = other.data;
 }
 
@@ -277,7 +294,9 @@ PhraseList::PhraseList(PhraseList *left, const AbstractFieldPhrase *right)
 
 PhraseList::~PhraseList()
 {
+#ifdef QT_DEBUG
     LOG("");
+#endif // QT_DEBUG
 }
 
 PhraseList &PhraseList::operator =(const PhraseList &other)
@@ -409,7 +428,9 @@ ConditionalPhrase::ConditionalPhrase() : data(nullptr)
 
 ConditionalPhrase::ConditionalPhrase(const ConditionalPhrase &other)
 {
+#ifdef QT_DEBUG
     qDebug() << "************* ctor called:";
+#endif // QT_DEBUG
     data = other.data;
     data->parents++;
 //    const_cast<ConditionalPhrase&>(other).data = 0;
@@ -418,7 +439,9 @@ ConditionalPhrase::ConditionalPhrase(const ConditionalPhrase &other)
 #ifdef Q_COMPILER_RVALUE_REFS
 ConditionalPhrase::ConditionalPhrase(const ConditionalPhrase &&other)
 {
+#ifdef QT_DEBUG
     qDebug() << "************* ctor called:";
+#endif // QT_DEBUG
     this->data = qMove(other.data);
 }
 #endif
@@ -454,7 +477,7 @@ ConditionalPhrase::ConditionalPhrase(AbstractFieldPhrase *l,
                                      ConditionalPhrase &r)
 {
     data = new PhraseData(l->data, cond, r.data);
-    r.data = 0;
+    r.data = nullptr;
 }
 
 ConditionalPhrase::ConditionalPhrase(ConditionalPhrase *l,
@@ -462,7 +485,7 @@ ConditionalPhrase::ConditionalPhrase(ConditionalPhrase *l,
                                      const AbstractFieldPhrase &r)
 {
     data = new PhraseData(l->data, cond, r.data);
-    l->data = 0;
+    l->data = nullptr;
 }
 
 ConditionalPhrase::ConditionalPhrase(ConditionalPhrase *l,
@@ -470,7 +493,7 @@ ConditionalPhrase::ConditionalPhrase(ConditionalPhrase *l,
                                      const QVariant &r)
 {
     data = new PhraseData(l->data, cond, r);
-    l->data = 0;
+    l->data = nullptr;
 }
 
 ConditionalPhrase::ConditionalPhrase(ConditionalPhrase *l,
@@ -478,13 +501,15 @@ ConditionalPhrase::ConditionalPhrase(ConditionalPhrase *l,
                                      ConditionalPhrase &r)
 {
     data = new PhraseData(l->data, cond, r.data);
-    l->data = 0;
-    r.data = 0;
+    l->data = nullptr;
+    r.data = nullptr;
 }
 
 ConditionalPhrase::~ConditionalPhrase()
 {
+#ifdef QT_DEBUG
     LOG("");
+#endif // QT_DEBUG
     if (data) {
         data->cleanUp();
         if (!--data->parents)

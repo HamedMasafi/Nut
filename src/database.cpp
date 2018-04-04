@@ -19,7 +19,9 @@
 **************************************************************************/
 
 #include <QtCore/QMetaProperty>
+#ifdef QT_DEBUG
 #include <QtCore/QDebug>
+#endif // QT_DEBUG
 #include <QtCore/QFile>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
@@ -63,9 +65,9 @@ bool DatabasePrivate::open(bool update)
     if (db.isOpen())
         return true;
     Q_Q(Database);
-//    if (update)
+    //    if (update)
     connectionName = q->metaObject()->className()
-                     + QString::number(DatabasePrivate::lastId);
+            + QString::number(DatabasePrivate::lastId);
 
     db = QSqlDatabase::addDatabase(driver, connectionName);
     db.setHostName(hostName);
@@ -88,14 +90,16 @@ bool DatabasePrivate::open(bool update)
 
         if (db.lastError().text().contains("database \"" + databaseName
                                            + "\" does not exist")
-            || db.lastError().text().contains("Cannot open database")
-            || db.lastError().text().contains("Unknown database '"
-                                              + databaseName + "'")) {
+                || db.lastError().text().contains("Cannot open database")
+                || db.lastError().text().contains("Unknown database '"
+                                                  + databaseName + "'")) {
 
             db.close();
             db.setDatabaseName(sqlGenertor->masterDatabaseName(databaseName));
             ok = db.open();
+#ifdef QT_DEBUG
             qDebug("Creating database");
+#endif // QT_DEBUG
             if (ok) {
                 db.exec("CREATE DATABASE " + databaseName);
                 db.close();
@@ -133,17 +137,23 @@ bool DatabasePrivate::updateDatabase()
     DatabaseModel current = currentModel;
 
     if (last == current) {
+#ifdef QT_DEBUG
         qDebug("Databse is up-to-date");
+#endif // QT_DEBUG
         return true;
     }
 
+#ifdef QT_DEBUG
     if (!last.count())
         qDebug("Databse is new");
     else
         qDebug("Databse is changed");
+#endif // QT_DEBUG
 
     QStringList sql = sqlGenertor->diff(last, current);
-qDebug()<<"database Sql =\n"<<sql;
+#ifdef QT_DEBUG
+    qDebug()<<"database Sql =\n"<<sql;
+#endif // QT_DEBUG
     db.transaction();
     foreach (QString s, sql) {
         db.exec(s);
@@ -192,7 +202,7 @@ bool DatabasePrivate::getCurrectScheema()
     int changeLogTypeId = qRegisterMetaType<ChangeLogTable*>();
 
     currentModel.append(
-        new TableModel(changeLogTypeId, __CHANGE_LOG_TABLE_NAME));
+                new TableModel(changeLogTypeId, __CHANGE_LOG_TABLE_NAME));
     tables.insert(ChangeLogTable::staticMetaObject.className(),
                   __CHANGE_LOG_TABLE_NAME);
 
@@ -214,7 +224,7 @@ bool DatabasePrivate::getCurrectScheema()
         if (type == __nut_DB_VERSION)
             currentModel.setVersion(name);
 
-            /* TODO: remove
+        /* TODO: remove
             QStringList version
                 = QString(ci.value()).replace("\"", "").split('.');
             bool ok = false;
@@ -235,7 +245,7 @@ bool DatabasePrivate::getCurrectScheema()
         int typeId = QMetaType::type(tableProperty.typeName());
 
         if (tables.values().contains(tableProperty.name())
-            && (unsigned)typeId >= QVariant::UserType) {
+                && (unsigned)typeId >= QVariant::UserType) {
             TableModel *sch = new TableModel(typeId, tableProperty.name());
             currentModel.append(sch);
         }
@@ -271,12 +281,12 @@ DatabaseModel DatabasePrivate::getLastScheema()
             ->orderBy(!ChangeLogTable::idField())
             ->first();
 
-//    DatabaseModel ret(q->metaObject()->className());
+    //    DatabaseModel ret(q->metaObject()->className());
 
     if (u) {
         QJsonObject json
-            = QJsonDocument::fromJson(
-                  QByteArray(u->data().toLocal8Bit().data())).object();
+                = QJsonDocument::fromJson(
+                    QByteArray(u->data().toLocal8Bit().data())).object();
 
         DatabaseModel ret = json;
         return ret;
@@ -367,7 +377,7 @@ Database::Database(const QSqlDatabase &other)
     //TODO: make a polish here
     DatabasePrivate::lastId++;
 
-//    setDriver(other.driver());
+    //    setDriver(other.driver());
     setHostName(other.hostName());
     setPort(other.port());
     setDatabaseName(other.databaseName());
@@ -540,14 +550,14 @@ bool Database::open(bool updateDatabase)
             if (p.trimmed().startsWith("driver="))
                 driverName = p.split('=').at(1).toLower().trimmed();
 
-//        if (driverName == "{sql server}")
-            d->sqlGenertor = new SqlServerGenerator(this);
+        //        if (driverName == "{sql server}")
+        d->sqlGenertor = new SqlServerGenerator(this);
         // TODO: add ODBC driver for mysql, postgres, ...
     }
 
     if (!d->sqlGenertor) {
         qFatal("Sql generator for driver %s not found",
-                 driver().toLatin1().constData());
+               driver().toLatin1().constData());
         return false;
     } else {
         return d->open(updateDatabase);

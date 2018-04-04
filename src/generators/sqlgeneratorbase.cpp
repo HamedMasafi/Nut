@@ -19,7 +19,9 @@
 **************************************************************************/
 
 #include <QDate>
+#ifdef QT_DEBUG
 #include <QDebug>
+#endif // QT_DEBUG
 #include <QDateTime>
 #include <QPointF>
 #include <QTime>
@@ -1018,8 +1020,10 @@ QString SqlGeneratorBase::createFieldPhrase(const PhraseList &ph)
         if (ret != "")
             ret.append(", ");
         ret.append(d->toString());
+#ifdef QT_DEBUG
         if (d->isNot)
             qDebug() << "Operator ! is ignored in fields phrase";
+#endif // QT_DEBUG
     }
     return ret;
 }

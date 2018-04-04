@@ -22,7 +22,9 @@
 #define TABLESCHEEMA_H
 
 #include <QtCore/QVariant>
+#ifdef QT_DEBUG
 #include <QDebug>
+#endif // QT_DEBUG
 #include "defines.h"
 
 class QJsonObject;
@@ -89,6 +91,7 @@ struct RelationModel{
 };
 bool operator ==(const RelationModel &l, const RelationModel &r);
 bool operator !=(const RelationModel &l, const RelationModel &r);
+
 class TableModel
 {
 public:

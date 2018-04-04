@@ -24,7 +24,9 @@
 #include "database.h"
 #include "databasemodel.h"
 
+#ifdef QT_DEBUG
 #include <QDebug>
+#endif // QT_DEBUG
 
 NUT_BEGIN_NAMESPACE
 
