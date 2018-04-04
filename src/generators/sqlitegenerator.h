@@ -29,7 +29,7 @@ NUT_BEGIN_NAMESPACE
 class SqliteGenerator : public SqlGeneratorBase
 {
 public:
-    explicit SqliteGenerator(Database *parent = 0);
+    explicit SqliteGenerator(Database *parent = nullptr);
 
     QString fieldType(FieldModel *field);
 

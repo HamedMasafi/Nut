@@ -28,7 +28,6 @@ NUT_BEGIN_NAMESPACE
 
 MySqlGenerator::MySqlGenerator(Database *parent) : SqlGeneratorBase(parent)
 {
-
 }
 
 QString MySqlGenerator::fieldType(FieldModel *field)

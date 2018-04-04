@@ -26,5 +26,4 @@ public:
     WeblogDatabase();
 };
 
-
 #endif // TDATABASE_H

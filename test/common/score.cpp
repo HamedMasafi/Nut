@@ -2,5 +2,4 @@
 
 Score::Score(QObject *parent) : Nut::Table(parent)
 {
-
 }

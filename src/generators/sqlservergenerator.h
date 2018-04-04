@@ -29,7 +29,7 @@ NUT_BEGIN_NAMESPACE
 class SqlServerGenerator : public SqlGeneratorBase
 {
 public:
-    explicit SqlServerGenerator(Database *parent = 0);
+    explicit SqlServerGenerator(Database *parent = nullptr);
 
     QString masterDatabaseName(QString databaseName);
 

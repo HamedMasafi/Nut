@@ -36,7 +36,7 @@ class SqlModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit SqlModel(Database *database, TableSetBase *tableSet, QObject *parent = Q_NULLPTR);
+    explicit SqlModel(Database *database, TableSetBase *tableSet, QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;

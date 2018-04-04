@@ -26,7 +26,6 @@ NUT_BEGIN_NAMESPACE
 
 SqliteGenerator::SqliteGenerator(Database *parent) : SqlGeneratorBase(parent)
 {
-
 }
 
 QString SqliteGenerator::fieldType(FieldModel *field)

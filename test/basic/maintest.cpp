@@ -178,7 +178,7 @@ void MainTest::selectFirst()
     auto posts = db.postTable()->query()
         ->first();
 
-    QTEST_ASSERT(posts != Q_NULLPTR);
+    QTEST_ASSERT(posts != nullptr);
 }
 
 void MainTest::selectPostsWithoutTitle()

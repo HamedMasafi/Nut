@@ -57,7 +57,7 @@ public:
         SignleField
     };
 
-    explicit SqlGeneratorBase(Database *parent);
+    explicit SqlGeneratorBase(Database *parent = nullptr);
     virtual ~SqlGeneratorBase();
 
     virtual QString masterDatabaseName(QString databaseName);
@@ -76,8 +76,8 @@ public:
 
     virtual QString join(const QString &mainTable,
                          const QList<RelationModel*> list,
-                         QStringList *order = Q_NULLPTR);
-    virtual QString join(const QStringList &list, QStringList *order = Q_NULLPTR);
+                         QStringList *order = nullptr);
+    virtual QString join(const QStringList &list, QStringList *order = nullptr);
 
     virtual QString saveRecord(Table *t, QString tableName);
 

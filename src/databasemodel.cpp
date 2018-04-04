@@ -224,7 +224,7 @@ DatabaseModel *DatabaseModel::modelByName(const QString &name)
     if (_models.contains(name))
         return _models[name];
 
-    return Q_NULLPTR;
+    return nullptr;
 }
 
 void DatabaseModel::deleteAllModels()

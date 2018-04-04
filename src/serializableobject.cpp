@@ -2,5 +2,4 @@
 
 SerializableObject::SerializableObject()
 {
-
 }

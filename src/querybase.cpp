@@ -8,7 +8,6 @@ NUT_BEGIN_NAMESPACE
 
 QueryBase::QueryBase(QObject *parent) : QObject(parent)
 {
-
 }
 
 void QueryBase::addTableToSet(TableSetBase *set, Table *table)

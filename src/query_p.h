@@ -37,7 +37,7 @@ class QueryPrivate{
     Q_DECLARE_PUBLIC(QueryBase)
 
 public:
-    explicit QueryPrivate(QueryBase *parent);
+    explicit QueryPrivate(QueryBase *parent = nullptr);
     ~QueryPrivate();
 
     QString sql;

@@ -35,7 +35,7 @@ class DatabasePrivate
     Q_DECLARE_PUBLIC(Database)
 
 public:
-    explicit DatabasePrivate(Database *parent);
+    explicit DatabasePrivate(Database *parent = nullptr);
 
     bool open(bool updateDatabase);
 
