@@ -29,7 +29,7 @@ NUT_BEGIN_NAMESPACE
 class PostgreSqlGenerator : public SqlGeneratorBase
 {
 public:
-    explicit PostgreSqlGenerator(Database *parent);
+    explicit PostgreSqlGenerator(Database *parent = nullptr);
 
     QString fieldType(FieldModel *field);
 

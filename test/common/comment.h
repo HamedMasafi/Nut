@@ -25,7 +25,7 @@ class Comment : public Table
     NUT_FOREGION_KEY(User, int, author, author, setAuthor)
 
 public:
-    Q_INVOKABLE explicit Comment(QObject *parentTableSet = 0);
+    Q_INVOKABLE explicit Comment(QObject *parentTableSet = nullptr);
 };
 
 Q_DECLARE_METATYPE(Comment*)

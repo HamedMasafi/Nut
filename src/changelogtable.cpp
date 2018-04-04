@@ -24,8 +24,6 @@ NUT_BEGIN_NAMESPACE
 
 ChangeLogTable::ChangeLogTable(QObject *tableSet) : Table(tableSet)
 {
-
-
 }
 
 NUT_END_NAMESPACE

@@ -18,7 +18,7 @@ class Score : public Nut::Table
     NUT_FOREGION_KEY(User, int, user, user, setUser)
 
 public:
-    Q_INVOKABLE Score(QObject *parent = Q_NULLPTR);
+    Q_INVOKABLE Score(QObject *parent = nullptr);
 };
 
 #endif // SCORE_H

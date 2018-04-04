@@ -29,7 +29,7 @@ NUT_BEGIN_NAMESPACE
 class MySqlGenerator : public SqlGeneratorBase
 {
 public:
-    explicit MySqlGenerator(Database *parent = 0);
+    explicit MySqlGenerator(Database *parent = nullptr);
 
     QString fieldType(FieldModel *field);
     QString escapeValue(const QVariant &v) const;

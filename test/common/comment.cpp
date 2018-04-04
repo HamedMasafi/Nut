@@ -1,7 +1,7 @@
 #include "comment.h"
 
 Comment::Comment(QObject *parent) : Table(parent),
-    m_author(Q_NULLPTR), m_post(Q_NULLPTR)
+    m_post(nullptr), m_author(nullptr)
 {
 
 }

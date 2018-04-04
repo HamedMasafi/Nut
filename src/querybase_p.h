@@ -34,7 +34,7 @@ class QueryBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit QueryBase(QObject *parent = 0);
+    explicit QueryBase(QObject *parent = nullptr);
 
 protected:
     void addTableToSet(TableSetBase *set, Table *table);

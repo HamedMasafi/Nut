@@ -25,12 +25,12 @@
 
 NUT_BEGIN_NAMESPACE
 
-TableSetBase::TableSetBase(Database *parent) : QObject(parent), _database(parent), _table(0)
+TableSetBase::TableSetBase(Database *parent) : QObject(parent), _database(parent), _table(nullptr)
 {
     parent->add(this);
 }
 
-TableSetBase::TableSetBase(Table *parent) : QObject(parent), _database(0), _table(parent)
+TableSetBase::TableSetBase(Table *parent) : QObject(parent), _database(nullptr), _table(parent)
 {
     parent->add(this);
 }

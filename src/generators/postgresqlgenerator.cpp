@@ -26,7 +26,6 @@ NUT_BEGIN_NAMESPACE
 
 PostgreSqlGenerator::PostgreSqlGenerator(Database *parent) : SqlGeneratorBase (parent)
 {
-
 }
 
 QString PostgreSqlGenerator::fieldType(FieldModel *field)

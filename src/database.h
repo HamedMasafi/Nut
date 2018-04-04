@@ -43,7 +43,7 @@ class NUT_EXPORT Database : public QObject
     Q_DECLARE_PRIVATE(Database)
 
 public:
-    explicit Database(QObject *parent = 0);
+    explicit Database(QObject *parent = nullptr);
     explicit Database(const Database &other);
     explicit Database(const QSqlDatabase &other);
     ~Database();

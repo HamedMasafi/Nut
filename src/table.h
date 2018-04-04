@@ -39,7 +39,7 @@ class NUT_EXPORT Table : public QObject
     Q_OBJECT
 
 public:
-    explicit Table(QObject *parentTableSet = 0);
+    explicit Table(QObject *parentTableSet = nullptr);
 
     enum Status{
         NewCreated,
