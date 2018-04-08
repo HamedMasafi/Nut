@@ -63,7 +63,7 @@ QString PostgreSqlGenerator::fieldType(FieldModel *field)
         if(field->isAutoIncrement)
             dbType = "BIGSERIAL";
         else
-            dbType = "BIGINTEGER";
+            dbType = "BIGINT";
         break;
 
     case QVariant::Double:
