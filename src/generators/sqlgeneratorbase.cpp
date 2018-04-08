@@ -104,7 +104,7 @@ QString SqlGeneratorBase::recordsPhrase(TableModel *table)
     foreach (FieldModel *f, table->fields()) {
         if (!ret.isEmpty())
             ret.append(", ");
-        ret.append(QString("%1.%2 AS [%1.%2]").arg(table->name()).arg(f->name));
+        ret.append(QString("%1.%2 AS \"%1.%2\"").arg(table->name()).arg(f->name));
     }
     return ret;
 }
@@ -720,8 +720,8 @@ QString SqlGeneratorBase::updateCommand(const QString &tableName,
 void SqlGeneratorBase::replaceTableNames(QString &command)
 {
     foreach (TableModel *m, TableModel::allModels())
-        command = command
-                .replace("[" + m->className() + "]", "`" + m->name() + "`");
+            command = command
+                .replace("[" + m->className() + "]", "\"" + m->name() + "\"");
 }
 
 void SqlGeneratorBase::removeTableNames(QString &command)
