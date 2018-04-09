@@ -74,7 +74,7 @@ public:                                                                        \
 
 #define NUT_FOREGION_KEY(type, keytype, name, read, write)                     \
     Q_PROPERTY(type* name READ read WRITE write)                               \
-    NUT_DECLARE_FIELD(keytype, name##Id, read##Id, write##Id)                  \
+    NUT_DECLARE_FIELD(keytype, id##name, id##read, id##write)                  \
     NUT_INFO(__nut_FOREGION_KEY, name, type)                                   \
     type *m_##name;                                                            \
 public:                                                                        \

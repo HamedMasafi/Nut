@@ -235,7 +235,7 @@ TableModel::TableModel(int typeId, QString tableName)
         if(type == __nut_FOREGION_KEY){
             RelationModel *fk = new RelationModel;
             fk->slaveTable = this;
-            fk->localColumn = name + "Id";
+            fk->localColumn = "id" + name;
             fk->localProperty = name;
             fk->foreignColumn = value;
             fk->masterClassName = value;
