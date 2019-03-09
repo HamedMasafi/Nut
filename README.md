@@ -3,6 +3,7 @@
 ## Build result
 | Brancc name   | Icon  |
 | ------------- |:-------------:|
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8bdf1279bc9c418ca2b95ec4b8972aa7)](https://app.codacy.com/app/HamedMasafi/Nut?utm_source=github.com&utm_medium=referral&utm_content=HamedMasafi/Nut&utm_campaign=Badge_Grade_Dashboard)
 | master        | [![Build Status](https://travis-ci.org/HamedMasafi/Nut.svg?branch=master)](https://travis-ci.org/HamedMasafi/Nut) |
 | dev           | [![Build Status](https://travis-ci.org/HamedMasafi/Nut.svg?branch=dev)](https://travis-ci.org/HamedMasafi/Nut) |
 
