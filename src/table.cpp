@@ -45,7 +45,9 @@ NUT_BEGIN_NAMESPACE
 
 Table::Table(QObject *parent) : QObject(parent),
     d(new TablePrivate)
-{ }
+{
+    qRegisterMetaType<Nut::Row<Table>>("Nut::Row<Table>");
+}
 
 Table::~Table()
 {
