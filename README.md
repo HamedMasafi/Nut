@@ -8,15 +8,15 @@
 ## Advanced, Powerful and easy to use ORM for Qt5
 
 
-## Features:
+## Features
 - Easy to use
 - Support PosgtreSQL, MySQL, SQLite and Microsoft Sql Server
 - Automatically create and update database
-- IDE auto complete support, No hard-code nedded
-- Table join detect 
-- Suppor every Qt types. [Full list](doc/datatypes.md)
+- Support for IDE autocomplete. No hard-coding is needed
+- Detecting table joins
+- Support common C++ and Qt-specific types ([Full list](doc/datatypes.md))
 
-## Getting start
+## Getting started
 - [Sample codes](doc/start.md)
 - [Shared pointer and regular mode](doc/sharedpointer.md)
 - [Create database class](doc/database.md)
@@ -28,9 +28,9 @@
 We need more documentation or wiki. If you can help to improve docs please fork now!
 
 ### Donate
-Butcoin address: 1Dn1WHKkaxanXe4cTGDk4cFRRABxLUpEVj
+Bitcoin address: 1Dn1WHKkaxanXe4cTGDk4cFRRABxLUpEVj
 
 
-![Wallet addresst](btc-qr.png)
+![Wallet address](btc-qr.png)
 
 For more information read [Wiki](wiki).
