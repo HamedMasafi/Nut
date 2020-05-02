@@ -82,17 +82,6 @@ public:                                                                        \
         propertyChanged(#name);                                                \
     }
 
-#define NUT_FOREIGN_KEY(type, keytype, name, read, write)                     \
-    Q_PROPERTY(Nut::Row<type> name READ read WRITE write)                      \
-    NUT_DECLARE_FIELD(keytype, name##Id, read##Id, write##Id)                  \
-    NUT_INFO(__nut_FOREIGN_KEY, name, type)                                   \
-    Nut::Row<type> m_##name;                                                   \
-public slots:                                                                        \
-    Nut::Row<type> read() const { return m_##name ; }                          \
-    Q_INVOKABLE void write(Nut::Row<type> name){                                           \
-        m_##name = name;                                                       \
-    }
-
 #define NUT_FOREIGN_KEY_DECLARE(type, keytype, name, read, write)                     \
     NUT_INFO(__nut_FIELD, name##Id, 0)                                             \
     NUT_INFO(__nut_FOREIGN_KEY, name, type)                                   \
@@ -100,6 +89,7 @@ public slots:                                                                   
     keytype m_##name##Id; \
     Q_PROPERTY(Nut::Row<type> name READ read WRITE write)                                \
     Q_PROPERTY(keytype name##Id READ read##Id WRITE write##Id)                                \
+    Q_PROPERTY(Nut::Row<Table> _##name READ _##read WRITE _##write)                \
 public:                                                                        \
     Nut::Row<type> read() const;                          \
     keytype read##Id() const;                                                   \
@@ -109,9 +99,11 @@ public:                                                                        \
                         (staticMetaObject.className(), #name);                 \
         return f;                                                              \
     }                                                                          \
-public slots: \
     void write(Nut::Row<type> name); \
-    void write##Id(keytype name##Id);
+    void write##Id(keytype name##Id); \
+private: \
+    Nut::Row<Table> _##read() const;                                               \
+    void _##write(Nut::Row<Table> name);
 
 #define NUT_FOREIGN_KEY_IMPLEMENT(class, type, keytype, name, read, write)                     \
     \
@@ -132,6 +124,13 @@ public slots: \
         m_##name##Id = name##Id;                                                       \
         m_##name = nullptr; \
         propertyChanged(QT_STRINGIFY2(name##Id));                                                \
+    } \
+    Nut::Row<Table> class::_##read() const { return m_##name ; }                           \
+    \
+    void class::_##write(Nut::Row<Table> name) {                                           \
+        propertyChanged(QT_STRINGIFY2(keyname));                                                \
+        m_##name = qSharedPointerCast< type >( name );\
+        m_##name##Id = m_##name->primaryValue().value<keytype>(); \
     }
 
 

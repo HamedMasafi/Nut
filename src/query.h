@@ -232,19 +232,13 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
 
         levels.append(data);
     };
+
+    // Always add the reference to the query's base table as first item
+    add_table(0, d->database->model().tableByName(d->tableName));
     for (int i = 0; i < d->relations.count(); ++i) {
         RelationModel *rel = d->relations[i];
         add_table(i, rel->masterTable);
         add_table(i, rel->slaveTable);
-    }
-
-    if (!importedTables.count()) {
-        LevelData data;
-        data.table = d->database->model().tableByName(d->tableName);
-        data.keyFiledname = d->tableName + "." + data.table->primaryKey();
-        data.lastKeyValue = QVariant();
-
-        levels.append(data);
     }
 
     QVector<bool> checked;
@@ -290,6 +284,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
             //create table row
             Row<Table> row;
             if (data.table->className() == d->className) {
+                // create a row for the current table
                 row = Nut::create<T>();
 #ifdef NUT_SHARED_POINTER
                 returnList.append(row.objectCast<T>());
@@ -299,6 +294,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
                 d->tableSet->add(row);
 
             } else {
+                // create row for a related table
                 Table *table;
                 const QMetaObject *childMetaObject
                         = QMetaType::metaObjectForType(data.table->typeId());
@@ -308,6 +304,20 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
                     qFatal("Could not create instance of %s",
                            qPrintable(data.table->name()));
                 row = createFrom(table);
+                if (levels[0].lastRow) {
+                    // assign the current row (belongs to a joined table) to the query's base table
+                    foreach (RelationModel *rel, d->relations) {
+                        if (rel->slaveTable->className() == levels[0].table->className()
+                                && rel->masterTable->className() == data.table->className()) {
+                            // relation found -> assign the row to the query's base table proper field
+                            QString propertyName = "_" + rel->localProperty;
+                            levels[0].lastRow.data()->setProperty(
+                                        propertyName.toUtf8().constData(),
+                                        QVariant::fromValue(row));
+                            break;
+                        }
+                    }
+                }
             }
 
             QList<FieldModel*> childFields = data.table->fields();

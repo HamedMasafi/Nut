@@ -97,4 +97,6 @@ private:
 
 NUT_END_NAMESPACE
 
+Q_DECLARE_METATYPE(Nut::Row<Nut::Table>)
+
 #endif // TABLE_H
