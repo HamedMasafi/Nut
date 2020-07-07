@@ -55,7 +55,8 @@ struct FieldModel{
                 && type == f.type
                 && length == f.length
                 && defaultValue == f.defaultValue
-                && notNull == f.notNull;
+                && notNull == f.notNull
+                && isUnique == f.isUnique;
 
         return b;
     }

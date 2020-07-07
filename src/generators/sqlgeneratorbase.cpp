@@ -147,7 +147,9 @@ QString SqlGeneratorBase::fieldDeclare(FieldModel *field)
     QString type = fieldType(field);
     if (type.isEmpty())
         return type;
-    return field->name + " " + type + (field->notNull ? " NOT NULL" : "");
+    return field->name + " " + type
+            + (field->notNull ? " NOT NULL" : "")
+            + (field->isUnique ? " UNIQUE" : "");
 }
 
 QStringList SqlGeneratorBase::constraints(TableModel *table)

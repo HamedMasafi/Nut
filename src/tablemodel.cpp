@@ -73,7 +73,7 @@ FieldModel *TableModel::field(const QString &name) const
     foreach (FieldModel *f, _fields)
         if(f->name == name)
             return f;
-    
+
     return nullptr;
 }
 
@@ -251,6 +251,9 @@ TableModel::TableModel(const QJsonObject &json, const QString &tableName) : _typ
         if(fieldObject.contains(__nut_NOT_NULL))
             f->notNull = fieldObject.value(__nut_NOT_NULL).toBool();
 
+        if(fieldObject.contains(__nut_UNIQUE))
+            f->isUnique = fieldObject.value(__nut_UNIQUE).toBool();
+
         if(fieldObject.contains(__nut_LEN))
             f->length = fieldObject.value(__nut_LEN).toInt();
 
@@ -287,6 +290,9 @@ QJsonObject TableModel::toJson() const
 
         if(f->notNull)
             fieldObj.insert(__nut_NOT_NULL, f->notNull);
+
+        if(f->isUnique)
+            fieldObj.insert(__nut_UNIQUE, f->isUnique);
 
         if(!f->defaultValue.isNull())
             fieldObj.insert(__nut_DEFAULT_VALUE, f->defaultValue);
@@ -359,6 +365,7 @@ FieldModel::FieldModel(const QJsonObject &json)
     type = static_cast<QMetaType::Type>(json.value(__TYPE).toInt());
     length = json.value(__nut_LEN).toInt();
     notNull = json.value(__nut_NOT_NULL).toBool();
+    isUnique = json.value(__nut_UNIQUE).toBool();
     isAutoIncrement = json.value(__nut_AUTO_INCREMENT).toBool();
     isPrimaryKey = json.value(__nut_PRIMARY_KEY).toBool();
     defaultValue = json.value(__nut_DEFAULT_VALUE).toString();
@@ -372,6 +379,7 @@ QJsonObject FieldModel::toJson() const
     fieldObj.insert(__TYPE, QString(QVariant::typeToName(type)));
     fieldObj.insert(__nut_LEN, length);
     fieldObj.insert(__nut_NOT_NULL, notNull);
+    fieldObj.insert(__nut_UNIQUE, isUnique);
     fieldObj.insert(__nut_AUTO_INCREMENT, isAutoIncrement);
     fieldObj.insert(__nut_PRIMARY_KEY, isPrimaryKey);
     fieldObj.insert(__nut_DEFAULT_VALUE, defaultValue);

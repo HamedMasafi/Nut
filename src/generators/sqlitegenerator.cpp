@@ -104,6 +104,9 @@ QString SqliteGenerator::fieldDeclare(FieldModel *field)
     if (field->notNull)
         type.append(" NOT NULL");
 
+    if (field->isUnique)
+        type.append(" UNIQUE");
+
     return field->name + " " + type;
 }
 
