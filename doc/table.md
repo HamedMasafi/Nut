@@ -26,7 +26,7 @@ NUT_DECLARE_FIELD(type, property_name, read_method_name, write_method_name)
 | NUT_NOT_NULL(x)               | The field *x* is not allowed to store NULL value |
 | NUT_LEN(x, len)               | Max length of *x* is *len* in string types and in numeric typed field *x* will be store in *len* bytes   |
 | NUT_DEFAULT_VALUE(x, def)     | Default value of *x* is *def*                    |
-| NUT_UNIQUE(x)                 | Field *x* is unique (Not implemented yet!)        |
+| NUT_UNIQUE(x)                 | Field *x* is unique                               |
 | NUT_DISPLAY_NAME(field, name) | Sets display name for field (used in model creation |
 
 ## Sample table
