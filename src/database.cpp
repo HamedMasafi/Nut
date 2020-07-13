@@ -136,7 +136,7 @@ bool DatabasePrivate::updateDatabase()
     DatabaseModel current = currentModel;
 
     if (last == current) {
-        qDebug("Databse is up-to-date");
+        qDebug("Database is up-to-date");
         //TODO: crash without this and I don't know why!
         changeLogs->clearChilds();
         return true;
@@ -154,9 +154,9 @@ bool DatabasePrivate::updateDatabase()
         }
     }
     if (!last.count())
-        qDebug("Databse is new");
+        qDebug("Database is new");
     else
-        qDebug("Databse is changed");
+        qDebug("Database is changed");
 
     QStringList sql = sqlGenerator->diff(last, current);
 
@@ -607,6 +607,7 @@ int Database::saveChanges(bool cleanUp)
     int rowsAffected = 0;
     foreach (TableSetBase *ts, d->tableSets)
         rowsAffected += ts->save(this, cleanUp);
+
     return rowsAffected;
 }
 
