@@ -324,7 +324,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
                 tableset->add(row);
             }
 
-            row->setStatus(Table::FeatchedFromDB);
+            row->setStatus(Table::FetchedFromDB);
             row->setParent(this);
             row->clear();
 

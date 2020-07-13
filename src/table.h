@@ -46,7 +46,7 @@ public:
 
     enum Status{
         NewCreated,
-        FeatchedFromDB,
+        FetchedFromDB,
         Added,
         Modified,
         Deleted

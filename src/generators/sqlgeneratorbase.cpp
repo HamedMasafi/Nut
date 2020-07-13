@@ -102,7 +102,7 @@ QString SqlGeneratorBase::saveRecord(Table *t, QString tableName)
         return updateRecord(t, tableName);
 
     case Table::NewCreated:
-    case Table::FeatchedFromDB:
+    case Table::FetchedFromDB:
         Q_UNREACHABLE();
     }
 

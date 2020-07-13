@@ -131,7 +131,7 @@ Q_OUTOFLINE_TEMPLATE void TableSet<T>::append(Row<T> t)
 //        t->setModel(_database->model().tableByClassName(t->metaObject()->className()));
 
     t->setParentTableSet(this);
-    if(t->status() != Table::FeatchedFromDB)
+    if(t->status() != Table::FetchedFromDB)
         t->setStatus(Table::Added);
 }
 

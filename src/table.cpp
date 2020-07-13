@@ -97,7 +97,7 @@ void Table::propertyChanged(const QString &propName)
 
     d.detach();
     d->changedProperties.insert(propName);
-    if (d->status == FeatchedFromDB)
+    if (d->status == FetchedFromDB)
         d->status = Modified;
 
     if (d->status == NewCreated)
@@ -181,7 +181,7 @@ int Table::save(Database *db)
 
     foreach(TableSetBase *ts, d->childTableSets)
         ts->save(db);
-    setStatus(FeatchedFromDB);
+    setStatus(FetchedFromDB);
 
     return q.numRowsAffected();
 }
