@@ -41,7 +41,7 @@ void BenchmarkTest::initTestCase()
 
 void BenchmarkTest::insert1kPost()
 {
-    QTime t;
+    QElapsedTimer t;
     t.start();
 
     for (int i = 0; i < 100; ++i) {
@@ -52,7 +52,7 @@ void BenchmarkTest::insert1kPost()
         db.posts()->append(newPost);
     }
     db.saveChanges();
-    qDebug("1k post inserted in %d ms", t.elapsed());
+    qDebug("1k post inserted in %lld ms", t.elapsed());
 
 }
 

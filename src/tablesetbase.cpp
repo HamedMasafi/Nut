@@ -53,16 +53,16 @@ int TableSetBase::save(Database *db, bool cleanUp)
         masterModel = db->model().tableByClassName(data->table->metaObject()->className());
 
     foreach (Row<Table> t, data->childs) {
-        if(data->table)
+        if (data->table)
             t->setParentTable(data->table,
                               masterModel,
                               db->model().tableByClassName(t->metaObject()->className()));
 
-        if(t->status() == Table::Added
-                || t->status() == Table::Modified
-                || t->status() == Table::Deleted){
+        if (t->status() == Table::Added
+            || t->status() == Table::Modified
+            || t->status() == Table::Deleted) {
             rowsAffected += t->save(db);
-            if(cleanUp)
+            if (cleanUp)
 #ifdef NUT_SHARED_POINTER
                 remove(t);
 #else
