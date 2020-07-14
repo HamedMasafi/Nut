@@ -60,7 +60,7 @@ public:
 
     int length() const;
     Row<T> at(int i) const;
-    const Row<T> operator[](int i) const;
+    Row<T> operator[](int i) const;
 
     Query<T> *query(bool autoDelete = true);
     BulkInserter *bulkInserter();
@@ -100,7 +100,7 @@ Q_OUTOFLINE_TEMPLATE int TableSet<T>::length() const
 }
 
 template<class T>
-Q_OUTOFLINE_TEMPLATE Row<T> TableSet<T >::at(int i) const
+Q_OUTOFLINE_TEMPLATE Row<T> TableSet<T>::at(int i) const
 {
 #ifdef NUT_SHARED_POINTER
     return data->childs.at(i).template objectCast<T>();
@@ -110,13 +110,9 @@ Q_OUTOFLINE_TEMPLATE Row<T> TableSet<T >::at(int i) const
 }
 
 template<class T>
-Q_OUTOFLINE_TEMPLATE const Row<T> TableSet<T>::operator[](int i) const
+Q_OUTOFLINE_TEMPLATE Row<T> TableSet<T>::operator[](int i) const
 {
-#ifdef NUT_SHARED_POINTER
-    return data->childs.at(i).template objectCast<T>();
-#else
-    return reinterpret_cast<T*>(data->childs.at(i));
-#endif
+    return at(i);
 }
 
 template<class T>
