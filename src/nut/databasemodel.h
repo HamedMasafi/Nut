@@ -46,6 +46,8 @@ public:
     ~DatabaseModel() = default;
 
     TableModel *tableByName(const QString &tableName) const;
+
+    Q_DECL_DEPRECATED
     TableModel *tableByClassName(QString className) const;
 
     RelationModel *relationByClassNames(const QString &masterClassName,

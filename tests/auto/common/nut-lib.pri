@@ -1,4 +1,4 @@
-contains(debug_and_release, CONFIG): message(debug_and_release)
+#contains(debug_and_release, CONFIG): message(debug_and_release)
 
 debug_and_release:!ReleaseBuild:!DebugBuild {
         runtarget.target = run-tests
