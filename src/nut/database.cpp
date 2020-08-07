@@ -201,15 +201,14 @@ bool DatabasePrivate::getCurrectSchema()
     }
 
     QMap<QString, QString> tables;
-    tables.clear();
 
     // TODO: change logs must not be in model
     int changeLogTypeId = qRegisterMetaType<ChangeLogTable*>();
 
     currentModel.append(
         new TableModel(changeLogTypeId, QStringLiteral(__CHANGE_LOG_TABLE_NAME)));
-    tables.insert(QString::fromUtf8(ChangeLogTable::staticMetaObject.className()),
-                  QStringLiteral(__CHANGE_LOG_TABLE_NAME));
+    tables.insert(QStringLiteral(__CHANGE_LOG_TABLE_NAME),
+                  QString::fromUtf8(ChangeLogTable::staticMetaObject.className()));
 
     changeLogs = new TableSet<ChangeLogTable>(q);
 
@@ -228,7 +227,7 @@ bool DatabasePrivate::getCurrectSchema()
         if (type == QStringLiteral(__nut_TABLE)) {
             //name: table class name
             //value: table variable name (table name in db)
-            tables.insert(name, value);
+            tables.insert(value /* property name */, name /* class name */);
 
             int typeId = QMetaType::type(name.toLocal8Bit() + "*");
 
@@ -241,7 +240,7 @@ bool DatabasePrivate::getCurrectSchema()
 
         if (type == QStringLiteral(__nut_DB_VERSION)) {
             bool ok;
-            int version = value.toInt(&ok);
+            int version = name.toInt(&ok);
             if (!ok)
                 qFatal("NUT_DB_VERSION macro accept version in format 'x'");
             currentModel.setVersion(version);
@@ -252,20 +251,22 @@ bool DatabasePrivate::getCurrectSchema()
         QMetaProperty tableProperty = q->metaObject()->property(i);
         int typeId = QMetaType::type(tableProperty.typeName());
 
-        if (tables.values().contains(QString::fromUtf8(tableProperty.name()))
+        if (tables.contains(QString::fromUtf8(tableProperty.name()))
             && (unsigned)typeId >= QVariant::UserType) {
             TableModel *sch = new TableModel(typeId, QString::fromUtf8(tableProperty.name()));
             currentModel.append(sch);
+            qDebug() << "tableProperty.name()="<<tableProperty.name();
         }
     }
 
     foreach (TableModel *table, currentModel) {
+        //extra check one-time per program execution
         foreach (FieldModel *f, table->fields()) {
-            if (f->isPrimaryKey && ! sqlGenerator->supportPrimaryKey(f->type))
+            if (f->isPrimaryKey && !sqlGenerator->supportPrimaryKey(f->type))
                 qFatal("The field of type %s does not support as primary key",
                        qPrintable(f->typeName));
 
-            if (f->isAutoIncrement && ! sqlGenerator->supportAutoIncrement(f->type))
+            if (f->isAutoIncrement && !sqlGenerator->supportAutoIncrement(f->type))
                 qFatal("The field of type %s does not support as auto increment",
                        qPrintable(f->typeName));
         }
