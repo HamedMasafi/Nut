@@ -284,8 +284,6 @@ DatabaseModel DatabasePrivate::getLastSchema()
             .orderBy(!ChangeLogTable::idField())
             .first();
 
-//    DatabaseModel ret(q->metaObject()->className());
-
     if (u) {
         QJsonParseError e;
         QJsonObject json = QJsonDocument::fromJson(u->data()
