@@ -889,14 +889,25 @@ QString AbstractSqlGenerator::escapeValue(const QVariant &v) const
     if (v.type() == QVariant::String && v.toString().isEmpty())
         return QStringLiteral("''");
 
+    if (v.type() == QVariant::List) {
+        auto list = v.toList();
+        QStringList ret;
+        foreach (QVariant vi, list) {
+            ret.append(QStringLiteral("'")
+                       + _serializer->serialize(vi)
+                       + QStringLiteral("'"));
+        }
+        return QStringLiteral("(")
+               + ret.join(QStringLiteral(", "))
+               + QStringLiteral(")");
+    }
+
     QString serialized = _serializer->serialize(v);
     if (serialized.isEmpty()) {
          qWarning("No field escape rule for: %s", v.typeName());
          return QString();
     }
 
-    if (v.type() == QVariant::List)
-        return serialized;
 
     return QStringLiteral("'") + serialized + QStringLiteral("'");
 }
