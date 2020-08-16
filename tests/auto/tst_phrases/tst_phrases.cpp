@@ -35,7 +35,7 @@ void PhrasesTest::no1()
 
         Generator g;
 
-        COMPARE_WHERE(id == 10 || id.in({1, 2, 3, 4}), "([main].id = '10' OR [main].id IN (1, 2, 3, 4))");
+        COMPARE_WHERE(id == 10 || id.in({1, 2, 3, 4}), "([main].id = '10' OR [main].id IN ('1', '2', '3', '4'))");
     }
 }
 
@@ -132,10 +132,11 @@ void PhrasesTest::datetime()
 
 void PhrasesTest::extra()
 {
+    Generator g;
     FieldPhrase<QUrl> url("main", "url");
 
-    auto p1 = url == QUrl();
-    auto p2 = url == "http://google.com";
+//    COMPARE_WHERE(url == QUrl(), "[main].url = ''");
+    COMPARE_WHERE(url == QUrl("http://google.com"), "[main].url = 'http://google.com'");
 }
 
 void PhrasesTest::mix()
