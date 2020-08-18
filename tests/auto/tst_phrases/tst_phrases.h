@@ -23,13 +23,18 @@ signals:
 
 private slots:
     void initTestCase();
-    void no1();
 
-    void numeric();
-    void string();
-    void boolean();
-    void datetime();
+    void condition_numeric_sqlite();
+    void condition_string_sqlite();
+    void condition_bool_sqlite();
+    void condition_datetime_sqlite();
+
+    void order_sqlite();
+    void select_sqlite();
+
     void extra();
+
+    void no1();
     void mix();
 
 private:

@@ -131,7 +131,7 @@ AbstractFieldPhrase AbstractFieldPhrase::operator ~()
 
 AbstractFieldPhrase AbstractFieldPhrase::operator !()
 {
-    AbstractFieldPhrase f(data->className, data->fieldName);
+    AbstractFieldPhrase f(data->clone());
     f.data->isNot = !data->isNot;
     return f;
 }

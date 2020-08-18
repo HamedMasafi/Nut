@@ -9,6 +9,8 @@
 using namespace Nut;
 
 #define COMPARE_WHERE(w, sql) QCOMPARE(g.where(w), sql);
+#define COMPARE_ORDER(o, sql) QCOMPARE(g.order(o), sql);
+#define COMPARE_SELECT(s, sql) QCOMPARE(g.select(s), sql);
 
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_CLANG("-Wdeprecated-declarations")
@@ -39,7 +41,7 @@ void PhrasesTest::no1()
     }
 }
 
-void PhrasesTest::numeric()
+void PhrasesTest::condition_numeric_sqlite()
 {
     Generator g;
 
@@ -74,7 +76,7 @@ void PhrasesTest::numeric()
     auto p27 = n | f;
 }
 
-void PhrasesTest::string()
+void PhrasesTest::condition_string_sqlite()
 {
     Generator g;
     FieldPhrase<QString> str("main", "string");
@@ -82,28 +84,32 @@ void PhrasesTest::string()
     COMPARE_WHERE(str == "Hi", "[main].string = 'Hi'");
     COMPARE_WHERE(str.like("%hi%"), "[main].string LIKE '%hi%'");
     COMPARE_WHERE(str.isNull(), "[main].string IS NULL");
+    COMPARE_WHERE(!str.isNull(), "[main].string IS NOT NULL");
     COMPARE_WHERE(str.in(QStringList() << "one"
                                        << "two"
                                        << "three"),
                   "[main].string IN ('one', 'two', 'three')");
+
+    COMPARE_WHERE(!str.in(QStringList() << "one"
+                                       << "two"
+                                       << "three"),
+                  "[main].string NOT IN ('one', 'two', 'three')");
     COMPARE_WHERE(str != "hi" && str.like("%s"),
                   "([main].string <> 'hi' AND [main].string LIKE '%s')");
 }
 
-void PhrasesTest::boolean()
+void PhrasesTest::condition_bool_sqlite()
 {
+    Generator g;
     FieldPhrase<bool> b("main", "bool");
 
-    auto p1 = b;
-    auto p2 = !b;
-    auto p3 = b == false;
-
-    QTEST_ASSERT(p1.data);
-    QTEST_ASSERT(p2.data);
-    QTEST_ASSERT(p3.data);
+    COMPARE_WHERE(b, "[main].bool = 'true'");
+    COMPARE_WHERE(!b, "[main].bool = 'false'");
+    COMPARE_WHERE(b == true, "[main].bool = 'true'");
+    COMPARE_WHERE(b == false, "[main].bool = 'false'");
 }
 
-void PhrasesTest::datetime()
+void PhrasesTest::condition_datetime_sqlite()
 {
     Generator g;
 
@@ -115,19 +121,49 @@ void PhrasesTest::datetime()
     QTime t(12, 34, 56);
     QDateTime dt(d, t);
 
-    auto p1 = time <= QTime::currentTime();
-    auto p2 = time.addHours(2) < QTime::currentTime();
-    auto p3 = date == QDate::currentDate();
-    auto p4 = date.addDays(1) == QDate::currentDate();
-    auto p5 = datetime > QDateTime::currentDateTime();
-    auto p6 = datetime.addMonths(1) >= QDateTime::currentDateTime();
-    auto p7 = time.between(QTime::currentTime().addSecs(-100), QTime::currentTime());
-    auto p8 = time.hour() == 3;
-    auto p9 = time = QTime::currentTime();
+    COMPARE_WHERE(time.hour() == 1, "CAST(strftime('%H', [main].time) AS INT) = '1'");
+    COMPARE_WHERE(time.minute() == 2, "CAST(strftime('%M', [main].time) AS INT) = '2'");
+    COMPARE_WHERE(time.second() == 3, "CAST(strftime('%S', [main].time) AS INT) = '3'");
 
+    COMPARE_WHERE(date.year() == 1, "CAST(strftime('%Y', [main].date) AS INT) = '1'");
+    COMPARE_WHERE(date.month() == 2, "CAST(strftime('%m', [main].date) AS INT) = '2'");
+    COMPARE_WHERE(date.day() == 3, "CAST(strftime('%d', [main].date) AS INT) = '3'");
+
+    COMPARE_WHERE(time.isNull(), "[main].time IS NULL");
+    COMPARE_WHERE(!time.isNull(), "[main].time IS NOT NULL");
+    COMPARE_WHERE(time == t, "[main].time = '12:34:56'");
+    COMPARE_WHERE(time.between(t.addSecs(-10),
+                               t),
+                  "[main].time BETWEEN '12:34:46' AND '12:34:56'");
     COMPARE_WHERE(date.addDays(2) == d, "DATE([main].date,'+2 DAY') = '2020-02-20'");
     COMPARE_WHERE(time.addMinutes(-3) == t, "TIME([main].time,'-3 MINUTE') = '12:34:56'");
     COMPARE_WHERE(datetime.addMinutes(1) == dt, "DATETIME([main].datetime,'+1 MINUTE') = '2020-02-20 12:34:56'");
+}
+
+void PhrasesTest::order_sqlite()
+{
+    Generator g;
+
+    FieldPhrase<int> id("main", "id");
+    FieldPhrase<QString> name("main", "name");
+    FieldPhrase<QString> last_name("main", "last_name");
+
+    COMPARE_ORDER(id, "[main].id");
+    COMPARE_ORDER(id | name, "[main].id, [main].name");
+    COMPARE_ORDER(id | !name | last_name, "[main].id, [main].name DESC, [main].last_name");
+}
+
+void PhrasesTest::select_sqlite()
+{
+    Generator g;
+
+    FieldPhrase<int> id("main", "id");
+    FieldPhrase<QString> name("main", "name");
+    FieldPhrase<QString> last_name("main", "last_name");
+
+    COMPARE_ORDER(id, "[main].id");
+    COMPARE_ORDER(id | name, "[main].id, [main].name");
+    COMPARE_ORDER(id | name | last_name, "[main].id, [main].name, [main].last_name");
 }
 
 void PhrasesTest::extra()
@@ -135,7 +171,6 @@ void PhrasesTest::extra()
     Generator g;
     FieldPhrase<QUrl> url("main", "url");
 
-//    COMPARE_WHERE(url == QUrl(), "[main].url = ''");
     COMPARE_WHERE(url == QUrl("http://google.com"), "[main].url = 'http://google.com'");
 }
 

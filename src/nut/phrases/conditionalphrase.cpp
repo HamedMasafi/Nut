@@ -185,8 +185,9 @@ DECLARE_CONDITIONALPHRASE_OPERATORS_IMPL(&&, PhraseData::And)
 
 ConditionalPhrase ConditionalPhrase::operator !()
 {
-    ConditionalPhrase f(data);
-    f.data->isNot = !data->isNot;
+    ConditionalPhrase f;
+    f.data = data->clone();
+    f.data->isNot = !f.data->isNot;
     return f;
 }
 
