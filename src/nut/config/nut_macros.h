@@ -71,11 +71,11 @@ public:                                                                        \
     static NUT_WRAP_NAMESPACE(FieldPhrase<keytype>)& name##Id ## Field(){      \
         static NUT_WRAP_NAMESPACE(FieldPhrase<keytype>) f =                    \
                 NUT_WRAP_NAMESPACE(FieldPhrase<keytype>)                       \
-                        (staticMetaObject.className(), #name);                 \
+                        (staticMetaObject.className(), #name "Id");            \
         return f;                                                              \
     }                                                                          \
-public slots: \
-    void write(Nut::Row<type> name); \
+public slots:                                                                  \
+    void write(Nut::Row<type> name);                                           \
     void write##Id(keytype name##Id);
 
 #define NUT_FOREIGN_KEY_IMPLEMENT(class, type, keytype, name, read, write)     \
