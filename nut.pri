@@ -4,6 +4,11 @@ CONFIG += c++11
 
 INCLUDEPATH += $$PWD/include
 DEFINES += NUT_SHARED_POINTER
+
+!exists(3rdparty/serializer/src/src.pri) {
+    error("Please do git submodule update --init --recursive in the Nut directory")
+}
+
 include(3rdparty/serializer/src/src.pri)
 
 HEADERS += \
