@@ -18,6 +18,9 @@ signals:
 
 private slots:
     void initTestCase();
+    void insert();
+    void select();
+    void parallelUpdate();
 };
 
 #endif // TST_PROPERTIES_H

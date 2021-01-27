@@ -15,6 +15,11 @@ QString SampleTable::name() const
     return m_name;
 }
 
+QString SampleTable::lastName() const
+{
+    return m_lastName;
+}
+
 void SampleTable::setId(int id)
 {
     if (m_id == id)
@@ -31,4 +36,13 @@ void SampleTable::setName(QString name)
 
     m_name = name;
     emit nameChanged(m_name);
+}
+
+void SampleTable::setLastName(QString lastName)
+{
+    if (m_lastName == lastName)
+        return;
+
+    m_lastName = lastName;
+    emit lastNameChanged(m_lastName);
 }

@@ -139,16 +139,16 @@ void BasicTest::updatePostOnTheFly()
 
 void BasicTest::selectPublicts()
 {
-    auto q = db.posts()->query()
+    auto publinPostsCount = db.posts()->query()
             .where(Post::isPublicField())
             .count();
 
-    auto q2 = db.posts()->query()
+    auto nonPublicPostsCount = db.posts()->query()
             .where(!Post::isPublicField())
             .count();
 
-    QCOMPARE(q, 1);
-    QCOMPARE(q2, 1);
+    QCOMPARE(publinPostsCount, 1);
+    QCOMPARE(nonPublicPostsCount, 1);
 }
 
 void BasicTest::selectPosts()
