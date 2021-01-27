@@ -28,6 +28,17 @@
     private:
 
 //Table
+#define NUT_FIELD(type, name)                                                  \
+    private:                                                                   \
+    NUT_INFO(__nut_FIELD, name, 0)                                             \
+    public:                                                                    \
+    static NUT_WRAP_NAMESPACE(FieldPhrase<type>)& name ## Field(){             \
+        static NUT_WRAP_NAMESPACE(FieldPhrase<type>) f =                       \
+                NUT_WRAP_NAMESPACE(FieldPhrase<type>)                          \
+                        (staticMetaObject.className(), #name);                 \
+        return f;                                                              \
+    }
+
 #define NUT_DECLARE_FIELD(type, name, read, write)                             \
     Q_PROPERTY(type name READ read WRITE write)                                \
     NUT_INFO(__nut_FIELD, name, 0)                                             \
@@ -113,7 +124,7 @@ public slots: \
         return m_##n;                                                          \
     }
 
-#define NUT_FIELD(name)                     NUT_INFO(__nut_FIELD, name, 0)
+//#define NUT_FIELD(name)                     NUT_INFO(__nut_FIELD, name, 0)
 #define NUT_PRIMARY_KEY(x)                  NUT_INFO(__nut_PRIMARY_KEY,  x, 0) \
     public:                                                                    \
     QVariant primaryValue() const override {                                   \

@@ -72,11 +72,15 @@ public:
 signals:
 
 public slots:
+    void propertyChanged();
 
 protected:
+    void init();
     void propertyChanged(const QString &propName);
 
 private:
+    bool _is_signals_mapped{false};
+
     void setModel(TableModel *model);
 //    TableModel *myModel;
 //    Status _status;
@@ -94,6 +98,7 @@ private:
     template<class T>
     friend class TableSet;
     friend class AbstractTableSet;
+    friend class PropertySignalMapper;
 };
 
 NUT_END_NAMESPACE

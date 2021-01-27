@@ -5,6 +5,7 @@ SUBDIRS += \
     tst_benckmark  \
     tst_datatypes \
     tst_phrases \
+    tst_properties \
     tst_quuid \
     tst_generators \
     tst_upgrades \

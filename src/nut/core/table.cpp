@@ -28,6 +28,7 @@
 #include "databasemodel.h"
 #include "abstractsqlgenerator.h"
 #include "abstracttableset.h"
+#include "propertysignalmapper.h"
 
 NUT_BEGIN_NAMESPACE
 
@@ -147,6 +148,17 @@ bool Table::setParentTable(Table *master, TableModel *masterModel, TableModel *m
         }
 
     return false;
+}
+
+void Table::propertyChanged()
+{
+    auto pname = PropertySignalMapper::changedProperty(this, senderSignalIndex());
+    propertyChanged(pname);
+}
+
+void Table::init()
+{
+    PropertySignalMapper::map(this);
 }
 
 AbstractTableSet *Table::parentTableSet() const
