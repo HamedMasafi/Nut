@@ -304,7 +304,15 @@ void BasicTest::emptyDatabase()
 //    auto commentsCount = db.comments()->query().remove();
 //    auto postsCount = db.posts()->query().remove();
 //    QTEST_ASSERT(postsCount == 3);
-//    QTEST_ASSERT(commentsCount == 6);
+    //    QTEST_ASSERT(commentsCount == 6);
+}
+
+void BasicTest::dynamicPhrase()
+{
+    auto q = Post::titleField() == QStringLiteral("post title");
+    q = q || Post::idField() > 0;
+    auto list = db.posts()->query().where(q).toList();
+    QVERIFY(list.count());
 }
 
 void BasicTest::cleanupTestCase()

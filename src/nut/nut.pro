@@ -81,4 +81,7 @@ SOURCES += \
 
 load(qt_module)
 
+!exists($$PWD/3rdparty/serializer/src/src.pri) {
+    error("Please do git submodule update --init --recursive in the Nut directory")
+}
 include($$PWD/3rdparty/serializer/src/src.pri)

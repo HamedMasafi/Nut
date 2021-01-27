@@ -43,7 +43,7 @@ private slots:
     void selectWithInvalidRelation();
     void modifyPost();
     void emptyDatabase();
-
+    void dynamicPhrase();
     void cleanupTestCase();
 };
 
