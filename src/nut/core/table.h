@@ -69,9 +69,9 @@ public:
     QSet<QString> changedProperties() const;
 
     bool setParentTable(Table *master, TableModel *masterModel, TableModel *model);
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
     void propertyChanged();
 
 protected:

@@ -59,7 +59,7 @@ public:
 
     void setRenderer(const std::function<QVariant (int, QVariant)> &renderer);
 
-signals:
+Q_SIGNALS:
     void beforeShowText(int col, QVariant &value);
 };
 
@@ -67,7 +67,7 @@ template<class T>
 Q_OUTOFLINE_TEMPLATE void SqlModel::setTable(RowList<T> rows)
 {
     RowList<Table> tab;
-    foreach (auto t, rows)
+    for (auto &t: rows)
         tab.append(t);
     setRows(tab);
 }

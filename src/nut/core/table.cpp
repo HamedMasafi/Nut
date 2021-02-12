@@ -138,7 +138,7 @@ bool Table::setParentTable(Table *master, TableModel *masterModel, TableModel *m
 //    if (!d->model)
 //        d->model = TableModel::findByClassName(metaObject()->className());
 
-    foreach (RelationModel *r, model->foreignKeys())
+    for (RelationModel *r: model->foreignKeys())
         if(r->masterClassName == masterClassName)
         {
             setProperty(QString(r->localColumn).toLatin1().data(),
@@ -179,7 +179,7 @@ void Table::setParentTableSet(AbstractTableSet *parent)
 AbstractTableSet *Table::childTableSet(const QString &name) const
 {
     //Q_D(const Table);
-    foreach (AbstractTableSet *t, d->childTableSets)
+    for (AbstractTableSet *t: d->childTableSets)
         if (t->childClassName() == name)
             return t;
     return Q_NULLPTR;
@@ -195,7 +195,7 @@ int Table::save(Database *db)
     if(status() == Added && model->isPrimaryKeyAutoIncrement())
         setProperty(model->primaryKey().toLatin1().data(), q.lastInsertId());
 
-    foreach(AbstractTableSet *ts, d->childTableSets)
+    for (AbstractTableSet *ts: d->childTableSets)
         ts->save(db);
     setStatus(FetchedFromDB);
 

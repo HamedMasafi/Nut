@@ -244,7 +244,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
 
     QSet<TableModel*> relatedTables;
     relatedTables << d->database->model().tableByName(d->tableName);
-    foreach (RelationModel *rel, d->relations)
+    for (RelationModel *rel: d->relations)
         relatedTables << rel->slaveTable << rel->masterTable;
 
     struct LevelData{
@@ -271,7 +271,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
         data.lastKeyValue = QVariant();
 
         QHash<QString, QString> masters;
-        foreach (RelationModel *rel, d->relations)
+        for (RelationModel *rel: d->relations)
             if (rel->slaveTable->name() == table->name())
                 masters.insert(rel->masterTable->name(), rel->localProperty);
 
@@ -337,7 +337,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
             }
 
             // check if master if current table has processed
-            foreach (int m, data.masters)
+            for (int &m: data.masters)
                 if (!checked[m]) {
 //                    qDebug() << "row is checked";
                     continue;
@@ -371,7 +371,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
             }
 
             QList<FieldModel*> childFields = data.table->fields();
-            foreach (FieldModel *field, childFields)
+            for (FieldModel *field: childFields)
                 row->setProperty(field->name.toLatin1().data(),
                                    d->database->sqlGenerator()->unescapeValue(
                                    field->type,
@@ -678,7 +678,7 @@ Q_OUTOFLINE_TEMPLATE void Query<T>::toModel(QSqlQueryModel *model)
     int fieldIndex = 0;
 
     if (d->fieldPhrase.data.count()) {
-        foreach (const PhraseData *pd, d->fieldPhrase.data) {
+        for (const PhraseData *pd: d->fieldPhrase.data) {
             QString displayName = dbModel
                                       .tableByClassName(QString::fromUtf8(pd->className))
                                       ->field(QString::fromUtf8(pd->fieldName))
@@ -690,7 +690,7 @@ Q_OUTOFLINE_TEMPLATE void Query<T>::toModel(QSqlQueryModel *model)
         }
     } else {
         TableModel *tbl = d->database->model().tableByName(d->tableName);
-        foreach (FieldModel *f, tbl->fields()) {
+        for (FieldModel *f: tbl->fields()) {
             model->setHeaderData(fieldIndex++,
                                  Qt::Horizontal,
                                  f->displayName);

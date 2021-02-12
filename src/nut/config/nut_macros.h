@@ -63,7 +63,7 @@ public:                                                                        \
     NUT_DECLARE_FIELD(keytype, name##Id, read##Id, write##Id)                  \
     NUT_INFO(__nut_FOREIGN_KEY, name, type)                                    \
     Nut::Row<type> m_##name;                                                   \
-public slots:                                                                  \
+public Q_SLOTS:                                                                  \
     Nut::Row<type> read() const { return m_##name ; }                          \
     Q_INVOKABLE void write(Nut::Row<type> name){                               \
         m_##name = name;                                                       \
@@ -85,7 +85,7 @@ public:                                                                        \
                         (staticMetaObject.className(), #name "Id");            \
         return f;                                                              \
     }                                                                          \
-public slots: \
+public Q_SLOTS: \
     void write(Nut::Row<type> name); \
     void write##Id(keytype name##Id);
 

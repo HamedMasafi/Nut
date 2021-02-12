@@ -48,7 +48,7 @@ DatabaseModel::DatabaseModel(const QJsonObject &json) :
     setVersion(json.value(NODE_VERSION).toInt());
 
     QJsonObject tables = json.value(NODE_TABLES).toObject();
-    foreach (QString key, tables.keys()) {
+    for (QString key: tables.keys()) {
         if(!tables.value(key).isObject())
             continue;
 
@@ -146,7 +146,7 @@ RelationModel *DatabaseModel::relationByClassNames(const QString &masterClassNam
     if(!childTable)
         return nullptr;
 
-    foreach (RelationModel *rel, childTable->foreignKeys())
+    for (RelationModel *&rel: childTable->foreignKeys())
         if(rel->masterClassName == masterClassName)
             return rel;
 
@@ -160,7 +160,7 @@ RelationModel *DatabaseModel::relationByTableNames(const QString &masterTableNam
     if(!childTable)
         return nullptr;
 
-    foreach (RelationModel *rel, childTable->foreignKeys())
+    for (RelationModel *&rel: childTable->foreignKeys())
         if(rel->masterTable->name() == masterTableName)
             return rel;
 
@@ -174,7 +174,7 @@ DatabaseModel DatabaseModel::fromJson(QJsonObject &json)
     model.setVersion(json.value(NODE_VERSION).toInt());
 
     QJsonObject tables = json.value(NODE_TABLES).toObject();
-    foreach (QString key, tables.keys()) {
+    for (QString &key: tables.keys()) {
         if(!json.value(key).isObject())
             continue;
 

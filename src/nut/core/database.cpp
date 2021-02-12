@@ -144,8 +144,8 @@ bool DatabasePrivate::updateDatabase()
         return true;
     }
 
-    foreach (TableModel *tm, current) {
-        foreach (FieldModel *fm, tm->fields()) {
+    for (TableModel *&tm: current) {
+        for (FieldModel *&fm: tm->fields()) {
             if (sqlGenerator->fieldType(fm).isEmpty()) {
                 qWarning("The type (%s) is not supported for field %s::%s",
                          QMetaType::typeName(fm->type),
@@ -163,7 +163,7 @@ bool DatabasePrivate::updateDatabase()
     QStringList sql = sqlGenerator->diff(last, current);
 
     db.transaction();
-    foreach (QString s, sql) {
+    for (QString &s: sql) {
         db.exec(s);
 
         if (db.lastError().type() != QSqlError::NoError) {
@@ -259,8 +259,8 @@ bool DatabasePrivate::getCurrectSchema()
         }
     }
 
-    foreach (TableModel *table, currentModel) {
-        foreach (FieldModel *f, table->fields()) {
+    for (TableModel *&table: currentModel) {
+        for (FieldModel *&f: table->fields()) {
             if (f->isPrimaryKey && ! sqlGenerator->supportPrimaryKey(f->type))
                 qFatal("The field of type %s does not support as primary key",
                        qPrintable(f->typeName));
@@ -270,7 +270,7 @@ bool DatabasePrivate::getCurrectSchema()
                        qPrintable(f->typeName));
         }
 
-        foreach (RelationModel *fk, table->foreignKeys())
+        for (RelationModel *&fk: table->foreignKeys())
             fk->masterTable = currentModel.tableByClassName(fk->masterClassName);
     }
 
@@ -352,7 +352,7 @@ void DatabasePrivate::createChangeLogs()
                                           currentModel.tableByName(
                                               QStringLiteral("__change_log")));
 
-    foreach (QString s, diff)
+    for (QString &s: diff)
         db.exec(s);
 }
 
@@ -564,7 +564,7 @@ bool Database::open(bool updateDatabase)
     else if (d->driver == QStringLiteral("QODBC") || d->driver == QStringLiteral("QODBC3")) {
         QString driverName = QString();
         QStringList parts = d->databaseName.toLower().split(';');
-        foreach (QString p, parts)
+        for (QString &p: parts)
             if (p.trimmed().startsWith(QStringLiteral("driver=")))
                 driverName = p.split('=').at(1).toLower().trimmed();
 
@@ -615,7 +615,7 @@ int Database::saveChanges(bool cleanUp)
     }
 
     int rowsAffected = 0;
-    foreach (AbstractTableSet *ts, d->tableSets)
+    for (AbstractTableSet *ts: d->tableSets)
         rowsAffected += ts->save(this, cleanUp);
 
     return rowsAffected;
@@ -624,7 +624,7 @@ int Database::saveChanges(bool cleanUp)
 void Database::cleanUp()
 {
     Q_D(Database);
-    foreach (AbstractTableSet *ts, d->tableSets)
+    for (AbstractTableSet *ts: d->tableSets)
         ts->clearChilds();
 }
 

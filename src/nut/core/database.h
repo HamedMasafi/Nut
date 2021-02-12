@@ -79,7 +79,7 @@ protected:
     virtual void databaseCreated();
     virtual void databaseUpdated(int oldVersion, int newVersion);
 
-public slots:
+public Q_SLOTS:
     void setDatabaseName(QString databaseName);
     void setHostName(QString hostName);
     void setPort(int port);

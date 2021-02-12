@@ -77,7 +77,7 @@ AssignmentPhraseList::~AssignmentPhraseList()
 
 void AssignmentPhraseList::incAllDataParents()
 {
-    foreach (PhraseData *d, data)
+    for (PhraseData *d: data)
         d->ref.ref();
 }
 

@@ -151,7 +151,7 @@ Q_OUTOFLINE_TEMPLATE void TableSet<T>::append(Row<T> t)
 template<class T>
 Q_OUTOFLINE_TEMPLATE void TableSet<T>::append(RowList<T> t)
 {
-    foreach (Row<T> i, t)
+    for (Row<T> &i: t)
         append(i);
 }
 
@@ -168,7 +168,7 @@ Q_OUTOFLINE_TEMPLATE void TableSet<T>::remove(Row<T> t)
 template<class T>
 Q_OUTOFLINE_TEMPLATE void TableSet<T>::remove(RowList<T> t)
 {
-    foreach (Row<T> i, t)
+    for (Row<T> i: t)
         remove(i);
 }
 

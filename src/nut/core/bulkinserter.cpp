@@ -21,7 +21,7 @@ BulkInserter::BulkInserter(Database *db, QString &className)
 {
     Q_D(BulkInserter);
 
-    foreach (TableModel *m, db->model())
+    for (TableModel *&m: db->model())
         if (m->className() == className)
             d->className = m->name();
 }

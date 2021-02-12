@@ -74,7 +74,7 @@ FieldModel *TableModel::field(int n) const
 
 FieldModel *TableModel::field(const QString &name) const
 {
-    foreach (FieldModel *f, _fields)
+    for (FieldModel *f: _fields)
         if(f->name == name)
             return f;
 
@@ -94,7 +94,7 @@ QList<RelationModel *> TableModel::foreignKeys() const
 QStringList TableModel::fieldsNames() const
 {
     QStringList ret;
-    foreach (FieldModel *f, _fields)
+    for (FieldModel *f: _fields)
         ret.append(f->name);
     return ret;
 }
@@ -106,7 +106,7 @@ bool TableModel::operator ==(const TableModel &t) const{
     if(fields().count() != t.fields().count())
         return false;
 
-    foreach (FieldModel *f, _fields) {
+    for (FieldModel *f: _fields) {
         FieldModel *tf = t.field(f->name);
         if(!tf)
             return false;
@@ -162,7 +162,7 @@ TableModel::TableModel(int typeId, const QString &tableName)
         QMetaProperty fieldProperty = tableMetaObject->property(j);
         auto name = QString::fromUtf8(fieldProperty.name());
         FieldModel *fieldObj = field(name);
-        foreach (FieldModel *f, _fields)
+        for (FieldModel *&f: _fields)
             if(f->name == name)
                 f = fieldObj;
         if(!fieldObj)
@@ -244,7 +244,7 @@ TableModel::TableModel(const QJsonObject &json, const QString &tableName) : _typ
 
     QJsonObject fields = json.value(QStringLiteral(__FIELDS)).toObject();
     QJsonObject relations = json.value(QStringLiteral(__FOREIGN_KEYS)).toObject();
-    foreach (QString key, fields.keys()) {
+    for (QString &key: fields.keys()) {
         QJsonObject fieldObject = fields.value(key).toObject();
         //TODO: use FieldModel(QJsonObject) ctor
         auto *f = new FieldModel;
@@ -266,7 +266,7 @@ TableModel::TableModel(const QJsonObject &json, const QString &tableName) : _typ
         _fields.append(f);
     }
 
-    foreach (QString key, relations.keys()) {
+    for (QString &key: relations.keys()) {
         QJsonObject relObject = fields.value(key).toObject();
         _foreignKeys.append(new RelationModel(relObject));
     }
@@ -284,7 +284,7 @@ QJsonObject TableModel::toJson() const
     QJsonObject fieldsObj;
     QJsonObject foreignKeysObj;
 
-    foreach (FieldModel *f, _fields) {
+    for (FieldModel *f: _fields) {
         QJsonObject fieldObj;
         fieldObj.insert(QStringLiteral(__NAME), f->name);
         fieldObj.insert(QStringLiteral(__TYPE), QString::fromUtf8(QVariant::typeToName(f->type)));
@@ -309,7 +309,7 @@ QJsonObject TableModel::toJson() const
 
         fieldsObj.insert(f->name, fieldObj);
     }
-    foreach (RelationModel *rel, _foreignKeys)
+    for (RelationModel *rel: _foreignKeys)
         foreignKeysObj.insert(rel->localColumn, rel->toJson());
 
     obj.insert(QStringLiteral(__FIELDS), fieldsObj);
@@ -320,7 +320,7 @@ QJsonObject TableModel::toJson() const
 
 RelationModel *TableModel::foreignKey(const QString &otherTable) const
 {
-    foreach (RelationModel *fk, _foreignKeys)
+    for (RelationModel *fk: _foreignKeys)
         if(fk->masterClassName == otherTable)
             return fk;
 
@@ -329,7 +329,7 @@ RelationModel *TableModel::foreignKey(const QString &otherTable) const
 
 RelationModel *TableModel::foreignKeyByField(const QString &fieldName) const
 {
-    foreach (RelationModel *fk, _foreignKeys)
+    for (RelationModel *fk: _foreignKeys)
         if(fk->localColumn == fieldName)
             return fk;
 
@@ -339,7 +339,7 @@ RelationModel *TableModel::foreignKeyByField(const QString &fieldName) const
 QString TableModel::toString() const
 {
     QStringList sl;
-    foreach (FieldModel *f, _fields)
+    for (FieldModel *f: _fields)
         sl.append(f->name + QStringLiteral(" ")
                   + QString::fromUtf8(QVariant::typeToName(f->type)));
 
@@ -350,7 +350,7 @@ QString TableModel::toString() const
 
 QString TableModel::primaryKey() const
 {
-    foreach (FieldModel *f, _fields)
+    for (FieldModel *f: _fields)
         if(f->isPrimaryKey)
             return f->name;
     return QString();
