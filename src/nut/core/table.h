@@ -35,6 +35,7 @@ class Database;
 class AbstractTableSet;
 class TableModel;
 class TablePrivate;
+class AbstractForeignContainer;
 class NUT_EXPORT Table : public QObject
 {
     Q_OBJECT
@@ -82,6 +83,7 @@ private:
     bool _is_signals_mapped{false};
 
     void setModel(TableModel *model);
+    void addForeignKey(const QString &name, AbstractForeignContainer *fp);
 //    TableModel *myModel;
 //    Status _status;
 //    QSet<QString> _changedProperties;
@@ -99,6 +101,7 @@ private:
     friend class TableSet;
     friend class AbstractTableSet;
     friend class PropertySignalMapper;
+    friend class AbstractForeignContainer;
 };
 
 NUT_END_NAMESPACE

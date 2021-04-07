@@ -4,6 +4,7 @@
 #include <QtCore/qglobal.h>
 #include <QtCore/QDateTime>
 #include <QtNut/table.h>
+#include <QtNut/ForeignContainer>
 
 #ifdef NUT_NAMESPACE
 using namespace NUT_NAMESPACE;
@@ -29,12 +30,14 @@ class Comment : public Table
     NUT_FOREIGN_KEY_DECLARE(Post, int, post, post, setPost)
     NUT_FOREIGN_KEY_DECLARE(User, int, author, author, setAuthor)
 
+
     int m_id;
     QString m_message;
     QDateTime m_saveDate;
     qreal m_point;
 
 public:
+//    ForeignContainer<Post, int> _post{this, m_postId};
     Q_INVOKABLE explicit Comment(QObject *parentTableSet = nullptr);
 
     int id() const;

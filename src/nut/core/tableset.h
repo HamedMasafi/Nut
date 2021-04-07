@@ -54,10 +54,6 @@ public:
     explicit TableSet(Database *parent);
     explicit TableSet(Table *parent);
 
-#ifndef NUT_RAW_POINTER
-    void append(T *t);
-    void append(QList<T*> t);
-#endif
     void append(Row<T> t);
     void append(RowList<T> t);
     void remove(Row<T> t);
@@ -116,21 +112,6 @@ Q_OUTOFLINE_TEMPLATE Row<T> TableSet<T>::operator[](int i) const
 {
     return at(i);
 }
-
-#ifndef NUT_RAW_POINTER
-template<class T>
-Q_OUTOFLINE_TEMPLATE void TableSet<T>::append(T *t)
-{
-    append(QSharedPointer<T>(t));
-}
-
-template<class T>
-Q_OUTOFLINE_TEMPLATE void TableSet<T>::append(QList<T*> t)
-{
-    for (auto &table: t)
-        append(table);
-}
-#endif
 
 template<class T>
 Q_OUTOFLINE_TEMPLATE void TableSet<T>::append(Row<T> t)

@@ -5,7 +5,10 @@ TEMPLATE = app
 
 CONFIG   += warn_on c++11
 
-include(../common/nut-lib.pri)
+#include(../common/nut-lib.pri)
+#Qt += nut
+include(../../../src/nut/nut.pri)
+INCLUDEPATH += ../common/
 
 SOURCES += \
     ../common/comment.cpp \

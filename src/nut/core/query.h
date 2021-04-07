@@ -90,6 +90,40 @@ class Query
 {
     QueryData *d;
 
+    QList<Table *> readTables(Table *masterTable,
+                              QSqlQuery &query,
+                              TableModel *model,
+                              const QString &keyName,
+                              const QVariant &keyValue)
+    {
+        QList<Table*> list;
+        do {
+            if (query.value(keyName) != keyValue)
+                return list;
+            Table *table;
+            const QMetaObject *childMetaObject
+                = QMetaType::metaObjectForType(model->typeId());
+            table = qobject_cast<Table *>(childMetaObject->newInstance());
+
+            if (!table)
+                qFatal("Could not create instance of %s",
+                       qPrintable("data.table->name()"));
+
+            auto row = createFrom(table);
+
+            QList<FieldModel*> childFields = model->fields();
+            for (auto &field: childFields)
+                row->setProperty(field->name.toLatin1().data(),
+                                 d->database->sqlGenerator()->unescapeValue(
+                                     field->type,
+                                     query.value(model->name() + QStringLiteral(".") + field->name)));
+
+//            masterTable->add()
+            list.append(table);
+        } while(query.next());
+        return list;
+    }
+
 public:
     explicit Query(Database *database, AbstractTableSet *tableSet);
     Query (const Query<T> &other);

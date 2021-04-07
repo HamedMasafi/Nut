@@ -40,7 +40,7 @@ AbstractTableSet::AbstractTableSet(Table *parent) : QObject(parent),
 
 AbstractTableSet::~AbstractTableSet()
 {
-    Q_FOREACH (Row<Table> t, data->childs)
+    for (auto &t: data->childs)
         if (t)
             t->setParentTableSet(nullptr);
 }
@@ -52,22 +52,21 @@ int AbstractTableSet::save(Database *db, bool cleanUp)
     if (data->table)
         masterModel = db->model().tableByClassName(QString::fromUtf8(data->table->metaObject()->className()));
 
-    Q_FOREACH (Row<Table> t, data->childs) {
+    for (auto &t: data->childs) {
         if (data->table)
             t->setParentTable(data->table,
                               masterModel,
                               db->model().tableByClassName(QString::fromUtf8(t->metaObject()->className())));
 
-        if (t->status() == Table::Added
-            || t->status() == Table::Modified
+        if (t->status() == Table::Added || t->status() == Table::Modified
             || t->status() == Table::Deleted) {
             rowsAffected += t->save(db);
-            if (cleanUp)
+            if (cleanUp) {
 #ifdef NUT_RAW_POINTER
                 t->deleteLater();
-#else
-                remove(t);
 #endif
+                remove(t);
+            }
         }
     }
 
@@ -80,7 +79,7 @@ int AbstractTableSet::save(Database *db, bool cleanUp)
 void AbstractTableSet::clearChilds()
 {
 #ifdef NUT_RAW_POINTER
-    Q_FOREACH (Table *t, data->childs)
+    for (auto &t: data->childs)
         t->deleteLater();
 #endif
     data->childs.clear();

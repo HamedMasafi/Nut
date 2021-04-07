@@ -1,7 +1,7 @@
 #include "post.h"
 #include "comment.h"
 #include "score.h"
-#include "tableset.h"
+#include <QtNut/TableSet>
 
 Post::Post(QObject *parent) : Table(parent),
     m_id(0), m_title(""),

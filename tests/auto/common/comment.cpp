@@ -56,7 +56,6 @@ void Comment::setSaveDate(QDateTime saveDate)
 
 void Comment::setPoint(qreal point)
 {
-    qWarning("Floating point comparison needs context sanity check");
     if (qFuzzyCompare(m_point, point))
         return;
 

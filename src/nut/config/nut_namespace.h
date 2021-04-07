@@ -13,6 +13,10 @@
 #include <QtCore/QVariant>
 #include <QtCore/QMetaClassInfo>
 
+#ifndef NUT_RAW_POINTER
+#   include <QSharedPointer>
+#endif
+
 NUT_BEGIN_NAMESPACE
 
 inline bool nutClassInfo(const QMetaClassInfo &classInfo,
@@ -107,6 +111,11 @@ inline bool nutClassInfoInt(const QMetaClassInfo &classInfo,
     inline T *get(const QSharedPointer<T> row) {
         return row.data();
     }
+
+    template <class _To, class _From>
+    inline Row<_To> cast(Row<_From> t) {
+        return qobject_cast<_To*>(t);
+    }
 #else
     template <class T>
     using RowList = QList<QSharedPointer<T>>;
@@ -134,6 +143,11 @@ inline bool nutClassInfoInt(const QMetaClassInfo &classInfo,
     template<class T>
     inline Row<T> createFrom(const QSharedPointer<T> row) {
         return row;
+    }
+
+    template <class _To, class _From>
+    inline Row<_To> cast(Row<_From> t) {
+        return qSharedPointerCast<_To>(t);
     }
 #endif
 

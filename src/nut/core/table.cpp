@@ -115,6 +115,11 @@ void Table::setModel(TableModel *model)
     d->model = model;
 }
 
+void Table::addForeignKey(const QString &name, AbstractForeignContainer *fp)
+{
+    d->foreignContainers.insert(name, fp);
+}
+
 void Table::clear()
 {
     //Q_D(Table);
@@ -178,11 +183,11 @@ void Table::setParentTableSet(AbstractTableSet *parent)
 
 AbstractTableSet *Table::childTableSet(const QString &name) const
 {
-    //Q_D(const Table);
-    Q_FOREACH (AbstractTableSet *t, d->childTableSets)
+    for (auto &t: d->childTableSets)
         if (t->childClassName() == name)
             return t;
-    return Q_NULLPTR;
+    qDebug() << "No child table for" << name;
+    return nullptr;
 }
 
 int Table::save(Database *db)
