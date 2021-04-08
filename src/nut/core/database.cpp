@@ -365,6 +365,7 @@ Database::Database(QObject *parent)
     : QObject(parent), d_ptr(new DatabasePrivate(this))
 {
     DatabasePrivate::lastId++;
+    qRegisterMetaType<ChangeLogTable*>();
 }
 
 Database::Database(const Database &other)

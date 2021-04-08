@@ -85,7 +85,7 @@ public:                                                                        \
                         (staticMetaObject.className(), #name "Id");            \
         return f;                                                              \
     }                                                                          \
-public : \
+public Q_SLOTS: \
     void write(Nut::Row<type> name); \
     void write##Id(keytype name##Id);
 

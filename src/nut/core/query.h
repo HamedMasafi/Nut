@@ -180,6 +180,8 @@ public:
 
     //debug purpose
     QString sqlCommand() const;
+private:
+    void readList(AbstractTableSet *tableset, TableModel *model, const QString &fieldName, const QVariant &fieldValue, QSqlQuery &query);
 };
 
 template<typename T>
@@ -259,6 +261,32 @@ Q_OUTOFLINE_TEMPLATE Query<T> &Query<T>::operator=(const Query<T> &q)
     return *this;
 }
 
+template <class T>
+Q_OUTOFLINE_TEMPLATE void Query<T>::readList(AbstractTableSet *tableset, TableModel *model, const QString &fieldName, const QVariant &fieldValue, QSqlQuery &query) {
+    do {
+        if (query.value(fieldName) != fieldValue)
+            return;
+
+        Table *table;
+        const QMetaObject *childMetaObject = QMetaType::metaObjectForType(model->typeId());
+        table = qobject_cast<Table *>(childMetaObject->newInstance());
+        //                table = dynamic_cast<Table *>(QMetaType::create(data.table->typeId()));
+        if (!table)
+            qFatal("Could not create instance of %s", qPrintable(model->name()));
+        auto row = createFrom(table);
+
+        QList<FieldModel *> childFields = model->fields();
+        for (auto &field: childFields)
+            row->setProperty(field->name.toLatin1().data(),
+                             d->database->sqlGenerator()
+                                 ->unescapeValue(field->type,
+                                                 query.value(model->name() + QStringLiteral(".")
+                                                             + field->name)));
+
+        tableset->add(row);
+
+    } while (query.next());
+}
 template <class T>
 Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
 {
@@ -346,6 +374,12 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
     for (int i = 0; i < levels.count(); ++i)
         checked.append(false);
 
+//    while (q.next()) {
+//        for (auto i = levels.begin(); i != levels.end(); ++i) {
+//            LevelData &data = *i;
+//            readList();
+//        }
+//    }
     while (q.next()) {
         checked.fill(false);
 

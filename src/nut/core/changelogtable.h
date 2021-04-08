@@ -38,7 +38,7 @@ class NUT_EXPORT ChangeLogTable : public Table
     NUT_DECLARE_FIELD(int, version, version, setVersion)
 
 public:
-    explicit ChangeLogTable(QObject *parentTableSet = Q_NULLPTR);
+    Q_INVOKABLE ChangeLogTable(QObject *parentTableSet = Q_NULLPTR);
 };
 
 NUT_END_NAMESPACE

@@ -183,7 +183,7 @@ void Table::setParentTableSet(AbstractTableSet *parent)
 
 AbstractTableSet *Table::childTableSet(const QString &name) const
 {
-    for (auto &t: d->childTableSets)
+    for (auto &t: qAsConst(d->childTableSets))
         if (t->childClassName() == name)
             return t;
     qDebug() << "No child table for" << name;
