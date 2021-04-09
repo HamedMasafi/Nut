@@ -479,7 +479,7 @@ QString AbstractSqlGenerator::insertRecord(Table *t, QString tableName)
               .arg(tableName, changedPropertiesText, values.join(QStringLiteral(", ")));
 
     removeTableNames(sql);
-
+    qDebug() << sql;
     return sql;
 }
 

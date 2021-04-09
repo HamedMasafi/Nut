@@ -70,6 +70,8 @@ public:
     QSet<QString> changedProperties() const;
 
     bool setParentTable(Table *master, TableModel *masterModel, TableModel *model);
+    bool setKey(Nut::Row<Table> master, const QString &name);;
+    void addChangedProp(const QString &name);
 Q_SIGNALS:
 
 public Q_SLOTS:

@@ -451,6 +451,11 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
                 auto tableset = levels[master].lastRow.data()->childTableSet(
                             data.table->className());
                 tableset->add(row);
+                row->setParentTable(levels[master].lastRow.data(),
+                                    data.table,
+                                    d->database->model().tableByClassName(
+                                        row->metaObject()->className()));
+                row->setKey(levels[master].lastRow, data.masterFields[master]);
             }
 
             row->setStatus(Table::FetchedFromDB);
@@ -458,7 +463,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
             row->clear();
 
             //set last created row
-            data.lastRow = row;
+            data.lastRow.swap(row);
         } //while
     } // while
 

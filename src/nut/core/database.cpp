@@ -217,14 +217,17 @@ bool DatabasePrivate::getCurrectSchema()
         QString type;
         QString name;
         QString value;
+        QStringList values;
 
         if (!nutClassInfoString(q->metaObject()->classInfo(i),
-                                type, name, value)) {
+                                type, name, values)) {
 
             errorMessage = QStringLiteral("No valid table in ")
                                + QString::fromUtf8(q->metaObject()->classInfo(i).value());
             continue;
         }
+        value = values.first();
+
         if (type == QStringLiteral(__nut_TABLE)) {
             //name: table class name
             //value: table variable name (table name in db)

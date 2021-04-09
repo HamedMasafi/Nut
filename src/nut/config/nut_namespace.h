@@ -36,18 +36,19 @@ inline bool nutClassInfo(const QMetaClassInfo &classInfo,
 }
 
 inline bool nutClassInfoString(const QMetaClassInfo &classInfo,
-                               QString &type, QString &name, QString &value)
+                               QString &type, QString &name, QStringList &value)
 {
     if (!QString::fromUtf8(classInfo.name()).startsWith(QStringLiteral(__nut_NAME_PERFIX)))
         return false;
 
     QStringList parts = QString::fromUtf8(classInfo.value()).split(QStringLiteral("\n"));
-    if (parts.count() != 3)
+    if (parts.count() < 3)
         return false;
 
     type = parts[0];
     name = parts[1];
-    value = parts[2];
+    for (int i = 2; i < parts.size(); ++i)
+        value.append(parts[i]);
     return true;
 }
 
@@ -88,67 +89,67 @@ inline bool nutClassInfoInt(const QMetaClassInfo &classInfo,
 }
 
 #ifdef NUT_RAW_POINTER
-    template <typename T>
-    using RowList = QList<T*>;
+template <typename T>
+using RowList = QList<T*>;
 
-    template <typename T>
-    using RowSet = QSet<T*>;
+template <typename T>
+using RowSet = QSet<T*>;
 
-    template <typename T>
-    using Row = T*;
+template <typename T>
+using Row = T*;
 
-    template<class T>
-    inline Row<T> create() {
-        return new T;
-    }
+template<class T>
+inline Row<T> create() {
+    return new T;
+}
 
-    template<class T>
-    inline T *get(const Row<T> row) {
-        return row;
-    }
+template<class T>
+inline T *get(const Row<T> row) {
+    return row;
+}
 
-    template<class T>
-    inline T *get(const QSharedPointer<T> row) {
-        return row.data();
-    }
+template<class T>
+inline T *get(const QSharedPointer<T> row) {
+    return row.data();
+}
 
-    template <class _To, class _From>
-    inline Row<_To> cast(Row<_From> t) {
-        return qobject_cast<_To*>(t);
-    }
+template <class _To, class _From>
+inline Row<_To> cast(Row<_From> t) {
+    return qobject_cast<_To*>(t);
+}
 #else
-    template <class T>
-    using RowList = QList<QSharedPointer<T>>;
+template <class T>
+using RowList = QList<QSharedPointer<T>>;
 
-    template <class T>
-    using RowSet = QSet<QSharedPointer<T>>;
+template <class T>
+using RowSet = QSet<QSharedPointer<T>>;
 
-    template <typename T>
-    using Row = QSharedPointer<T>;
+template <typename T>
+using Row = QSharedPointer<T>;
 
-    template<class T>
-    inline Row<T> create() {
-        return QSharedPointer<T>(new T);
-    }
+template<class T>
+inline Row<T> create() {
+    return QSharedPointer<T>(new T);
+}
 
-    template<class T>
-    inline Row<T> create(QObject *parent) {
-        return QSharedPointer<T>(new T(parent));
-    }
+template<class T>
+inline Row<T> create(QObject *parent) {
+    return QSharedPointer<T>(new T(parent));
+}
 
-    template<class T>
-    inline Row<T> createFrom(T *row) {
-        return QSharedPointer<T>(row);
-    }
-    template<class T>
-    inline Row<T> createFrom(const QSharedPointer<T> row) {
-        return row;
-    }
+template<class T>
+inline Row<T> createFrom(T *row) {
+    return QSharedPointer<T>(row);
+}
+template<class T>
+inline Row<T> createFrom(const QSharedPointer<T> row) {
+    return row;
+}
 
-    template <class _To, class _From>
-    inline Row<_To> cast(Row<_From> t) {
-        return qSharedPointerCast<_To>(t);
-    }
+template <class _To, class _From>
+inline Row<_To> cast(const Row<_From> &t) {
+    return qSharedPointerObjectCast<_To>(t);
+}
 #endif
 
 NUT_END_NAMESPACE

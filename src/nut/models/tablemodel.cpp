@@ -145,11 +145,13 @@ TableModel::TableModel(int typeId, const QString &tableName)
         QString type;
         QString name;
         QString value;
+        QStringList values;
 
         if (!nutClassInfoString(tableMetaObject->classInfo(j),
-                            type, name, value)) {
+                            type, name, values)) {
             continue;
         }
+        value = values.first();
 
         if(type == QStringLiteral(__nut_FIELD)) {
             auto *f = new FieldModel;
@@ -176,20 +178,30 @@ TableModel::TableModel(int typeId, const QString &tableName)
         QString type;
         QString name;
         QString value;
+        QStringList values;
 
         if (!nutClassInfoString(tableMetaObject->classInfo(j),
-                            type, name, value)) {
+                            type, name, values)) {
             continue;
         }
+        value = values.first();
 
         if(type == QStringLiteral(__nut_FOREIGN_KEY)) {
-            auto *fk = new RelationModel;
+            auto fk = new RelationModel;
             fk->slaveTable = this;
             fk->localColumn = name + QStringLiteral("Id");
             fk->localProperty = name;
             fk->foreignColumn = value;
             fk->masterClassName = value;
             _foreignKeys.append(fk);
+
+            if (values.size() > 1) {
+                auto f = new FieldModel;
+                f->name = f->displayName = name + "Id";
+                f->typeName = values[1];
+                f->type = static_cast<QMetaType::Type>(QMetaType::type(values[1].toLatin1().data()));;
+                _fields.append(f);
+            }
         }
 
         if(type == QStringLiteral(__nut_FIELD)) {
@@ -197,7 +209,7 @@ TableModel::TableModel(int typeId, const QString &tableName)
         }
 
 
-        FieldModel *f = field(name);
+        auto f = field(name);
         if (!f)
             continue;
 

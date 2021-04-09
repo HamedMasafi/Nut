@@ -6,6 +6,10 @@
     Q_CLASSINFO(__nut_NAME_PERFIX type #name #value,                           \
                 type "\n" #name "\n" #value)
 
+#define NUT_INFO2(type, name, value1, value2)                                            \
+    Q_CLASSINFO(__nut_NAME_PERFIX type #name #value1 #value2,                           \
+                type "\n" #name "\n" #value1 "\n" #value2)
+
 #define NUT_INFO_STRING(type, name, value)                                     \
     Q_CLASSINFO(__nut_NAME_PERFIX type #name #value,                           \
                 type "\n" #name "\n" value)
@@ -58,16 +62,8 @@ public:                                                                        \
         propertyChanged(QString::fromUtf8(#name));                             \
     }
 
-#define NUT_FOREIGN_KEY(type, keytype, name, read, write)                      \
-    Q_PROPERTY(Nut::Row<type> name READ read WRITE write)                      \
-    NUT_DECLARE_FIELD(keytype, name##Id, read##Id, write##Id)                  \
-    NUT_INFO(__nut_FOREIGN_KEY, name, type)                                    \
-    Nut::Row<type> m_##name;                                                   \
-public Q_SLOTS:                                                                  \
-    Nut::Row<type> read() const { return m_##name ; }                          \
-    Q_INVOKABLE void write(Nut::Row<type> name){                               \
-        m_##name = name;                                                       \
-    }
+#define NUT_FOREIGN_KEY(type, keytype, name)                                   \
+    NUT_INFO2(__nut_FOREIGN_KEY, name, type, keytype)
 
 #define NUT_FOREIGN_KEY_DECLARE(type, keytype, name, read, write)              \
     NUT_INFO(__nut_FIELD, name##Id, 0)                                         \
@@ -85,9 +81,9 @@ public:                                                                        \
                         (staticMetaObject.className(), #name "Id");            \
         return f;                                                              \
     }                                                                          \
-public Q_SLOTS: \
-    void write(Nut::Row<type> name); \
-    void write##Id(keytype name##Id);
+public : \
+    Q_INVOKABLE void write(Nut::Row<type> name); \
+    Q_INVOKABLE void write##Id(keytype name##Id);
 
 #define NUT_FOREIGN_KEY_IMPLEMENT(class, type, keytype, name, read, write)     \
     Nut::Row<type> class::read() const { return m_##name ; }                   \

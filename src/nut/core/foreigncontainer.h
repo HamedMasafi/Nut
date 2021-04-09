@@ -28,10 +28,17 @@ NUT_BEGIN_NAMESPACE
 
 class AbstractForeignContainer
 {
+    QString _name;
     Nut::Row<Table*> _t;
-protected:
-    AbstractForeignContainer(Table *parent, const QString &name) {
+
+public:
+    AbstractForeignContainer(Table *parent, const QString &name) : _name(name){
         parent->addForeignKey(name, this);
+    }
+
+    QString name() const
+    {
+        return _name;
     }
     virtual void setObject(Table *table) { Q_UNUSED(table) }
 };
@@ -42,7 +49,6 @@ class NUT_EXPORT ForeignContainer : public AbstractForeignContainer
     _OBJECT *_object{nullptr};
     _KEY _key;
     _KEY *_member;
-    QString _name;
     enum StorageType {
         Key,
         ClassValue
@@ -51,7 +57,7 @@ class NUT_EXPORT ForeignContainer : public AbstractForeignContainer
 
 public:
     ForeignContainer(Table *parent, const QString &name, _KEY &keyMember)
-        : AbstractForeignContainer(parent, name), _member(&keyMember), _name(name)
+        : AbstractForeignContainer(parent, name), _member(&keyMember)
     {
     }
 
@@ -88,14 +94,14 @@ public:
         return key();
     }
 
-    operator _OBJECT()
-    {
-        return object();
-    }
+    //    operator _OBJECT*()
+    //    {
+    //        return object();
+    //    }
 
     void setObject(Table *table) override
     {
-        auto p = Nut::cast<_OBJECT>(table);
+        auto p = qobject_cast<_OBJECT*>(table);
         if (!p)
             return;
 

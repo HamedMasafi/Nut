@@ -29,6 +29,7 @@
 #include "abstractsqlgenerator.h"
 #include "abstracttableset.h"
 #include "propertysignalmapper.h"
+#include "foreigncontainer.h"
 
 NUT_BEGIN_NAMESPACE
 
@@ -132,6 +133,11 @@ QSet<QString> Table::changedProperties() const
     return d->changedProperties;
 }
 
+void Table::addChangedProp(const QString &name)
+{
+    d->changedProperties.insert(name);
+}
+
 bool Table::setParentTable(Table *master, TableModel *masterModel, TableModel *model)
 {
     //Q_D(Table);
@@ -149,9 +155,42 @@ bool Table::setParentTable(Table *master, TableModel *masterModel, TableModel *m
             setProperty(QString(r->localColumn).toLatin1().data(),
                         master->property(masterModel->primaryKey().toUtf8().data()));
             d->changedProperties.insert(r->localColumn);
+
             return true;
         }
 
+    return false;
+}
+
+bool Table::setKey(Nut::Row<Table> master, const QString &name)
+{
+    d.detach();
+
+    QString masterClassName = QString::fromUtf8(master->metaObject()->className());
+    d->refreshModel();
+
+    for (auto &fk: d->foreignContainers)
+        if (fk->name() == name) {
+            fk->setObject(master.data());
+            return true;
+        }
+
+/*
+    for (auto &r: model->foreignKeys())
+        if (r->masterClassName == masterClassName) {
+            auto s = r->localColumn.mid(0, r->localColumn.size() - 2);
+            s[0] = s[0].toUpper();
+            s.prepend("set");
+
+            auto type = QStringLiteral("Nut::Row<%1>").arg(r->masterClassName);
+//            auto row = Nut::createFrom(master);
+            QGenericArgument a(type.toStdString().c_str(), master.data());
+            qDebug() << "a type" << a.name() << type;
+
+            metaObject()->invokeMethod(this, s.toLatin1().data(), Qt::QueuedConnection, a);
+            return true;
+        }
+  */
     return false;
 }
 
@@ -176,7 +215,6 @@ void Table::setParentTableSet(AbstractTableSet *parent)
 {
     //Q_D(Table);
     d->parentTableSet = parent;
-
 //    if (parent)
 //        d->parentTableSet->add(this);
 }
