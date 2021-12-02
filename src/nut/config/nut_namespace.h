@@ -1,10 +1,6 @@
 #ifndef NUT_NAMESPACE_H
 #define NUT_NAMESPACE_H
 
-#ifndef NUT_GLOBAL_H
-#   error "Do not include nut_namespace.h header directly!"
-#endif
-
 //avoid ide warnings
 #include <QtNut/nut_global.h>
 
