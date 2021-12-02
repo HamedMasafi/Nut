@@ -363,8 +363,12 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
 
             } else {
                 Table *table;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+                auto childMetaObject = QMetaType(data.table->typeId()).metaObject();
+#else
                 const QMetaObject *childMetaObject
                         = QMetaType::metaObjectForType(data.table->typeId());
+#endif
                 table = qobject_cast<Table *>(childMetaObject->newInstance());
 //                table = dynamic_cast<Table *>(QMetaType::create(data.table->typeId()));
                 if (!table)
