@@ -403,6 +403,8 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
                                                               Q_ARG(Nut::Row<Nut::Table>,
                                                                     levels[master].lastRow));
 
+                    if (Q_UNLIKELY(!ok))
+                        qWarning("Unable to invoke method %s on object", qPrintable(setterName));
                 }
             }
 

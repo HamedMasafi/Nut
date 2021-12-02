@@ -43,12 +43,12 @@ bool PostgreSqlGenerator::readInsideParentese(QString &text, QString &out)
     for (int i = 0; i < text.length(); ++i) {
         QChar ch = text.at(i);
 
-        if (ch == '(') {
+        if (ch == QLatin1Char('(')) {
             if (start == -1)
                 start = i;
             pc++;
         }
-        if (ch == ')') {
+        if (ch == QLatin1Char(')')) {
             pc--;
 
             if (!pc && end == -1)
@@ -63,14 +63,14 @@ bool PostgreSqlGenerator::readInsideParentese(QString &text, QString &out)
     return false;
 }
 
-bool PostgreSqlGenerator::isPostGisType(const QVariant::Type &t) const
+bool PostgreSqlGenerator::isPostGisType(const QMetaType::Type &t) const
 {
-    return t == QVariant::Point
-            || t == QVariant::PointF
-            || t == QVariant::Rect
-            || t == QVariant::RectF
-            || t == QVariant::Polygon
-            || t == QVariant::PolygonF;
+    return t == QMetaType::QPoint
+            || t == QMetaType::QPointF
+            || t == QMetaType::QRect
+            || t == QMetaType::QRectF
+            || t == QMetaType::QPolygon
+            || t == QMetaType::QPolygonF;
 }
 
 PostgreSqlGenerator::PostgreSqlGenerator(Database *parent) : AbstractSqlGenerator (parent)
@@ -212,25 +212,25 @@ QString PostgreSqlGenerator::diff(FieldModel *oldField, FieldModel *newField)
 
 QString PostgreSqlGenerator::escapeValue(const QVariant &v) const
 {
-    if (v.type() == QVariant::Time)
+    if (v.typeId() == QMetaType::QTime)
         return v.toTime().toString(QStringLiteral("''HH:mm:ss''"));
 
-    if (v.type() == QVariant::Date)
+    if (v.typeId() == QMetaType::QDate)
         return v.toDate().toString(QStringLiteral("''yyyy-MM-dd''"));
 
-    if (v.type() == QVariant::DateTime)
+    if (v.typeId() == QMetaType::QDateTime)
         return v.toDateTime().toString(QStringLiteral("''yyyy-MM-dd HH:mm:ss''"));
 
-    if (v.type() == QVariant::StringList)
+    if (v.typeId() == QMetaType::QStringList)
         return QStringLiteral("'{")
                                        + v.toStringList().join(QStringLiteral(","))
                                        + QStringLiteral("}'");
 
-    if (v.type() == QVariant::Point) {
+    if (v.typeId() == QMetaType::QPoint) {
         QPoint pt = v.toPoint();
         return QStringLiteral("point(%1, %2)").arg(pt.x()).arg(pt.y());
     }
-    if (v.type() == QVariant::PointF) {
+    if (v.typeId() == QMetaType::QPointF) {
         QPointF pt = v.toPointF();
         return QStringLiteral("point(%1, %2)").arg(pt.x()).arg(pt.y());
     }
@@ -241,7 +241,7 @@ QString PostgreSqlGenerator::escapeValue(const QVariant &v) const
     }
 
 #ifdef QT_GUI_LIB
-    if (v.type() == QVariant::Polygon) {
+    if (v.typeId() == QMetaType::QPolygon) {
         QString ret;
         QPoint pt;
         QPolygon pol = v.value<QPolygon>();
@@ -254,7 +254,7 @@ QString PostgreSqlGenerator::escapeValue(const QVariant &v) const
         }
         return QStringLiteral("'((") + ret + QStringLiteral("))'");
     }
-    if (v.type() == QVariant::PolygonF) {
+    if (v.typeId() == QMetaType::QPolygonF) {
         QString ret;
         QPointF pt;
         QPolygonF pol = v.value<QPolygonF>();

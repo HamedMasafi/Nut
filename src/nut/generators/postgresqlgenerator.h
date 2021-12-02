@@ -31,7 +31,7 @@ class NUT_EXPORT PostgreSqlGenerator : public AbstractSqlGenerator
 {
 private:
     bool readInsideParentese(QString &text, QString &out);
-    bool isPostGisType(const QVariant::Type &t) const;
+    bool isPostGisType(const QMetaType::Type &t) const;
 public:
     explicit PostgreSqlGenerator(Database *parent = nullptr);
 
