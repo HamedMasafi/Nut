@@ -15,7 +15,7 @@ class Database;
 class BulkInserterPrivate;
 class NUT_EXPORT BulkInserter
 {
-    Q_DECLARE_PRIVATE(BulkInserter);
+    Q_DECLARE_PRIVATE(BulkInserter)
 
 public:
     BulkInserter(Database *db, QString &className);
