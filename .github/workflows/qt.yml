@@ -49,7 +49,7 @@ jobs:
 
       - name: Setup MSVC environment for QMake
         uses: ilammy/msvc-dev-cmd@v1
-
+ 
       - name: Build with QMake
         run: |
           qmake CONFIG+=install_ok QT_PLATFORM=${{matrix.platform}} "QT_TOOL_PATH=${{steps.qt.outputs.qtdir}}/Tools" nut.pro
