@@ -21,11 +21,11 @@ jobs:
             additional_arguments: -D QT_DEFAULT_MAJOR_VERSION=6
           - platform: ubuntu-20.04
             make: make
-            CXXFLAGS: -Wall -Wextra -pedantic -Werror
+            CXXFLAGS: -Wall -Wextra -pedantic
             MAKEFLAGS: -j2
           - platform: macos-latest
             make: make
-            CXXFLAGS: -Wall -Wextra -pedantic -Werror -Wno-gnu-zero-variadic-macro-arguments # Ignore false-positive warning for qCWarning
+            CXXFLAGS: -Wall -Wextra -pedantic -Wno-gnu-zero-variadic-macro-arguments # Ignore false-positive warning for qCWarning
             MAKEFLAGS: -j3
           - platform: windows-latest
             make: nmake
