@@ -17,11 +17,11 @@ include(phrases/phrases.pri)
 include(models/models.pri)
 
 HEADERS += \
-    $$PWD/phrase.h
+    $$PWD/phrase.h \
+    $$PWD/nut_p.h
 
 SOURCES += \
     $$PWD/phrase.cpp
 
 load(qt_module)
 
-include($$PWD/3rdparty/serializer/src/src.pri)
