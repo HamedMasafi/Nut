@@ -244,7 +244,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
 
     QSet<TableModel*> relatedTables;
     relatedTables << d->database->model().tableByName(d->tableName);
-    Q_FOREACH (RelationModel *rel, d->relations)
+    for (auto &rel: d->relations)
         relatedTables << rel->slaveTable << rel->masterTable;
 
     struct LevelData{
@@ -271,7 +271,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
         data.lastKeyValue = QVariant();
 
         QHash<QString, QString> masters;
-        Q_FOREACH (RelationModel *rel, d->relations)
+        for (auto &rel: d->relations)
             if (rel->slaveTable->name() == table->name())
                 masters.insert(rel->masterTable->name(), rel->localProperty);
 
@@ -337,7 +337,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
             }
 
             // check if master if current table has processed
-            Q_FOREACH (int m, data.masters)
+            for (auto &m: data.masters)
                 if (!checked[m]) {
 //                    qDebug() << "row is checked";
                     continue;
@@ -378,7 +378,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
             }
 
             QList<FieldModel*> childFields = data.table->fields();
-            Q_FOREACH (FieldModel *field, childFields)
+            for (auto &field: childFields)
                 row->setProperty(field->name.toLatin1().data(),
                                    d->database->sqlGenerator()->unescapeValue(
                                    field->type,
@@ -633,15 +633,6 @@ Q_OUTOFLINE_TEMPLATE Query<T> &Query<T>::fields(const PhraseList &ph)
     return *this;
 }
 
-//template <class T>
-//Q_OUTOFLINE_TEMPLATE Query<T> &Query<T>::orderBy(QString fieldName,
-//                                                 QString type)
-//{
-//    //Q_D(AbstractQuery);
-//    d->orderPhrases.append(fieldName, type);
-//    return *this;
-//}
-
 template <class T>
 Q_OUTOFLINE_TEMPLATE Query<T> &Query<T>::orderBy(const PhraseList &ph)
 {
@@ -702,7 +693,7 @@ Q_OUTOFLINE_TEMPLATE void Query<T>::toModel(QSqlQueryModel *model)
     int fieldIndex = 0;
 
     if (d->fieldPhrase.data.count()) {
-        Q_FOREACH (const PhraseData *pd, d->fieldPhrase.data) {
+        for (const auto &pd: d->fieldPhrase.data) {
             QString displayName = dbModel
                                       .tableByClassName(QString::fromUtf8(pd->className))
                                       ->field(QString::fromUtf8(pd->fieldName))
@@ -714,7 +705,7 @@ Q_OUTOFLINE_TEMPLATE void Query<T>::toModel(QSqlQueryModel *model)
         }
     } else {
         TableModel *tbl = d->database->model().tableByName(d->tableName);
-        Q_FOREACH (FieldModel *f, tbl->fields()) {
+        for (auto &f: tbl->fields()) {
             model->setHeaderData(fieldIndex++,
                                  Qt::Horizontal,
                                  f->displayName);
@@ -734,29 +725,6 @@ Q_OUTOFLINE_TEMPLATE void Query<T>::toModel(SqlModel *model)
                 d->skip, d->take);
 
     model->setTable(toList());
-    /*
-    DatabaseModel dbModel = d->database->model();
-    model->setQuery(d->sql, d->database->database());
-
-    int fieldIndex = 0;
-
-    if (d->fieldPhrase.data.count()) {
-        Q_FOREACH (const PhraseData *pd, d->fieldPhrase.data) {
-            QString displayName = dbModel.tableByClassName(pd->className)
-                    ->field(pd->fieldName)->displayName;
-
-            model->setHeaderData(fieldIndex++,
-                                 Qt::Horizontal,
-                                 displayName);
-        }
-    } else {
-        TableModel *tbl = d->database->model().tableByName(d->tableName);
-        Q_FOREACH (FieldModel *f, tbl->fields()) {
-            model->setHeaderData(fieldIndex++,
-                                 Qt::Horizontal,
-                                 f->displayName);
-        }
-    }*/
 }
 
 template <class T>
@@ -766,14 +734,6 @@ Q_OUTOFLINE_TEMPLATE QString Query<T>::sqlCommand() const
     return d->sql;
 }
 
-//TODO: complete this class later
-//class RawQuery : public Query<void>
-//{
-//public:
-//    void setRawCommand(const QString &sql) {
-
-//    }
-//};
 
 NUT_END_NAMESPACE
 

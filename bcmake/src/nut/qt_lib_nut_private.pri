@@ -1,0 +1,11 @@
+QT.nut_private.VERSION = 6.3.0
+QT.nut_private.name = QtNut
+QT.nut_private.module =
+QT.nut_private.libs = $$QT_MODULE_LIB_BASE
+QT.nut_private.includes = $$QT_MODULE_INCLUDE_BASE/QtNut/6.3.0 $$QT_MODULE_INCLUDE_BASE/QtNut/6.3.0/QtNut
+QT.nut_private.frameworks = 
+QT.nut_private.depends = nut
+QT.nut_private.uses = 
+QT.nut_private.module_config = v2 internal_module
+QT.nut_private.enabled_features = 
+QT.nut_private.disabled_features = 

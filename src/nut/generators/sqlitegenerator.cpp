@@ -21,6 +21,7 @@
 #include "sqlitegenerator.h"
 #include "table.h"
 #include "tablemodel.h"
+#include "nut_p.h"
 
 NUT_BEGIN_NAMESPACE
 
@@ -308,13 +309,13 @@ QString SqliteGenerator::createConditionalPhrase(const PhraseData *d) const
 
 QString SqliteGenerator::escapeValue(const QVariant &v) const
 {
-    if (v.type() == QVariant::Time)
+    if (VARIANT_TYPE_COMPARE(v, Time))
         return v.toTime().toString(QStringLiteral("''HH:mm:ss''"));
 
-    if (v.type() == QVariant::Date)
+    if (VARIANT_TYPE_COMPARE(v, Date))
         return v.toDate().toString(QStringLiteral("''yyyy-MM-dd''"));
 
-    if (v.type() == QVariant::DateTime)
+    if (VARIANT_TYPE_COMPARE(v, DateTime))
         return v.toDateTime().toString(QStringLiteral("''yyyy-MM-dd HH:mm:ss''"));
 
     return AbstractSqlGenerator::escapeValue(v);

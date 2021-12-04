@@ -1,0 +1,1 @@
+FINAL_PRL_FILE_PATH = /doc/dev/qt/Nut/bcmake/lib/libQt6Nut.prl

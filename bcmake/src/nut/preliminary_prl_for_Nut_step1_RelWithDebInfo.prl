@@ -1,0 +1,7 @@
+RCC_OBJECTS = 
+QMAKE_PRL_BUILD_DIR = /doc/dev/qt/Nut/bcmake/src/nut
+QMAKE_PRL_TARGET = libQt6Nut.so
+QMAKE_PRL_CONFIG = shared
+QMAKE_PRL_VERSION = 6.3.0
+QMAKE_PRL_LIBS_FOR_CMAKE = /doc/Qt/6.2.0/gcc_64/lib/libQt6Gui.so.6.2.0;/usr/lib/x86_64-linux-gnu/libGL.so;/doc/Qt/6.2.0/gcc_64/lib/libQt6Sql.so.6.2.0;/doc/Qt/6.2.0/gcc_64/lib/libQt6Core.so.6.2.0;-pthread
+

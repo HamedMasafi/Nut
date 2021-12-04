@@ -32,6 +32,7 @@
 #include "table.h"
 #include "tablemodel.h"
 #include "sqlserializer.h"
+#include "nut_p.h"
 
 NUT_BEGIN_NAMESPACE
 
@@ -66,11 +67,11 @@ bool PostgreSqlGenerator::readInsideParentese(QString &text, QString &out)
 bool PostgreSqlGenerator::isPostGisType(const QMetaType::Type &t) const
 {
     return t == QMetaType::QPoint
-            || t == QMetaType::QPointF
-            || t == QMetaType::QRect
-            || t == QMetaType::QRectF
-            || t == QMetaType::QPolygon
-            || t == QMetaType::QPolygonF;
+           || t == QMetaType::QPointF
+           || t == QMetaType::QRect
+           || t == QMetaType::QRectF
+           || t == QMetaType::QPolygon
+           || t == QMetaType::QPolygonF;
 }
 
 PostgreSqlGenerator::PostgreSqlGenerator(Database *parent) : AbstractSqlGenerator (parent)
@@ -212,25 +213,25 @@ QString PostgreSqlGenerator::diff(FieldModel *oldField, FieldModel *newField)
 
 QString PostgreSqlGenerator::escapeValue(const QVariant &v) const
 {
-    if (v.typeId() == QMetaType::QTime)
+    if (VARIANT_TYPE_COMPARE(v, Time))
         return v.toTime().toString(QStringLiteral("''HH:mm:ss''"));
 
-    if (v.typeId() == QMetaType::QDate)
+    if (VARIANT_TYPE_COMPARE(v, Date))
         return v.toDate().toString(QStringLiteral("''yyyy-MM-dd''"));
 
-    if (v.typeId() == QMetaType::QDateTime)
+    if (VARIANT_TYPE_COMPARE(v, DateTime))
         return v.toDateTime().toString(QStringLiteral("''yyyy-MM-dd HH:mm:ss''"));
 
-    if (v.typeId() == QMetaType::QStringList)
+    if (VARIANT_TYPE_COMPARE(v, StringList))
         return QStringLiteral("'{")
                                        + v.toStringList().join(QStringLiteral(","))
                                        + QStringLiteral("}'");
 
-    if (v.typeId() == QMetaType::QPoint) {
+    if (VARIANT_TYPE_COMPARE(v, Point)) {
         QPoint pt = v.toPoint();
         return QStringLiteral("point(%1, %2)").arg(pt.x()).arg(pt.y());
     }
-    if (v.typeId() == QMetaType::QPointF) {
+    if (VARIANT_TYPE_COMPARE(v, PointF)) {
         QPointF pt = v.toPointF();
         return QStringLiteral("point(%1, %2)").arg(pt.x()).arg(pt.y());
     }
@@ -353,7 +354,7 @@ QString PostgreSqlGenerator::createConditionalPhrase(const PhraseData *d) const
     }
 
     if (d->type == PhraseData::WithVariant) {
-        if (isPostGisType(d->operand.type()) && d->operatorCond == PhraseData::Equal) {
+        if (isPostGisType(METATYPE_ID(d->operand)) && d->operatorCond == PhraseData::Equal) {
             return QStringLiteral("%1 ~= %2")
                     .arg(AbstractSqlGenerator::createConditionalPhrase(d->left),
                          escapeValue(d->operand));

@@ -31,6 +31,7 @@
 #include "databasemodel.h"
 #include "tablemodel.h"
 #include "sqlserializer.h"
+#include "nut_p.h"
 
 NUT_BEGIN_NAMESPACE
 
@@ -891,10 +892,10 @@ QString AbstractSqlGenerator::dateTimePartName(const PhraseData::Condition &op) 
 
 QString AbstractSqlGenerator::escapeValue(const QVariant &v) const
 {
-    if (v.type() == QVariant::String && v.toString().isEmpty())
+    if (VARIANT_TYPE_COMPARE(v, String) && v.toString().isEmpty())
         return QStringLiteral("''");
 
-    if (v.type() == QVariant::List) {
+    if (VARIANT_TYPE_COMPARE_X(v, QVariant::List, QMetaType::QVariantList)) {
         auto list = v.toList();
         QStringList ret;
         Q_FOREACH (QVariant vi, list) {

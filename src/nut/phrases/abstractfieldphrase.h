@@ -46,7 +46,7 @@ public:
     ConditionalPhrase in(QList<T> list)
     {
         QVariantList vlist;
-        Q_FOREACH (T t, list)
+        for (auto &t: list)
             vlist.append(QVariant::fromValue(t));
 
         return ConditionalPhrase(this, PhraseData::In, vlist);

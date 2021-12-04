@@ -32,6 +32,7 @@
 #endif
 
 #include "sqlserializer.h"
+#include "nut_p.h"
 
 NUT_BEGIN_NAMESPACE
 
@@ -114,7 +115,7 @@ QString MySqlGenerator::fieldType(FieldModel *field)
     default:
         qWarning("Type %s::%s(%d) is not supported",
                  qPrintable(field->name),
-                 QMetaType::typeName(field->type),
+                 METATYPE_TO_NAME(field->type),
                  field->type);
         dbType = QString();
     }
@@ -127,16 +128,16 @@ QString MySqlGenerator::fieldType(FieldModel *field)
 
 QString MySqlGenerator::escapeValue(const QVariant &v) const
 {
-    if (v.type() == QVariant::Bool)
+    if (VARIANT_TYPE_COMPARE_X(v, Bool, Bool))
         return v.toBool() ? QStringLiteral("1") : QStringLiteral("0");
 
-    if (v.type() == QVariant::Time)
+    if (VARIANT_TYPE_COMPARE(v, Time))
         return v.toTime().toString(QStringLiteral("''HH:mm:ss''"));
 
-    if (v.type() == QVariant::Date)
+    if (VARIANT_TYPE_COMPARE(v, Date))
         return v.toDate().toString(QStringLiteral("''yyyy-MM-dd''"));
 
-    if (v.type() == QVariant::DateTime)
+    if (VARIANT_TYPE_COMPARE(v, DateTime))
         return v.toDateTime().toString(QStringLiteral("''yyyy-MM-dd HH:mm:ss''"));
 
 //#ifdef QT_GUI_LIB
