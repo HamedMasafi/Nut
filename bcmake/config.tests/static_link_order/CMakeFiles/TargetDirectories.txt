@@ -1,5 +1,0 @@
-/doc/dev/qt/Nut/bcmake/config.tests/static_link_order/CMakeFiles/rebuild_cache.dir
-/doc/dev/qt/Nut/bcmake/config.tests/static_link_order/CMakeFiles/edit_cache.dir
-/doc/dev/qt/Nut/bcmake/config.tests/static_link_order/CMakeFiles/static_link_order_test.dir
-/doc/dev/qt/Nut/bcmake/config.tests/static_link_order/CMakeFiles/staticLib.dir
-/doc/dev/qt/Nut/bcmake/config.tests/static_link_order/CMakeFiles/objLib.dir
