@@ -30,11 +30,13 @@ jobs:
           - platform: windows-latest
             make: nmake
             CXXFLAGS: /W4 /WX /MP
+            QMAKE_MSC_VER: 14
 
     runs-on: ${{ matrix.platform }}
     env:
       CXXFLAGS: ${{ matrix.CXXFLAGS }}
       MAKEFLAGS: ${{ matrix.MAKEFLAGS }}
+      QMAKE_MSC_VER: ${{ matrix.QMAKE_MSC_VER }}
 
     steps:
       - name: Clone repo
