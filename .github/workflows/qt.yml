@@ -31,7 +31,7 @@ jobs:
           - platform: windows-latest
             make: nmake
             CXXFLAGS: /W4 /WX /MP
-            QMAKE_MSC_VER: 14
+            QMAKE_MSC_VER: 16.11.31911.196
 
     runs-on: ${{ matrix.platform }}
     env:
@@ -52,6 +52,8 @@ jobs:
 
       - name: Setup MSVC environment for QMake
         uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: 16.11.31911
  
       - name: Build with QMake
         run: |
