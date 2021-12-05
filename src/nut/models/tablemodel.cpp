@@ -259,7 +259,7 @@ TableModel::TableModel(const QJsonObject &json, const QString &tableName) : _typ
 #else
         f->type = static_cast<QMetaType::Type>(QMetaType::type(fieldObject.value(QStringLiteral(__TYPE)).toString().toLatin1().data()));
 #endif
-        f->typeName = QString::fromUtf8(QMetaType(f->type).name());
+        f->typeName = QString::fromUtf8(METATYPE_TO_NAME(f->type));
 
         if(fieldObject.contains(QStringLiteral(__nut_NOT_NULL)))
             f->notNull = fieldObject.value(QStringLiteral(__nut_NOT_NULL)).toBool();
@@ -350,7 +350,7 @@ QString TableModel::toString() const
     QStringList sl;
     for (auto &f: _fields)
         sl.append(f->name + QStringLiteral(" ")
-                  + QString::fromUtf8(QMetaType(f->type).name()));
+                  + QString::fromUtf8(METATYPE_TO_NAME(f->type)));
 
     QString ret = QStringLiteral("%1 (%2)")
                       .arg(_name, sl.join(QStringLiteral(", ")));

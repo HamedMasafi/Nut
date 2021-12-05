@@ -175,7 +175,7 @@ QVariant SqlSerializer::fromString(const QString &value, const QMetaType::Type &
     case QMetaType::QVariantMap: {
         QVariantMap ret;
         QStringList parts = value.split(QStringLiteral("\n"));
-        Q_FOREACH (QString p, parts) {
+        for (auto &p: parts) {
             if (p.isEmpty())
                 continue;
             QString name;

@@ -144,8 +144,8 @@ bool DatabasePrivate::updateDatabase()
         return true;
     }
 
-    Q_FOREACH (TableModel *tm, current) {
-        Q_FOREACH (FieldModel *fm, tm->fields()) {
+    for (auto &tm: current) {
+        for (auto &fm: tm->fields()) {
             if (sqlGenerator->fieldType(fm).isEmpty()) {
                 qWarning("The type (%s) is not supported for field %s::%s",
                          QMetaType::typeName(fm->type),
@@ -163,7 +163,7 @@ bool DatabasePrivate::updateDatabase()
     QStringList sql = sqlGenerator->diff(last, current);
 
     db.transaction();
-    Q_FOREACH (QString s, sql) {
+    for (auto &s: sql) {
         db.exec(s);
 
         if (db.lastError().type() != QSqlError::NoError) {
@@ -259,8 +259,8 @@ bool DatabasePrivate::getCurrectSchema()
         }
     }
 
-    Q_FOREACH (TableModel *table, currentModel) {
-        Q_FOREACH (FieldModel *f, table->fields()) {
+    for (auto &table: currentModel) {
+        for (auto &f: table->fields()) {
             if (f->isPrimaryKey && ! sqlGenerator->supportPrimaryKey(f->type))
                 qFatal("The field of type %s does not support as primary key",
                        qPrintable(f->typeName));
@@ -270,7 +270,7 @@ bool DatabasePrivate::getCurrectSchema()
                        qPrintable(f->typeName));
         }
 
-        Q_FOREACH (RelationModel *fk, table->foreignKeys())
+        for (auto &fk: table->foreignKeys())
             fk->masterTable = currentModel.tableByClassName(fk->masterClassName);
     }
 
@@ -352,7 +352,7 @@ void DatabasePrivate::createChangeLogs()
                                           currentModel.tableByName(
                                               QStringLiteral("__change_log")));
 
-    Q_FOREACH (QString s, diff)
+    for (auto &s: diff)
         db.exec(s);
 }
 

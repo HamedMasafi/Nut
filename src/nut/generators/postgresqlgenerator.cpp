@@ -242,7 +242,7 @@ QString PostgreSqlGenerator::escapeValue(const QVariant &v) const
     }
 
 #ifdef QT_GUI_LIB
-    if (v.typeId() == QMetaType::QPolygon) {
+    if (VARIANT_TYPE_COMPARE(v, Polygon)) {
         QString ret;
         QPoint pt;
         QPolygon pol = v.value<QPolygon>();
@@ -255,7 +255,7 @@ QString PostgreSqlGenerator::escapeValue(const QVariant &v) const
         }
         return QStringLiteral("'((") + ret + QStringLiteral("))'");
     }
-    if (v.typeId() == QMetaType::QPolygonF) {
+    if (VARIANT_TYPE_COMPARE(v, PolygonF)) {
         QString ret;
         QPointF pt;
         QPolygonF pol = v.value<QPolygonF>();
