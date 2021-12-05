@@ -115,7 +115,7 @@ QString AbstractSqlGenerator::recordsPhrase(TableModel *table)
         return QString();
 
     QString ret = QString();
-    Q_FOREACH (FieldModel *f, table->fields()) {
+    for (auto &f: table->fields()) {
         if (!ret.isEmpty())
             ret.append(QLatin1String(", "));
         ret.append(QStringLiteral("%1.%2 AS \"%1.%2\"").arg(table->name(), f->name));
@@ -126,9 +126,9 @@ QString AbstractSqlGenerator::recordsPhrase(TableModel *table)
 QString AbstractSqlGenerator::insertBulk(const QString &tableName, const PhraseList &ph, const QList<QVariantList> &vars)
 {
     QString sql;
-    Q_FOREACH (QVariantList list, vars) {
+    for (auto &list: vars) {
         QStringList values;
-        Q_FOREACH (QVariant v, list)
+        for (auto &v: list)
             values.append(escapeValue(v));
 
         if (!sql.isEmpty())
@@ -233,23 +233,23 @@ QStringList AbstractSqlGenerator::diff(TableModel *oldTable, TableModel *newTabl
     QList<QString> relations;
 
     if (oldTable) {
-        Q_FOREACH (FieldModel *f, oldTable->fields())
+        for (auto &f: oldTable->fields())
             if (!fieldNames.contains(f->name))
                 fieldNames.append(f->name);
-        Q_FOREACH (RelationModel *r, oldTable->foreignKeys())
+        for (auto &r: oldTable->foreignKeys())
             if (!relations.contains(r->localColumn))
                 relations.append(r->localColumn);
     }
 
-    Q_FOREACH (FieldModel *f, newTable->fields())
+    for (auto &f: newTable->fields())
         if (!fieldNames.contains(f->name))
             fieldNames.append(f->name);
-    Q_FOREACH (RelationModel *r, newTable->foreignKeys())
+    for (auto &r: newTable->foreignKeys())
         if (!relations.contains(r->localColumn))
             relations.append(r->localColumn);
 
     QStringList columnSql;
-    Q_FOREACH (QString fieldName, fieldNames) {
+    for (auto &fieldName: fieldNames) {
         FieldModel *newField = newTable->field(fieldName);
         if (oldTable) {
             FieldModel *oldField = oldTable->field(fieldName);
@@ -304,17 +304,17 @@ QStringList AbstractSqlGenerator::diffRelation(TableModel *oldTable, TableModel 
     QList<QString> relations;
 
     if (oldTable) {
-        Q_FOREACH (RelationModel *r, oldTable->foreignKeys())
+        for (auto &r: oldTable->foreignKeys())
             if (!relations.contains(r->localColumn))
                 relations.append(r->localColumn);
     }
 
-    Q_FOREACH (RelationModel *r, newTable->foreignKeys())
+    for (auto &r: newTable->foreignKeys())
         if (!relations.contains(r->localColumn))
             relations.append(r->localColumn);
 
     QStringList columnSql;
-    Q_FOREACH (QString fieldName, relations) {
+    for (auto &fieldName: relations) {
         RelationModel *newRelation = newTable->foreignKeyByField(fieldName);
         RelationModel *oldRelation = nullptr;
         if (oldTable)
@@ -601,11 +601,11 @@ QString AbstractSqlGenerator::selectCommand(const QString &tableName,
     if (fields.data.count() == 0) {
         QSet<TableModel*> tables;
         tables.insert(_database->model().tableByName(tableName));
-        Q_FOREACH (RelationModel *rel, joins)
+        for (auto &rel: joins)
             tables << rel->masterTable << rel->slaveTable;
 
         selectText = QString();
-        Q_FOREACH (TableModel *t, tables) {
+        for (auto &t: tables) {
             if (!selectText.isEmpty())
                 selectText.append(QStringLiteral(", "));
             selectText.append(recordsPhrase(t));
@@ -690,7 +690,7 @@ QString AbstractSqlGenerator::updateCommand(const QString &tableName,
                                         const ConditionalPhrase &where)
 {
     QString assigmentTexts = QString();
-    Q_FOREACH (PhraseData *d, assigments.data) {
+    for (auto &d: assigments.data) {
         if (assigmentTexts != QStringLiteral(""))
             assigmentTexts.append(QStringLiteral(", "));
 
@@ -718,7 +718,7 @@ QString AbstractSqlGenerator::insertCommand(const QString &tableName, const Assi
 
     QString fieldNames;
     QString values;
-    Q_FOREACH (PhraseData *d, assigments.data) {
+    for (auto &d: assigments.data) {
         if (!fieldNames.isEmpty())
             fieldNames.append(QStringLiteral(", "));
 
@@ -732,78 +732,9 @@ QString AbstractSqlGenerator::insertCommand(const QString &tableName, const Assi
               .arg(tableName, fieldNames, values);
 }
 
-//QString SqlGeneratorBase::selectCommand(SqlGeneratorBase::AgregateType t,
-//                                        QString agregateArg,
-//                                        QString tableName,
-//                                        QList<WherePhrase> &wheres,
-//                                        QList<WherePhrase> &orders,
-//                                        QList<RelationModel*> joins,
-//                                        int skip, int take)
-//{
-//    Q_UNUSED(take)
-//    Q_UNUSED(skip)
-
-//    QStringList joinedOrders;
-//    QString select = agregateText(t, agregateArg);
-
-//    //TODO: temporatory disabled
-//    if (t == SelectAll) {
-//        QSet<TableModel*> tables;
-//        tables.insert(_database->model().tableByName(tableName));
-//        Q_FOREACH (RelationModel *rel, joins)
-//            tables << rel->masterTable << rel->slaveTable;
-
-//        select = "";
-//        Q_FOREACH (TableModel *t, tables) {
-//            if (!select.isEmpty())
-//                select.append(", ");
-//            select.append(recordsPhrase(t));
-//        }
-//    }
-//    QString from = join(tableName, joins, &joinedOrders);
-//    QString where = createWhere(wheres);
-//    QString orderText = joinedOrders.join(", ");
-
-//    Q_FOREACH (WherePhrase p, orders) {
-//        if (orderText != "")
-//            orderText.append(", ");
-//        orderText.append(phraseOrder(p.data()));
-//    }
-
-//    QString sql = "SELECT " + select + " FROM " + from;
-
-//    if (where != "")
-//        sql.append(" WHERE " + where);
-
-//    if (orderText != "")
-//        sql.append(" ORDER BY " + orderText);
-
-//    for (int i = 0; i < _database->model().count(); i++)
-//        sql = sql.replace(_database->model().at(i)->className() + ".",
-//                          _database->model().at(i)->name() + ".");
-
-//    replaceTableNames(sql);
-
-//    return sql + " ";
-//}
-
-//QString SqlGeneratorBase::createWhere(QList<WherePhrase> &wheres)
-//{
-//    QString whereText = "";
-
-//    Q_FOREACH (WherePhrase w, wheres) {
-//        if (whereText != "")
-//            whereText.append(" AND ");
-
-//        whereText.append(phrase(w.data()));
-//    }
-
-//    return whereText;
-//}
-
 void AbstractSqlGenerator::replaceTableNames(QString &command)
 {
-    Q_FOREACH (TableModel *m, _database->model())
+    for (auto &m: _database->model())
         command = command
                       .replace(QStringLiteral("[") + m->className()
                                    + QStringLiteral("]"), m->name());
@@ -811,7 +742,7 @@ void AbstractSqlGenerator::replaceTableNames(QString &command)
 
 void AbstractSqlGenerator::removeTableNames(QString &command)
 {
-    Q_FOREACH (TableModel *m, _database->model())
+    for (auto &m: _database->model())
         command = command.replace(QStringLiteral("[")
                                       + m->className()
                                       + QStringLiteral("]."), QStringLiteral(""));
@@ -898,7 +829,7 @@ QString AbstractSqlGenerator::escapeValue(const QVariant &v) const
     if (VARIANT_TYPE_COMPARE_X(v, QVariant::List, QMetaType::QVariantList)) {
         auto list = v.toList();
         QStringList ret;
-        Q_FOREACH (QVariant vi, list) {
+        for (auto &vi: list) {
             ret.append(QStringLiteral("'")
                        + _serializer->serialize(vi)
                        + QStringLiteral("'"));
@@ -1122,7 +1053,7 @@ QString AbstractSqlGenerator::createConditionalPhrase(const PhraseData *d) const
 QString AbstractSqlGenerator::createOrderPhrase(const PhraseList &ph)
 {
     QString ret = QString();
-    Q_FOREACH (const PhraseData *d, ph.data) {
+    for (const auto &d: ph.data) {
         if (!ret.isEmpty())
             ret.append(QStringLiteral(", "));
         ret.append(d->toString());
@@ -1136,7 +1067,7 @@ QString AbstractSqlGenerator::createOrderPhrase(const PhraseList &ph)
 QString AbstractSqlGenerator::createFieldPhrase(const PhraseList &ph)
 {
     QString ret = QString();
-    Q_FOREACH (const PhraseData *d, ph.data) {
+    for (const auto &d: ph.data) {
         if (!ret.isEmpty())
             ret.append(QStringLiteral(", "));
         ret.append(d->toString());
@@ -1148,7 +1079,7 @@ QString AbstractSqlGenerator::createFieldPhrase(const PhraseList &ph)
 
 void AbstractSqlGenerator::createInsertPhrase(const AssignmentPhraseList &ph, QString &fields, QString &values)
 {
-    Q_FOREACH (PhraseData *d, ph.data) {
+    for (auto &d: ph.data) {
         if (!fields.isEmpty())
             fields.append(QStringLiteral(", "));
 

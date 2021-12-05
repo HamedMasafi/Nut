@@ -75,7 +75,7 @@ FieldModel *TableModel::field(int n) const
 
 FieldModel *TableModel::field(const QString &name) const
 {
-    Q_FOREACH (FieldModel *f, _fields)
+    for (auto &f: _fields)
         if(f->name == name)
             return f;
 
@@ -95,7 +95,7 @@ QList<RelationModel *> TableModel::foreignKeys() const
 QStringList TableModel::fieldsNames() const
 {
     QStringList ret;
-    Q_FOREACH (FieldModel *f, _fields)
+    for (auto &f: _fields)
         ret.append(f->name);
     return ret;
 }
@@ -107,7 +107,7 @@ bool TableModel::operator ==(const TableModel &t) const{
     if(fields().count() != t.fields().count())
         return false;
 
-    Q_FOREACH (FieldModel *f, _fields) {
+    for (auto &f: _fields) {
         FieldModel *tf = t.field(f->name);
         if(!tf)
             return false;
@@ -249,7 +249,7 @@ TableModel::TableModel(const QJsonObject &json, const QString &tableName) : _typ
 
     QJsonObject fields = json.value(QStringLiteral(__FIELDS)).toObject();
     QJsonObject relations = json.value(QStringLiteral(__FOREIGN_KEYS)).toObject();
-    Q_FOREACH (QString key, fields.keys()) {
+    for (auto &key: fields.keys()) {
         QJsonObject fieldObject = fields.value(key).toObject();
         //TODO: use FieldModel(QJsonObject) ctor
         auto *f = new FieldModel;
@@ -275,7 +275,7 @@ TableModel::TableModel(const QJsonObject &json, const QString &tableName) : _typ
         _fields.append(f);
     }
 
-    Q_FOREACH (QString key, relations.keys()) {
+    for (auto &key: relations.keys()) {
         QJsonObject relObject = fields.value(key).toObject();
         _foreignKeys.append(new RelationModel(relObject));
     }
@@ -329,7 +329,7 @@ QJsonObject TableModel::toJson() const
 
 RelationModel *TableModel::foreignKey(const QString &otherTable) const
 {
-    Q_FOREACH (RelationModel *fk, _foreignKeys)
+    for (auto &fk: _foreignKeys)
         if(fk->masterClassName == otherTable)
             return fk;
 
@@ -359,7 +359,7 @@ QString TableModel::toString() const
 
 QString TableModel::primaryKey() const
 {
-    Q_FOREACH (FieldModel *f, _fields)
+    for (auto &f: _fields)
         if(f->isPrimaryKey)
             return f->name;
     return QString();

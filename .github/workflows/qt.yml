@@ -21,11 +21,11 @@ jobs:
             additional_arguments: -D QT_DEFAULT_MAJOR_VERSION=6
           - platform: ubuntu-20.04
             make: make
-            CXXFLAGS: -Wall -Wextra -pedantic
+            CXXFLAGS: -Wall -Wextra -pedantic -Wno-error
             MAKEFLAGS: -j2
           - platform: macos-latest
             make: make
-            CXXFLAGS: -Wall -Wextra -pedantic -Wno-gnu-zero-variadic-macro-arguments # Ignore false-positive warning for qCWarning
+            CXXFLAGS: -Wall -Wextra -pedantic -Wno-error -Wno-gnu-zero-variadic-macro-arguments # Ignore false-positive warning for qCWarning
             MAKEFLAGS: -j3
           - platform: windows-latest
             make: nmake
@@ -52,7 +52,6 @@ jobs:
  
       - name: Build with QMake
         run: |
-          qmake CONFIG+=install_ok QT_PLATFORM=${{matrix.platform}} "QT_TOOL_PATH=${{steps.qt.outputs.qtdir}}/Tools" nut.pro
-
+          qmake nut.pro
           ${{ matrix.make }} qmake_all
           ${{ matrix.make }}

@@ -295,28 +295,8 @@ DatabaseModel DatabasePrivate::getLastSchema()
 
         DatabaseModel ret = json;
         return ret;
-        /*
-        Q_FOREACH (QString key, json.keys()) {
-            TableModel *sch = new TableModel(json.value(key).toObject(), key);
-            ret.append(sch);
-        }*/
     }
     return DatabaseModel();
-
-    //    QSqlQuery query = q->exec("select * from __change_logs order by id
-    //    desc limit 1");
-    //    DatabaseModel ret;
-    //    if(query.next()){
-    //        QJsonObject json =
-    //        QJsonDocument::fromJson(query.value("data").toByteArray()).object();
-
-    //        Q_FOREACH (QString key, json.keys()) {
-    //            TableModel *sch = new TableModel(json.value(key).toObject(),
-    //            key);
-    //            ret.append(sch);
-    //        }
-    //    }
-    //    return ret;
 }
 
 bool DatabasePrivate::putModelToDatabase()
@@ -333,16 +313,6 @@ bool DatabasePrivate::putModelToDatabase()
     changeLog->deleteLater();
 
     return true;
-
-    //    QSqlQuery query(db);
-    //    query.prepare("insert into __change_logs (data) values (:data)");
-    //    query.bindValue(":data",
-    //    QString(QJsonDocument(currentModel.toJson()).toJson()));
-    //    bool ret = query.exec();
-    //    if(query.lastError().type() != QSqlError::NoError)
-    //        qWarning(QString("storeSchemaInDB" +
-    //        query.lastError().text()).toLatin1().data());
-    //    return ret;
 }
 
 void DatabasePrivate::createChangeLogs()
@@ -564,7 +534,7 @@ bool Database::open(bool updateDatabase)
     else if (d->driver == QStringLiteral("QODBC") || d->driver == QStringLiteral("QODBC3")) {
         QString driverName = QString();
         QStringList parts = d->databaseName.toLower().split(';');
-        Q_FOREACH (QString p, parts)
+        for (auto &p: parts)
             if (p.trimmed().startsWith(QStringLiteral("driver=")))
                 driverName = p.split('=').at(1).toLower().trimmed();
 
@@ -615,7 +585,7 @@ int Database::saveChanges(bool cleanUp)
     }
 
     int rowsAffected = 0;
-    Q_FOREACH (AbstractTableSet *ts, d->tableSets)
+    for (auto &ts: d->tableSets)
         rowsAffected += ts->save(this, cleanUp);
 
     return rowsAffected;
@@ -624,7 +594,7 @@ int Database::saveChanges(bool cleanUp)
 void Database::cleanUp()
 {
     Q_D(Database);
-    Q_FOREACH (AbstractTableSet *ts, d->tableSets)
+    for (auto &ts: d->tableSets)
         ts->clearChilds();
 }
 

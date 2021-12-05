@@ -68,16 +68,11 @@ AssignmentPhraseList AssignmentPhraseList::operator &(const AssignmentPhrase
 
 AssignmentPhraseList::~AssignmentPhraseList()
 {
-//    Q_FOREACH (PhraseData *d, data)
-//        if (!d->ref.deref())
-//            delete d;
-//    qDeleteAll(data);
-    //    data.clear();
 }
 
 void AssignmentPhraseList::incAllDataParents()
 {
-    Q_FOREACH (PhraseData *d, data)
+    for (auto &d: data)
         d->ref.ref();
 }
 

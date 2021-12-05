@@ -48,7 +48,7 @@ DatabaseModel::DatabaseModel(const QJsonObject &json) :
     setVersion(json.value(NODE_VERSION).toInt());
 
     QJsonObject tables = json.value(NODE_TABLES).toObject();
-    Q_FOREACH (QString key, tables.keys()) {
+    for (auto &key: tables.keys()) {
         if(!tables.value(key).isObject())
             continue;
 
@@ -146,7 +146,7 @@ RelationModel *DatabaseModel::relationByClassNames(const QString &masterClassNam
     if(!childTable)
         return nullptr;
 
-    Q_FOREACH (RelationModel *rel, childTable->foreignKeys())
+    for (auto &rel: childTable->foreignKeys())
         if(rel->masterClassName == masterClassName)
             return rel;
 
@@ -160,7 +160,7 @@ RelationModel *DatabaseModel::relationByTableNames(const QString &masterTableNam
     if(!childTable)
         return nullptr;
 
-    Q_FOREACH (RelationModel *rel, childTable->foreignKeys())
+    for (auto &rel: childTable->foreignKeys())
         if(rel->masterTable->name() == masterTableName)
             return rel;
 
@@ -174,7 +174,7 @@ DatabaseModel DatabaseModel::fromJson(QJsonObject &json)
     model.setVersion(json.value(NODE_VERSION).toInt());
 
     QJsonObject tables = json.value(NODE_TABLES).toObject();
-    Q_FOREACH (QString key, tables.keys()) {
+    for (auto &key: tables.keys()) {
         if(!json.value(key).isObject())
             continue;
 
@@ -209,8 +209,8 @@ bool DatabaseModel::remove(const QString &tableName)
 void DatabaseModel::fixRelations()
 {
     /*TODO: fixme
-    Q_FOREACH (TableModel *table, currentModel)
-        Q_FOREACH (RelationModel *fk, table->foreignKeys())
+    for (auto &table: currentModel)
+        for (auto &fk: table->foreignKeys())
             fk->masterTable = currentModel.tableByClassName(fk->masterClassName);
             */
 }

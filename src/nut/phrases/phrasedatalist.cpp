@@ -43,7 +43,7 @@ void PhraseDataList::append(PhraseData *d)
 
 void PhraseDataList::append(QList<PhraseData *> &dl)
 {
-    Q_FOREACH (PhraseData *d, dl)
+    for (auto &d: dl)
         d->ref.ref();
     QList<PhraseData*>::append(dl);
 }

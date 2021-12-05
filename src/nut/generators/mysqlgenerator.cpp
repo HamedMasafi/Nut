@@ -195,7 +195,7 @@ QVariant MySqlGenerator::unescapeValue(const QMetaType::Type &type, const QVaria
 //        if (!readInsideParentese(ref, p))
 //            return pol;
 //        QStringList parts = p.split(",");
-//        Q_FOREACH (QString v, parts) {
+//        for (auto &v: parts) {
 //            QList<int> l = _serializer->toListInt(p.trimmed(), " ");
 //            if (l.count() != 2)
 //                return QPolygon();
@@ -211,7 +211,7 @@ QVariant MySqlGenerator::unescapeValue(const QMetaType::Type &type, const QVaria
 //            return pol;
 
 //        QStringList parts = p.split(",");
-//        Q_FOREACH (QString v, parts) {
+//        for (auto &v: parts) {
 //            QList<qreal> l = _serializer->toListReal(p.trimmed(), " ");
 //            if (l.count() != 2)
 //                return QPolygonF();
@@ -241,12 +241,12 @@ bool MySqlGenerator::readInsideParentese(QString &text, QString &out)
     for (int i = 0; i < text.length(); ++i) {
         QChar ch = text.at(i);
 
-        if (ch == '(') {
+        if (ch == QLatin1Char('(')) {
             if (start == -1)
                 start = i;
             pc++;
         }
-        if (ch == ')') {
+        if (ch == QLatin1Char(')')) {
             pc--;
 
             if (!pc && end == -1)

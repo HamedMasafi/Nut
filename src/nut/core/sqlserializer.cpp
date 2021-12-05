@@ -189,7 +189,7 @@ QVariant SqlSerializer::fromString(const QString &value, const QMetaType::Type &
     case QMetaType::QVariantList: {
         QVariantMap ret;
         QStringList parts = value.split(QStringLiteral("\n"));
-        Q_FOREACH (QString p, parts) {
+        for (auto &p: parts) {
             if (p.isEmpty())
                 continue;
             QString name;
@@ -287,7 +287,7 @@ QString SqlSerializer::toString(const QVariant &value) const
     case QMetaType::QStringList: {
         QString ret;
         QStringList sl = value.toStringList();
-        Q_FOREACH (QString s, sl) {
+        for (auto &s: sl) {
             if (!ret.isEmpty())
                 ret.append(QStringLiteral(" "));
 
@@ -367,7 +367,7 @@ QString SqlSerializer::toString(const QVariant &value) const
     case QMetaType::QVariantMap: {
         QString ret;
         QVariantMap map = value.toMap();
-        Q_FOREACH (QString k, map.keys()) {
+        for (auto k: map.keys()) {
             if (!ret.isEmpty())
                 ret.append(QStringLiteral("\n"));
             QVariant v = map.value(k);
@@ -435,7 +435,7 @@ QString SqlSerializer::toString(const QVariant &value) const
         auto l = value.toList();
         QString ret;
 
-        Q_FOREACH (QVariant v, l) {
+        for (auto &v: l) {
             if (!ret.isEmpty())
                 ret.append(QStringLiteral(", "));
             ret.append(toString(v));
@@ -461,7 +461,7 @@ QList<int> SqlSerializer::toListInt(const QString &s, const QString &sep) const
 {
     auto parts = s.split(sep);
     QList<int> ret;
-    Q_FOREACH (QString p, parts) {
+    for (auto &p: parts) {
         bool ok;
         ret.append(p.toInt(&ok));
         if (!ok)
@@ -479,7 +479,7 @@ QList<qreal> SqlSerializer::toListReal(const QString &s) const
 QString SqlSerializer::fromList(const QList<int> &list) const
 {
     QString ret;
-    Q_FOREACH (int n, list) {
+    for (auto &n: list) {
         if (!ret.isEmpty())
             ret.append(QStringLiteral(","));
         ret.append(QString::number(n));
@@ -491,7 +491,7 @@ QList<qreal> SqlSerializer::toListReal(const QString &s, const QString &sep) con
 {
     auto parts = s.split(sep);
     QList<qreal> ret;
-    Q_FOREACH (QString p, parts) {
+    for (auto &p: parts) {
         bool ok;
         ret.append(p.toDouble(&ok));
         if (!ok)
