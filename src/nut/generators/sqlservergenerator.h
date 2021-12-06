@@ -37,7 +37,7 @@ public:
     QString masterDatabaseName(QString databaseName) override;
 
     QString fieldType(FieldModel *field) override;
-    QString diff(FieldModel *oldField, FieldModel *newField) override;
+    QString diffField(FieldModel *oldField, FieldModel *newField) override;
 
     QString escapeValue(const QVariant &v) const override;
     QVariant unescapeValue(const QMetaType::Type &type, const QVariant &dbValue) override;

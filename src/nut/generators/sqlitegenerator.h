@@ -42,7 +42,7 @@ public:
     void appendSkipTake(QString &sql, int skip, int take) override;
 
     QString primaryKeyConstraint(const TableModel *table) const override;
-    QStringList diff(TableModel *oldTable, TableModel *newTable) override;
+    QStringList diffTable(TableModel *oldTable, TableModel *newTable) override;
 
     QString createConditionalPhrase(const PhraseData *d) const override;
 

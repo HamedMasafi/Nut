@@ -177,7 +177,7 @@ QString AbstractSqlGenerator::relationDeclare(const RelationModel *relation)
             .arg(relation->localColumn, relation->slaveTable->name());
 }
 
-QStringList AbstractSqlGenerator::diff(const DatabaseModel &lastModel,
+QStringList AbstractSqlGenerator::diffDatabase(const DatabaseModel &lastModel,
                                    const DatabaseModel &newModel)
 {
     QStringList ret;
@@ -188,7 +188,7 @@ QStringList AbstractSqlGenerator::diff(const DatabaseModel &lastModel,
     for (i = unionModel.begin(); i != unionModel.end(); ++i) {
         TableModel *oldTable = lastModel.tableByName((*i)->name());
         TableModel *newTable = newModel.tableByName((*i)->name());
-        QStringList sql = diff(oldTable, newTable);
+        QStringList sql = diffTable(oldTable, newTable);
         if (!sql.isEmpty())
             ret << sql;
 
@@ -200,7 +200,7 @@ QStringList AbstractSqlGenerator::diff(const DatabaseModel &lastModel,
     return ret;
 }
 
-QString AbstractSqlGenerator::diff(FieldModel *oldField, FieldModel *newField)
+QString AbstractSqlGenerator::diffField(FieldModel *oldField, FieldModel *newField)
 {
     QString sql = QString();
     if (oldField && newField)
@@ -219,7 +219,7 @@ QString AbstractSqlGenerator::diff(FieldModel *oldField, FieldModel *newField)
     return sql;
 }
 
-QStringList AbstractSqlGenerator::diff(TableModel *oldTable, TableModel *newTable)
+QStringList AbstractSqlGenerator::diffTable(TableModel *oldTable, TableModel *newTable)
 {
     if (!newTable && !oldTable)
         return QStringList();
@@ -256,7 +256,7 @@ QStringList AbstractSqlGenerator::diff(TableModel *oldTable, TableModel *newTabl
         if (oldTable) {
             FieldModel *oldField = oldTable->field(fieldName);
 
-            QString buffer = diff(oldField, newField);
+            QString buffer = diffField(oldField, newField);
             if (!buffer.isEmpty())
                 columnSql << buffer;
         } else {
@@ -322,7 +322,7 @@ QStringList AbstractSqlGenerator::diffRelation(TableModel *oldTable, TableModel 
         if (oldTable)
             oldRelation = oldTable->foreignKeyByField(fieldName);
 
-        QStringList buffer = diff(oldRelation, newRelation);
+        QStringList buffer = diffRelation2(oldRelation, newRelation);
         if (!buffer.isEmpty())
             columnSql << buffer.at(0);
     }
@@ -335,7 +335,7 @@ QStringList AbstractSqlGenerator::diffRelation(TableModel *oldTable, TableModel 
     return ret;
 }
 
-QStringList AbstractSqlGenerator::diff(RelationModel *oldRel, RelationModel *newRel)
+QStringList AbstractSqlGenerator::diffRelation2(RelationModel *oldRel, RelationModel *newRel)
 {
     QStringList ret;
     /*

@@ -192,7 +192,7 @@ QString PostgreSqlGenerator::fieldType(FieldModel *field)
     return dbType;
 }
 
-QString PostgreSqlGenerator::diff(FieldModel *oldField, FieldModel *newField)
+QString PostgreSqlGenerator::diffField(FieldModel *oldField, FieldModel *newField)
 {
     QString sql = QString();
     if(oldField && newField)

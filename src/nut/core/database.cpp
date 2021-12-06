@@ -162,7 +162,7 @@ bool DatabasePrivate::updateDatabase()
     else
         qDebug("Database is changed");
 
-    QStringList sql = sqlGenerator->diff(last, current);
+    QStringList sql = sqlGenerator->diffDatabase(last, current);
 
     db.transaction();
     for (auto &s: sql) {
@@ -320,7 +320,7 @@ bool DatabasePrivate::putModelToDatabase()
 void DatabasePrivate::createChangeLogs()
 {
     //    currentModel.model("change_log")
-    QStringList diff = sqlGenerator->diff(nullptr,
+    QStringList diff = sqlGenerator->diffTable(nullptr,
                                           currentModel.tableByName(
                                               QStringLiteral("__change_log")));
 
@@ -541,7 +541,7 @@ bool Database::open(bool updateDatabase)
                 driverName = p.split('=').at(1).toLower().trimmed();
 
 //        if (driverName == "{sql server}")
-            d->sqlGenerator = new SqlServerGenerator(this);
+        d->sqlGenerator = new SqlServerGenerator(this);
         // TODO: add ODBC driver for mysql, postgres, ...
     }
 

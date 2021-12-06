@@ -40,7 +40,7 @@ public:
 
     QString fieldType(FieldModel *field) override;
 
-    QString diff(FieldModel *oldField, FieldModel *newField) override;
+    QString diffField(FieldModel *oldField, FieldModel *newField) override;
 
     // SqlGeneratorBase interface
 public:

@@ -133,7 +133,7 @@ QString SqlServerGenerator::fieldType(FieldModel *field)
     }
 }
 
-QString SqlServerGenerator::diff(FieldModel *oldField, FieldModel *newField)
+QString SqlServerGenerator::diffField(FieldModel *oldField, FieldModel *newField)
 {
     QString sql = QString();
     if (oldField && newField)

@@ -119,7 +119,7 @@ bool SqliteGenerator::supportAutoIncrement(const QMetaType::Type &type)
 }
 
 
-QStringList SqliteGenerator::diff(TableModel *oldTable, TableModel *newTable)
+QStringList SqliteGenerator::diffTable(TableModel *oldTable, TableModel *newTable)
 {
     QStringList ret;
 
@@ -127,7 +127,7 @@ QStringList SqliteGenerator::diff(TableModel *oldTable, TableModel *newTable)
         if (*oldTable == *newTable)
             return ret;
 
-    QStringList newTableSql = AbstractSqlGenerator::diff(nullptr, newTable);
+    QStringList newTableSql = AbstractSqlGenerator::diffTable(nullptr, newTable);
 
     if (!newTable)
         return QStringList() << QStringLiteral("DROP TABLE ") + oldTable->name();
