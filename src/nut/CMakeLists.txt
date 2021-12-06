@@ -21,6 +21,7 @@ qt_internal_add_module(Nut
         core/query.cpp core/query.h
         core/table.cpp core/table.h core/table_p.h
         core/tableset.cpp core/tableset.h
+        core/sqlserializer.cpp core/sqlserializer.h
         generators/abstractsqlgenerator.cpp generators/abstractsqlgenerator.h
         generators/mysqlgenerator.cpp generators/mysqlgenerator.h
         generators/postgresqlgenerator.cpp generators/postgresqlgenerator.h
