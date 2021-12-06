@@ -26,6 +26,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class NUT_EXPORT ChangeLogTable : public Table
 {
     Q_OBJECT
@@ -41,8 +43,10 @@ public:
     explicit ChangeLogTable(QObject *parentTableSet = Q_NULLPTR);
 };
 
+NUT_END_NAMESPACE
+
 QT_END_NAMESPACE
 
-Q_DECLARE_METATYPE(Nut::ChangeLogTable*)
+Q_DECLARE_METATYPE(NUT_WRAP_NAMESPACE(ChangeLogTable*))
 
 #endif // CHANGELOGTABLE_H

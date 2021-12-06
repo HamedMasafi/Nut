@@ -29,6 +29,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class NUT_EXPORT DbGeography
 {
     qreal m_longitude;
@@ -47,6 +49,8 @@ public:
 
     operator QVariant();
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

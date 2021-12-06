@@ -30,6 +30,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class PhraseList;
 class Database;
 class BulkInserterPrivate;
@@ -54,6 +56,8 @@ public:
 private:
     BulkInserterPrivate *d_ptr;
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

@@ -35,6 +35,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 /*
  * Index:
  *  ALTER TABLE `travelLog` ADD INDEX(`driverId`);
@@ -1105,5 +1107,7 @@ void AbstractSqlGenerator::createInsertPhrase(const AssignmentPhraseList &ph, QS
         }
     }
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

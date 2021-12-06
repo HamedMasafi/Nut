@@ -30,6 +30,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 #define REL_LOCAL_COLUMN        QStringLiteral("localColumn")
 #define REL_LOCAL_PROPERTY      QStringLiteral("localProperty")
 #define REL_MASTER_CLASS_NAME   QStringLiteral("masterClassName")
@@ -296,7 +298,7 @@ QJsonObject TableModel::toJson() const
     for (auto &f: _fields) {
         QJsonObject fieldObj;
         fieldObj.insert(QStringLiteral(__NAME), f->name);
-        fieldObj.insert(QStringLiteral(__TYPE), METATYPE_TO_NAME(f->type));
+        fieldObj.insert(QStringLiteral(__TYPE), QString::fromUtf8(METATYPE_TO_NAME(f->type)));
 
         if(f->length)
             fieldObj.insert(QStringLiteral(__nut_LEN), f->length);
@@ -390,7 +392,7 @@ QJsonObject FieldModel::toJson() const
 {
     QJsonObject fieldObj;
     fieldObj.insert(QStringLiteral(__NAME), name);
-    fieldObj.insert(QStringLiteral(__TYPE), METATYPE_TO_NAME(type));
+    fieldObj.insert(QStringLiteral(__TYPE), QString::fromUtf8(METATYPE_TO_NAME(type)));
     fieldObj.insert(QStringLiteral(__nut_LEN), length);
     fieldObj.insert(QStringLiteral(__nut_NOT_NULL), notNull);
     fieldObj.insert(QStringLiteral(__nut_UNIQUE), isUnique);
@@ -431,5 +433,7 @@ bool operator !=(const RelationModel &l, const RelationModel &r)
 {
     return !(l == r);
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

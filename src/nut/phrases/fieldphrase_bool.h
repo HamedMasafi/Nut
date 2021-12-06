@@ -7,6 +7,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 template<>
 class FieldPhrase<bool> : public AbstractFieldPhrase
 {
@@ -32,6 +34,8 @@ public:
         return ConditionalPhrase(this, PhraseData::Equal, !data->isNot);
     }
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

@@ -25,6 +25,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 SqliteGenerator::SqliteGenerator(Database *parent) : AbstractSqlGenerator(parent)
 {
 
@@ -334,5 +336,7 @@ QVariant SqliteGenerator::unescapeValue(const QMetaType::Type &type, const QVari
 
     return AbstractSqlGenerator::unescapeValue(type, dbValue);
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

@@ -25,6 +25,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class NUT_EXPORT PhraseDataList : public QList<PhraseData*>
 {
 public:
@@ -34,6 +36,8 @@ public:
     void append(QList<PhraseData*> &dl);
     virtual ~PhraseDataList();
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

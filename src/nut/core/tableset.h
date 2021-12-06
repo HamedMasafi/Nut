@@ -37,6 +37,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 template<class T>
 class Query;
 
@@ -171,6 +173,8 @@ Q_OUTOFLINE_TEMPLATE void TableSet<T>::remove(RowList<T> t)
     for (auto &i: t)
         remove(i);
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

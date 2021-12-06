@@ -26,6 +26,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 AbstractTableSet::AbstractTableSet(Database *parent) : QObject(parent),
     data(new AbstractTableSetData(parent))
 {
@@ -119,5 +121,7 @@ int AbstractTableSet::size() const
 {
     return data->childs.size();
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

@@ -28,6 +28,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class Table;
 class PropertySignalMapper
 {
@@ -43,6 +45,8 @@ public:
     static void map(Table *obj);
     static QString changedProperty(QObject *obj, int senderSignalIndex);
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

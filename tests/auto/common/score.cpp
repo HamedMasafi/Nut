@@ -2,7 +2,7 @@
 #include "user.h"
 #include "post.h"
 
-Score::Score(QObject *parent) : Nut::Table(parent)
+Score::Score(QObject *parent) : NUT_WRAP_NAMESPACE(Table)(parent)
 {
 
 }

@@ -13,7 +13,7 @@ using namespace NUT_NAMESPACE;
 
 class Comment;
 class Score;
-class User : public Nut::Table
+class User : public NUT_WRAP_NAMESPACE(Table)
 {
     Q_OBJECT
 

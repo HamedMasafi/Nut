@@ -27,6 +27,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class NUT_EXPORT PostgreSqlGenerator : public AbstractSqlGenerator
 {
 private:
@@ -49,6 +51,8 @@ public:
 protected:
     QString createConditionalPhrase(const PhraseData *d) const override;
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

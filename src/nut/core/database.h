@@ -31,6 +31,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class DatabaseModel;
 class DatabasePrivate;
 class AbstractTableSet;
@@ -93,6 +95,8 @@ private:
 
     friend class AbstractTableSet;
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

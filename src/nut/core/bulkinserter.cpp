@@ -30,6 +30,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 BulkInserterPrivate::BulkInserterPrivate(Database *db)
     : database(db), fieldCount(0)
 {
@@ -89,5 +91,7 @@ int BulkInserter::apply()
     QSqlQuery q = d->database->exec(sql);
     return q.numRowsAffected();
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

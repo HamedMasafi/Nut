@@ -6,7 +6,7 @@
 
 class User;
 class Post;
-class Score : public Nut::Table
+class Score : public NUT_WRAP_NAMESPACE(Table)
 {
     Q_OBJECT
 

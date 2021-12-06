@@ -51,6 +51,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 qulonglong DatabasePrivate::lastId = 0;
 QMap<QString, DatabaseModel> DatabasePrivate::allTableMaps;
 
@@ -597,5 +599,7 @@ void Database::cleanUp()
     for (auto &ts: d->tableSets)
         ts->clearChilds();
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

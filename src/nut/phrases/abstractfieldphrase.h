@@ -28,6 +28,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class PhraseData;
 class NUT_EXPORT AbstractFieldPhrase
 {
@@ -84,6 +86,8 @@ public:
 protected:
     void detach();
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

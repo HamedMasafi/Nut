@@ -23,6 +23,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 AbstractFieldPhrase::AbstractFieldPhrase(PhraseData *d) : data(d)
 { }
 
@@ -135,5 +137,7 @@ AbstractFieldPhrase AbstractFieldPhrase::operator !()
     f.data->isNot = !data->isNot;
     return f;
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

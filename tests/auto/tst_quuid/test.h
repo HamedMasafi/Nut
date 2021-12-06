@@ -5,7 +5,7 @@
 
 #include "table.h"
 
-class Test : public Nut::Table
+class Test : public NUT_WRAP_NAMESPACE(Table)
 {
     Q_OBJECT
 

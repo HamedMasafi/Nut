@@ -4,7 +4,7 @@
 #include <QtNut/Database>
 
 class SampleTable;
-class SampleDataBase : public Nut::Database
+class SampleDataBase : public NUT_WRAP_NAMESPACE(Database)
 {
     Q_OBJECT
     NUT_DB_VERSION(1)

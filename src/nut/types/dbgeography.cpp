@@ -22,6 +22,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 DbGeography::DbGeography() : m_longitude(0), m_latitude(0)
 {
 
@@ -77,5 +79,7 @@ DbGeography::operator QVariant()
 {
     return QVariant::fromValue(QStringLiteral("%1,%2").arg(longitude()).arg(latitude()));
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

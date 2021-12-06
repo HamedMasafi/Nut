@@ -24,6 +24,7 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
 
 AssignmentPhraseList AssignmentPhrase::operator &(const AssignmentPhrase &other)
 {
@@ -76,5 +77,6 @@ void AssignmentPhraseList::incAllDataParents()
         d->ref.ref();
 }
 
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

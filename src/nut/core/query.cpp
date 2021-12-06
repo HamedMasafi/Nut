@@ -22,6 +22,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 /*!
   * \class Query
   * \brief This class hold a query. A query can be used for getting database rows, editing or deleting without row fetching.
@@ -78,5 +80,7 @@ QT_BEGIN_NAMESPACE
  * query->orderBy(!Post::idField & Post::bodyField());
  * \endcode
  */
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

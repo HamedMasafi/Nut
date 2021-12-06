@@ -40,6 +40,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class SqlModel;
 class Table;
 class TableModel;
@@ -56,6 +58,8 @@ public:
     TableModel *model;
     std::function <QVariant(int, QVariant)> renderer;
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

@@ -32,6 +32,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 /*
  * FIXME:
  *  Qt can not access metaObject inside of constructor
@@ -217,5 +219,7 @@ void TablePrivate::refreshModel()
 //    if (!model)
 //        model = TableModel::findByClassName(q->metaObject()->className());
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

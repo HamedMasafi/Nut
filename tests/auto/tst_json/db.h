@@ -5,7 +5,7 @@
 
 class Table;
 
-class DB : public Nut::Database
+class DB : public NUT_WRAP_NAMESPACE(Database)
 {
     Q_OBJECT
 

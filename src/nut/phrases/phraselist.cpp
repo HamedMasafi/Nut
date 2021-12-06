@@ -23,6 +23,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 PhraseList::PhraseList() : isValid(false)
 {
 
@@ -90,5 +92,7 @@ void PhraseList::incAllDataParents()
 PhraseList PhraseList::operator |(PhraseList &other) {
     return PhraseList(this, &other);
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

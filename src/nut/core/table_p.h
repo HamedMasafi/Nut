@@ -39,6 +39,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class TableModel;
 class Table;
 class AbstractTableSet;
@@ -58,6 +60,8 @@ public:
 
     void refreshModel();
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

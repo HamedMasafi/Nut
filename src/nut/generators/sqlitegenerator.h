@@ -27,6 +27,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class NUT_EXPORT SqliteGenerator : public AbstractSqlGenerator
 {
 public:
@@ -47,6 +49,8 @@ public:
     QString escapeValue(const QVariant &v) const override;
     QVariant unescapeValue(const QMetaType::Type &type, const QVariant &dbValue) override;
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

@@ -30,6 +30,8 @@ class QJsonObject;
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class TableModel;
 struct NUT_EXPORT FieldModel{
     explicit FieldModel() : name(QString()), defaultValue(QString())
@@ -132,6 +134,8 @@ private:
     QList<FieldModel*> _fields;
     QList<RelationModel*> _foreignKeys;
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

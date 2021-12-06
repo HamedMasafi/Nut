@@ -4,7 +4,7 @@
 #include "table.h"
 #include <QJsonDocument>
 
-class Table : public Nut::Table
+class Table : public NUT_WRAP_NAMESPACE(Table)
 {
     Q_OBJECT
 

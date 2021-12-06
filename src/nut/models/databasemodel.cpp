@@ -26,6 +26,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 QMap<QString, DatabaseModel*> DatabaseModel::_models;
 
 #define NODE_VERSION QStringLiteral("version")
@@ -271,5 +273,7 @@ DatabaseModel operator |(const DatabaseModel &l, const DatabaseModel &r)
 
     return ret;
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

@@ -27,9 +27,10 @@
 
 #include <QtNut/phrase.h>
 
-class SqlSerializer;
 
 QT_BEGIN_NAMESPACE
+
+NUT_BEGIN_NAMESPACE
 
 class Table;
 struct FieldModel;
@@ -37,6 +38,7 @@ class DatabaseModel;
 class TableModel;
 class Database;
 struct RelationModel;
+class SqlSerializer;
 class NUT_EXPORT AbstractSqlGenerator : public QObject
 {
 //    Q_OBJECT
@@ -166,6 +168,8 @@ protected:
     void removeTableNames(QString &command);
     QString dateTimePartName(const PhraseData::Condition &op) const;
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

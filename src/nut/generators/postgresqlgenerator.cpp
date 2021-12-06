@@ -36,6 +36,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 bool PostgreSqlGenerator::readInsideParentese(QString &text, QString &out)
 {
     int start = -1;
@@ -401,5 +403,7 @@ QString PostgreSqlGenerator::createConditionalPhrase(const PhraseData *d) const
 
     return AbstractSqlGenerator::createConditionalPhrase(d);
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

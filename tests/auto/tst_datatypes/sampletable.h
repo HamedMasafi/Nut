@@ -19,7 +19,7 @@
 
 #define FIELD_Q(type) NUT_DECLARE_FIELD(q##type, f##type, f##type, setF##type)
 
-class SampleTable : public Nut::Table
+class SampleTable : public NUT_WRAP_NAMESPACE(Table)
 {
     Q_OBJECT
 

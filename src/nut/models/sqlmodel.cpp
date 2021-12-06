@@ -29,6 +29,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 SqlModelPrivate::SqlModelPrivate(SqlModel *parent) : q_ptr(parent)
       , renderer(nullptr)
 {
@@ -122,5 +124,7 @@ Row<Table> SqlModel::at(const int &i) const
     Q_D(const SqlModel);
     return d->rows.at(i);
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

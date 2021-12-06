@@ -28,6 +28,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 SqlServerGenerator::SqlServerGenerator(Database *parent)
     : AbstractSqlGenerator(parent)
 {
@@ -278,5 +280,7 @@ QString SqlServerGenerator::createConditionalPhrase(const PhraseData *d) const
 
     return AbstractSqlGenerator::createConditionalPhrase(d);
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

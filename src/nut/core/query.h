@@ -46,6 +46,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 struct NUT_EXPORT QueryData {
     QString sql;
     QString className;
@@ -350,7 +352,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
             //create table row
             Row<Table> row;
             if (data.table->className() == d->className) {
-                Row<T> tmpRow = Nut::create<T>();
+                Row<T> tmpRow = create<T>();
                 row = tmpRow.template objectCast<Table>();
 
                 row->init();
@@ -400,7 +402,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
                     bool ok = row->metaObject()->invokeMethod(row.data(),
                                                               setterName.toStdString().c_str(),
                                                               Qt::DirectConnection,
-                                                              Q_ARG(Nut::Row<Nut::Table>,
+                                                              Q_ARG(Row<Table>,
                                                                     levels[master].lastRow));
 
                     if (Q_UNLIKELY(!ok))
@@ -734,6 +736,7 @@ Q_OUTOFLINE_TEMPLATE QString Query<T>::sqlCommand() const
     return d->sql;
 }
 
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

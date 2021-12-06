@@ -22,8 +22,11 @@
 #define SQLSERIALIZER_H
 
 #include <QVariant>
+#include "nut_global.h"
 
 QT_BEGIN_NAMESPACE
+
+NUT_BEGIN_NAMESPACE
 
 class SqlSerializer
 {
@@ -51,6 +54,8 @@ private:
     virtual QString escapeString(const QString &str) const;
     virtual QString unescapeString(const QString &str) const;
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

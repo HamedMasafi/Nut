@@ -35,6 +35,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class Database;
 class BulkInserterPrivate
 {
@@ -47,6 +49,8 @@ public:
     QList<QVariantList> variants;
     size_t fieldCount;
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

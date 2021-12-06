@@ -28,6 +28,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 #define COMMON_OPERATORS_DECL(T) \
     AssignmentPhrase operator =(const T &other); \
     ConditionalPhrase operator <(const QVariant &other);                   \
@@ -118,6 +120,8 @@ public:
     ConditionalPhrase second();
     ConditionalPhrase msec();
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

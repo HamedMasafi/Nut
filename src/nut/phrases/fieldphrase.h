@@ -26,6 +26,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 template<typename T>
 class FieldPhrase : public AbstractFieldPhrase
 {
@@ -57,6 +59,8 @@ Q_OUTOFLINE_TEMPLATE ConditionalPhrase FieldPhrase<T>::operator ==(const QVarian
         return ConditionalPhrase(this, cond, val); \
     }
 
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

@@ -39,6 +39,7 @@
 #include <QtCore/QBitArray>
 #include <QtCore/QBuffer>
 #include "nut_p.h"
+#include "nut_global.h"
 
 #ifdef QT_GUI_LIB
 #include <QtGui/QFont>
@@ -55,6 +56,8 @@
 #define TIME_FORMAT QStringLiteral("HH:mm:ss.zzz")
 
 QT_BEGIN_NAMESPACE
+
+NUT_BEGIN_NAMESPACE
 
 SqlSerializer::SqlSerializer()
 {
@@ -680,5 +683,7 @@ QString SqlSerializer::serialize(const QVariant &value) const
 {
     return escapeString(toString(value));
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

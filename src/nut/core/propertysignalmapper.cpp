@@ -20,8 +20,11 @@
 
 #include "propertysignalmapper.h"
 #include "table.h"
+#include "nut_global.h"
 
 QT_BEGIN_NAMESPACE
+
+NUT_BEGIN_NAMESPACE
 
 QMap<QString, PropertySignalMapper::ClassData*> PropertySignalMapper::_data;
 
@@ -69,5 +72,7 @@ QString PropertySignalMapper::changedProperty(QObject *obj, int senderSignalInde
                     QString::fromUtf8(obj->metaObject()->method(senderSignalIndex).name())
                 );
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

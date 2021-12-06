@@ -25,6 +25,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class PhraseData;
 class AbstractFieldPhrase;
 
@@ -89,6 +91,7 @@ ConditionalPhrase NUT_EXPORT operator <=(ConditionalPhrase &&l, ConditionalPhras
 ConditionalPhrase NUT_EXPORT operator >(ConditionalPhrase &&l, ConditionalPhrase &&r);
 ConditionalPhrase NUT_EXPORT operator >=(ConditionalPhrase &&l, ConditionalPhrase &&r);
 
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

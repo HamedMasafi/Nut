@@ -26,6 +26,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class AbstractFieldPhrase;
 class NUT_EXPORT PhraseList
 {
@@ -48,6 +50,8 @@ public:
 private:
     void incAllDataParents();
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

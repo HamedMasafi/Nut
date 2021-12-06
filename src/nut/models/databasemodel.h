@@ -31,6 +31,8 @@ class QJsonObject;
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class TableModel;
 struct RelationModel;
 class NUT_EXPORT DatabaseModel : public QList<TableModel *>
@@ -75,6 +77,8 @@ public:
 
 DatabaseModel operator +(const DatabaseModel &l, const DatabaseModel &r);
 DatabaseModel operator |(const DatabaseModel &l, const DatabaseModel &r);
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

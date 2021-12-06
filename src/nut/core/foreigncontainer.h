@@ -22,8 +22,11 @@
 #define FOREIGNCONTAINER_H
 
 #include <QtGlobal>
+#include "nut_global.h"
 
 QT_BEGIN_NAMESPACE
+
+NUT_BEGIN_NAMESPACE
 
 template<class _OBJECT, typename _KEY>
 class ForeignContainer
@@ -78,6 +81,8 @@ public:
         return object();
     }
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

@@ -22,6 +22,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 PhraseData::PhraseData()
     : className(""), fieldName(""), type(Field), operatorCond(NotAssign),
       left(nullptr), right(nullptr), operand(), isNot(false),
@@ -113,5 +115,7 @@ void PhraseData::cleanUp(PhraseData *d)
     if (d->right)
         cleanUp(d->right);
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

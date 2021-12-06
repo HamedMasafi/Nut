@@ -22,6 +22,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 PhraseDataList::PhraseDataList() : QList<PhraseData*>()
 {
 
@@ -57,5 +59,7 @@ PhraseDataList::~PhraseDataList()
             delete *i;
     }
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

@@ -27,6 +27,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class NUT_EXPORT MySqlGenerator : public AbstractSqlGenerator
 {
 public:
@@ -45,6 +47,8 @@ public:
 private:
     bool readInsideParentese(QString &text, QString &out);
 };
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 

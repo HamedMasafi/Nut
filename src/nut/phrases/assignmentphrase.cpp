@@ -24,6 +24,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 AssignmentPhrase::AssignmentPhrase(PhraseData *d) : data(d)
 {
     d->ref.ref();
@@ -59,5 +61,7 @@ AssignmentPhrase::~AssignmentPhrase()
     if (data && data->ref.deref())
         delete data;
 }
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE

@@ -27,6 +27,8 @@
 
 QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
+
 class Table;
 class Database;
 class AbstractTableSetData : public QSharedData
@@ -48,6 +50,9 @@ public:
     Table *table;
     QString childClassName;
 };
+
+
+NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 
