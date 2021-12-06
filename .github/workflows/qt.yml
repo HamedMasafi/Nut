@@ -58,3 +58,8 @@ jobs:
           qmake nut.pro
           ${{ matrix.make }} qmake_all
           ${{ matrix.make }}
+
+      - name: Build with CMake
+        run: |
+          cmake . ${{ matrix.additional_arguments }}
+          cmake --build .
