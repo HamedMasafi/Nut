@@ -35,7 +35,7 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
     env:
-      #CXXFLAGS: ${{ matrix.CXXFLAGS }}
+      CXXFLAGS: ${{ matrix.CXXFLAGS }}
       MAKEFLAGS: ${{ matrix.MAKEFLAGS }}
       QMAKE_MSC_VER: ${{ matrix.QMAKE_MSC_VER }}
       CMAKE_PREFIX_PATH: $Qt6_DIR/lib/cmake
@@ -53,7 +53,9 @@ jobs:
 
       - name: Setup MSVC environment for QMake
         uses: ilammy/msvc-dev-cmd@v1
- 
+        with:
+          uwp: false
+          
       - name: Build with QMake
         run: |
           qmake nut.pro
