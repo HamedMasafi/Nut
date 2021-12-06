@@ -38,6 +38,7 @@ jobs:
       CXXFLAGS: ${{ matrix.CXXFLAGS }}
       MAKEFLAGS: ${{ matrix.MAKEFLAGS }}
       QMAKE_MSC_VER: ${{ matrix.QMAKE_MSC_VER }}
+      CMAKE_PREFIX_PATH: $Qt6_DIR/lib/cmake
 
     steps:
       - name: Clone repo
@@ -60,6 +61,7 @@ jobs:
           ${{ matrix.make }}
 
       - name: Build with CMake
+        if: startsWith(matrix.qt_version, '6.')
         run: |
           cmake . ${{ matrix.additional_arguments }}
           cmake --build .
