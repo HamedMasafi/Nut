@@ -16,4 +16,3 @@ HEADERS += \
 SOURCES += \
     $$PWD/phrase.cpp
 
-include($$PWD/3rdparty/serializer/src/src.pri)

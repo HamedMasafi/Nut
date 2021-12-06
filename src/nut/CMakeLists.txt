@@ -6,12 +6,6 @@
 
 qt_internal_add_module(Nut
     SOURCES
-        3rdparty/serializer/src/abstractserializer.cpp 3rdparty/serializer/src/abstractserializer.h
-        3rdparty/serializer/src/binaryserializer.cpp 3rdparty/serializer/src/binaryserializer.h
-        3rdparty/serializer/src/jsonserializer.cpp 3rdparty/serializer/src/jsonserializer.h
-        3rdparty/serializer/src/serializer_global.h
-        3rdparty/serializer/src/sqlserializer.cpp 3rdparty/serializer/src/sqlserializer.h
-        3rdparty/serializer/src/stringserializer.cpp 3rdparty/serializer/src/stringserializer.h
         config/nut_config.h
         config/nut_consts.h
         config/nut_global.h
@@ -54,7 +48,6 @@ qt_internal_add_module(Nut
         NUT_SHARED_POINTER
         QT_DEPRECATED_WARNINGS
     INCLUDE_DIRECTORIES
-        3rdparty/serializer/src
         config
         core
         generators

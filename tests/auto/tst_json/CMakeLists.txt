@@ -7,12 +7,6 @@
 qt_internal_add_executable(tst_upgrades
     GUI
     SOURCES
-        ../../../src/nut/3rdparty/serializer/src/abstractserializer.cpp ../../../src/nut/3rdparty/serializer/src/abstractserializer.h
-        ../../../src/nut/3rdparty/serializer/src/binaryserializer.cpp ../../../src/nut/3rdparty/serializer/src/binaryserializer.h
-        ../../../src/nut/3rdparty/serializer/src/jsonserializer.cpp ../../../src/nut/3rdparty/serializer/src/jsonserializer.h
-        ../../../src/nut/3rdparty/serializer/src/serializer_global.h
-        ../../../src/nut/3rdparty/serializer/src/sqlserializer.cpp ../../../src/nut/3rdparty/serializer/src/sqlserializer.h
-        ../../../src/nut/3rdparty/serializer/src/stringserializer.cpp ../../../src/nut/3rdparty/serializer/src/stringserializer.h
         ../../../src/nut/config/nut_config.h
         ../../../src/nut/config/nut_consts.h
         ../../../src/nut/config/nut_global.h
@@ -56,7 +50,6 @@ qt_internal_add_executable(tst_upgrades
         NUT_SHARED_POINTER
     INCLUDE_DIRECTORIES
         ../../../src/nut
-        ../../../src/nut/3rdparty/serializer/src
         ../../../src/nut/config
         ../../../src/nut/core
         ../../../src/nut/generators
