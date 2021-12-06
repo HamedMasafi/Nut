@@ -20,7 +20,7 @@
 
 #include "phrasedatalist.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 PhraseDataList::PhraseDataList() : QList<PhraseData*>()
 {
@@ -58,4 +58,4 @@ PhraseDataList::~PhraseDataList()
     }
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

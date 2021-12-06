@@ -26,7 +26,7 @@
 #include <QtNut/conditionalphrase.h>
 #include <QtNut/phraselist.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class PhraseData;
 class NUT_EXPORT AbstractFieldPhrase
@@ -85,6 +85,6 @@ protected:
     void detach();
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // ABSTRACTFIELDPHRASE_H

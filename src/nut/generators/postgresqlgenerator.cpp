@@ -34,7 +34,7 @@
 #include "sqlserializer.h"
 #include "nut_p.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 bool PostgreSqlGenerator::readInsideParentese(QString &text, QString &out)
 {
@@ -402,4 +402,4 @@ QString PostgreSqlGenerator::createConditionalPhrase(const PhraseData *d) const
     return AbstractSqlGenerator::createConditionalPhrase(d);
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

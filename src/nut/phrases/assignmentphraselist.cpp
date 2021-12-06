@@ -22,7 +22,7 @@
 #include "phrasedata.h"
 #include "assignmentphrase.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 
 AssignmentPhraseList AssignmentPhrase::operator &(const AssignmentPhrase &other)
@@ -77,4 +77,4 @@ void AssignmentPhraseList::incAllDataParents()
 }
 
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

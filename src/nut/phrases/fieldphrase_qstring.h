@@ -5,7 +5,7 @@
 #include <QtNut/abstractfieldphrase.h>
 #include <QtNut/fieldphrase.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 template<>
 class FieldPhrase<QString> : public AbstractFieldPhrase
@@ -34,6 +34,6 @@ public:
     }
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // NUT_FIELDPHRASE_QSTRING_H

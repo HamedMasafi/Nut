@@ -1,6 +1,9 @@
 #ifndef NUT_MACROS_H
 #define NUT_MACROS_H
 
+#include <QtGlobal>
+
+QT_BEGIN_NAMESPACE
 
 #define NUT_INFO(type, name, value)                                            \
     Q_CLASSINFO(__nut_NAME_PERFIX type #name #value,                           \
@@ -148,5 +151,7 @@ public : \
 #define NUT_DEFAULT_VALUE(x, n)             NUT_INFO(__nut_DEFAULT_VALUE, x, n)
 #define NUT_NOT_NULL(x)                     NUT_INFO(__nut_NOT_NULL, x, 1)
 #define NUT_INDEX(name, field, order)
+
+QT_END_NAMESPACE
 
 #endif // NUT_MACROS_H

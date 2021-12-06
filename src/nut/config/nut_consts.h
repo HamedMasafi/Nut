@@ -21,6 +21,10 @@
 #ifndef NUT_CONSTS_H
 #define NUT_CONSTS_H
 
+#include <QtGlobal>
+
+QT_BEGIN_NAMESPACE
+
 #define __NAME                  "name"
 #define __TYPE                  "type"
 #define __FIELDS                "fields"
@@ -47,13 +51,15 @@
 #define __nut_CHANGE            "change"
 
 #ifdef NUT_NAMESPACE
-#   define NUT_BEGIN_NAMESPACE      namespace NUT_NAMESPACE{
-#   define NUT_END_NAMESPACE        }
+//#   define QT_BEGIN_NAMESPACE      namespace NUT_NAMESPACE{
+//#   define QT_END_NAMESPACE        }
 #   define NUT_WRAP_NAMESPACE(x)    NUT_NAMESPACE::x
 #else
-#   define NUT_BEGIN_NAMESPACE
-#   define NUT_END_NAMESPACE
+//#   define QT_BEGIN_NAMESPACE
+#   define QT_END_NAMESPACE
 #   define NUT_WRAP_NAMESPACE(x)    x
 #endif
+
+QT_END_NAMESPACE
 
 #endif // NUT_CONSTS_H

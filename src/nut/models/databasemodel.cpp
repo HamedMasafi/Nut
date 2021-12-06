@@ -24,7 +24,7 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 QMap<QString, DatabaseModel*> DatabaseModel::_models;
 
@@ -272,4 +272,4 @@ DatabaseModel operator |(const DatabaseModel &l, const DatabaseModel &r)
     return ret;
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

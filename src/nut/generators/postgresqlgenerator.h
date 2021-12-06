@@ -25,7 +25,7 @@
 
 #include <QtNut/abstractsqlgenerator.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class NUT_EXPORT PostgreSqlGenerator : public AbstractSqlGenerator
 {
@@ -50,6 +50,6 @@ protected:
     QString createConditionalPhrase(const PhraseData *d) const override;
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // POSTGRESQLGENERATOR_H

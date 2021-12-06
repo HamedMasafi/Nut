@@ -30,7 +30,7 @@
 #include "abstracttableset.h"
 #include "propertysignalmapper.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 /*
  * FIXME:
@@ -218,4 +218,4 @@ void TablePrivate::refreshModel()
 //        model = TableModel::findByClassName(q->metaObject()->className());
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

@@ -26,7 +26,7 @@
 
 #include <QtNut/fieldphrase.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 #define COMMON_OPERATORS_DECL(T) \
     AssignmentPhrase operator =(const T &other); \
@@ -119,6 +119,6 @@ public:
     ConditionalPhrase msec();
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // DATEPHRASE_H

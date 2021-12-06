@@ -29,7 +29,7 @@
 
 class QJsonObject;
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class TableModel;
 struct RelationModel;
@@ -76,6 +76,6 @@ public:
 DatabaseModel operator +(const DatabaseModel &l, const DatabaseModel &r);
 DatabaseModel operator |(const DatabaseModel &l, const DatabaseModel &r);
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // DATABASEMODEL_H

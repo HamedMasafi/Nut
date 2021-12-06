@@ -29,7 +29,7 @@
 #include <QtNut/tablemodel.h>
 #include <QtNut/phrase.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class Database;
 class AbstractTableSet;
@@ -101,6 +101,6 @@ private:
     friend class PropertySignalMapper;
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // TABLE_H

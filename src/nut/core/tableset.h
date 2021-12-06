@@ -35,7 +35,7 @@
 #include <QtNut/databasemodel.h>
 #include <QtNut/abstracttablesetdata.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 template<class T>
 class Query;
@@ -172,6 +172,6 @@ Q_OUTOFLINE_TEMPLATE void TableSet<T>::remove(RowList<T> t)
         remove(i);
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // TABLESET_H

@@ -1,6 +1,10 @@
 #ifndef NUT_CONFIG_H
 #define NUT_CONFIG_H
 
+#include <QtGlobal>
+
+QT_BEGIN_NAMESPACE
+
 #if defined(NUT_SHARED) || !defined(NUT_STATIC)
 #  ifdef NUT_STATIC
 #    error "Both NUT_SHARED and NUT_STATIC defined, please make up your mind"
@@ -16,5 +20,7 @@
 #else
 #  define NUT_EXPORT
 #endif
+
+QT_END_NAMESPACE
 
 #endif // NUT_CONFIG_H

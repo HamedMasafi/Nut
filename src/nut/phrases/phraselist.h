@@ -24,7 +24,7 @@
 #include <QtNut/nut_global.h>
 #include <QtNut/phrasedatalist.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class AbstractFieldPhrase;
 class NUT_EXPORT PhraseList
@@ -49,6 +49,6 @@ private:
     void incAllDataParents();
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // PHRASELIST_H

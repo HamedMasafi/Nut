@@ -49,7 +49,7 @@
 #   define __CHANGE_LOG_TABLE_NAME "__change_logs"
 #endif
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 qulonglong DatabasePrivate::lastId = 0;
 QMap<QString, DatabaseModel> DatabasePrivate::allTableMaps;
@@ -598,4 +598,4 @@ void Database::cleanUp()
         ts->clearChilds();
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

@@ -29,7 +29,7 @@
 #include <QtNut/nut_global.h>
 #include <QtNut/tableset.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class DatabaseModel;
 class DatabasePrivate;
@@ -94,6 +94,6 @@ private:
     friend class AbstractTableSet;
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif  // NUTDATABASE_H

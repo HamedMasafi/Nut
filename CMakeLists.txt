@@ -2,6 +2,8 @@
 
 cmake_minimum_required(VERSION 3.16)
 
+set(CMAKE_AUTOMOC ON)
+
 include(.cmake.conf)
 project(Nut
     VERSION "1.0"

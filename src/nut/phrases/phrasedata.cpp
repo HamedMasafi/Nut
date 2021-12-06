@@ -20,7 +20,7 @@
 
 #include "phrasedata.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 PhraseData::PhraseData()
     : className(""), fieldName(""), type(Field), operatorCond(NotAssign),
@@ -114,4 +114,4 @@ void PhraseData::cleanUp(PhraseData *d)
         cleanUp(d->right);
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

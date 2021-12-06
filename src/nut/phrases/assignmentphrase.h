@@ -24,7 +24,7 @@
 #include <QtNut/nut_global.h>
 #include <QtNut/assignmentphraselist.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class PhraseData;
 class AbstractFieldPhrase;
@@ -44,6 +44,6 @@ public:
 
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // ASSIGNMENTPHRASE_H

@@ -23,7 +23,7 @@
 #include "tablemodel.h"
 #include "nut_p.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 SqliteGenerator::SqliteGenerator(Database *parent) : AbstractSqlGenerator(parent)
 {
@@ -335,4 +335,4 @@ QVariant SqliteGenerator::unescapeValue(const QMetaType::Type &type, const QVari
     return AbstractSqlGenerator::unescapeValue(type, dbValue);
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

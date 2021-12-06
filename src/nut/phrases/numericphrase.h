@@ -5,7 +5,7 @@
 
 #include <QtNut/fieldphrase.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 #define SPECIALIZATION_NUMERIC_MEMBER(type, op, cond)                          \
     ConditionalPhrase operator op(const QVariant &other)                       \
@@ -83,6 +83,6 @@ SPECIALIZATION_NUMERIC_TYPE(quint64)
 SPECIALIZATION_NUMERIC_TYPE(qreal)
 SPECIALIZATION_NUMERIC_TYPE(float)
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // NUMERICPHRASE_H

@@ -22,7 +22,7 @@
 #include "assignmentphrase.h"
 #include "phrasedata.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 AssignmentPhrase::AssignmentPhrase(PhraseData *d) : data(d)
 {
@@ -60,4 +60,4 @@ AssignmentPhrase::~AssignmentPhrase()
         delete data;
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

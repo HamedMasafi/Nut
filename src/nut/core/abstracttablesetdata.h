@@ -25,7 +25,7 @@
 
 #include <QtNut/nut_global.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class Table;
 class Database;
@@ -49,6 +49,6 @@ public:
     QString childClassName;
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // NUT_ABSTRACTTABLESETDATA_H

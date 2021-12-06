@@ -44,7 +44,7 @@
 #include <QtNut/tablemodel.h>
 #include <QtNut/sqlmodel.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 struct NUT_EXPORT QueryData {
     QString sql;
@@ -735,6 +735,6 @@ Q_OUTOFLINE_TEMPLATE QString Query<T>::sqlCommand() const
 }
 
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // NUT_QUERY_H

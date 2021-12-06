@@ -29,7 +29,7 @@
 
 class SqlSerializer;
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class Table;
 struct FieldModel;
@@ -167,6 +167,6 @@ protected:
     QString dateTimePartName(const PhraseData::Condition &op) const;
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // NUT_ABSTRACTSQLGENERATOR_H

@@ -28,7 +28,7 @@
 
 class QJsonObject;
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class TableModel;
 struct NUT_EXPORT FieldModel{
@@ -133,6 +133,6 @@ private:
     QList<RelationModel*> _foreignKeys;
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // TABLEMODEL_H

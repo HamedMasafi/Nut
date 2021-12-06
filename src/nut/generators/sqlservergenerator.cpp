@@ -26,7 +26,7 @@
 #include <QtCore/QPoint>
 #include <QtCore/QRegularExpression>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 SqlServerGenerator::SqlServerGenerator(Database *parent)
     : AbstractSqlGenerator(parent)
@@ -279,4 +279,4 @@ QString SqlServerGenerator::createConditionalPhrase(const PhraseData *d) const
     return AbstractSqlGenerator::createConditionalPhrase(d);
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

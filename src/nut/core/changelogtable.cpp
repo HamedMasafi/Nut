@@ -20,7 +20,7 @@
 
 #include "changelogtable.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 ChangeLogTable::ChangeLogTable(QObject *tableSet) : Table(tableSet)
 {
@@ -28,4 +28,4 @@ ChangeLogTable::ChangeLogTable(QObject *tableSet) : Table(tableSet)
 
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

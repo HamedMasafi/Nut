@@ -27,7 +27,7 @@
 #include "sqlmodel.h"
 #include "query.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 SqlModelPrivate::SqlModelPrivate(SqlModel *parent) : q_ptr(parent)
       , renderer(nullptr)
@@ -123,4 +123,4 @@ Row<Table> SqlModel::at(const int &i) const
     return d->rows.at(i);
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

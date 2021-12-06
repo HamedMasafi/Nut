@@ -21,7 +21,7 @@
 #include "abstractfieldphrase.h"
 #include "phraselist.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 PhraseList::PhraseList() : isValid(false)
 {
@@ -91,4 +91,4 @@ PhraseList PhraseList::operator |(PhraseList &other) {
     return PhraseList(this, &other);
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

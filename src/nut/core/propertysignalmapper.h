@@ -26,7 +26,7 @@
 #include <QMetaMethod>
 #include <QMetaProperty>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class Table;
 class PropertySignalMapper
@@ -44,6 +44,6 @@ public:
     static QString changedProperty(QObject *obj, int senderSignalIndex);
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // PROPERTYSIGNALMAPPER_H

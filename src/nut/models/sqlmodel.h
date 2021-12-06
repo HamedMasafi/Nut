@@ -27,7 +27,7 @@
 
 #include <QtNut/nut_global.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class Database;
 class AbstractTableSet;
@@ -73,6 +73,6 @@ Q_OUTOFLINE_TEMPLATE void SqlModel::setTable(RowList<T> rows)
 }
 
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // SQLMODEL_H

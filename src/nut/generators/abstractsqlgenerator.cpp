@@ -33,7 +33,7 @@
 #include "sqlserializer.h"
 #include "nut_p.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 /*
  * Index:
@@ -1106,4 +1106,4 @@ void AbstractSqlGenerator::createInsertPhrase(const AssignmentPhraseList &ph, QS
     }
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

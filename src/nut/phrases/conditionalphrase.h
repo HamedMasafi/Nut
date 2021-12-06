@@ -23,7 +23,7 @@
 
 #include <QtNut/phrasedata.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class PhraseData;
 class AbstractFieldPhrase;
@@ -90,6 +90,6 @@ ConditionalPhrase NUT_EXPORT operator >(ConditionalPhrase &&l, ConditionalPhrase
 ConditionalPhrase NUT_EXPORT operator >=(ConditionalPhrase &&l, ConditionalPhrase &&r);
 
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // CONDITIONALPHRASE_H

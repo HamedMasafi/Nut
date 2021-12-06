@@ -21,7 +21,7 @@
 #include "propertysignalmapper.h"
 #include "table.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 QMap<QString, PropertySignalMapper::ClassData*> PropertySignalMapper::_data;
 
@@ -70,4 +70,4 @@ QString PropertySignalMapper::changedProperty(QObject *obj, int senderSignalInde
                 );
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

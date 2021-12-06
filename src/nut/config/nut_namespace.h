@@ -9,7 +9,7 @@
 #include <QtCore/QVariant>
 #include <QtCore/QMetaClassInfo>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 inline bool nutClassInfo(const QMetaClassInfo &classInfo,
                          QString &type, QString &name, QVariant &value)
@@ -133,6 +133,6 @@ inline bool nutClassInfoInt(const QMetaClassInfo &classInfo,
     }
 #endif
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // NUT_NAMESPACE_H

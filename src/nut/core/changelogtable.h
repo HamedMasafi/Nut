@@ -24,7 +24,7 @@
 #include <QtCore/qglobal.h>
 #include <QtNut/table.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class NUT_EXPORT ChangeLogTable : public Table
 {
@@ -41,7 +41,7 @@ public:
     explicit ChangeLogTable(QObject *parentTableSet = Q_NULLPTR);
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 Q_DECLARE_METATYPE(Nut::ChangeLogTable*)
 

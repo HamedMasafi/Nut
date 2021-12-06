@@ -28,7 +28,7 @@
 #include "nut_global.h"
 #include "nut_p.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 #define REL_LOCAL_COLUMN        QStringLiteral("localColumn")
 #define REL_LOCAL_PROPERTY      QStringLiteral("localProperty")
@@ -432,4 +432,4 @@ bool operator !=(const RelationModel &l, const RelationModel &r)
     return !(l == r);
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

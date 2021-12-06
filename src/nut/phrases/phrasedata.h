@@ -23,7 +23,7 @@
 
 #include <QtNut/nut_global.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class NUT_EXPORT PhraseData
 {
@@ -120,6 +120,6 @@ private:
     void cleanUp(PhraseData *d);
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // PHRASEDATA_H

@@ -21,7 +21,7 @@
 #include "abstractfieldphrase.h"
 #include <QDebug>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 AbstractFieldPhrase::AbstractFieldPhrase(PhraseData *d) : data(d)
 { }
@@ -136,4 +136,4 @@ AbstractFieldPhrase AbstractFieldPhrase::operator !()
     return f;
 }
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

@@ -20,7 +20,7 @@
 
 #include "query.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 /*!
   * \class Query
@@ -79,4 +79,4 @@ NUT_BEGIN_NAMESPACE
  * \endcode
  */
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE

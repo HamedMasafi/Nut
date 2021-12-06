@@ -18,6 +18,16 @@
 **
 **************************************************************************/
 
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the Nut API.  This header
+// file may change from version to version without notice, or even be removed.
+//
+// We mean it.
+//
+
 #ifndef DATABASE_P_H
 #define DATABASE_P_H
 
@@ -27,7 +37,7 @@
 #include <QtNut/database.h>
 #include <QtNut/databasemodel.h>
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 class ChangeLogTable;
 class NUT_EXPORT DatabasePrivate
@@ -71,6 +81,6 @@ public:
     QString errorMessage;
 };
 
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // DATABASE_P_H

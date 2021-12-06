@@ -34,7 +34,7 @@
 #include "sqlserializer.h"
 #include "nut_p.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
 MySqlGenerator::MySqlGenerator(Database *parent) : AbstractSqlGenerator(parent)
 {
@@ -367,4 +367,4 @@ QString MySqlGenerator::escaleFieldName(const QString &fieldName) const
 {
     return "`" + fieldName + "`";
 }
-NUT_END_NAMESPACE
+QT_END_NAMESPACE
