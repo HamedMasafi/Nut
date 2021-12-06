@@ -32,6 +32,7 @@ class SqlSerializer
 {
 public:
     SqlSerializer();
+    virtual ~SqlSerializer();
 
     bool readString(QString &text, QString &out) const;
 
@@ -51,8 +52,8 @@ public:
     QVariant deserialize(const QString &value, const QMetaType::Type &type) const;
     QString serialize(const QVariant &value) const;
 private:
-    virtual QString escapeString(const QString &str) const;
-    virtual QString unescapeString(const QString &str) const;
+    QString escapeString(const QString &str) const;
+    QString unescapeString(const QString &str) const;
 };
 
 NUT_END_NAMESPACE

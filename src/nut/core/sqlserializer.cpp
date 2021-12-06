@@ -64,6 +64,11 @@ SqlSerializer::SqlSerializer()
 
 }
 
+SqlSerializer::~SqlSerializer()
+{
+
+}
+
 QVariant SqlSerializer::fromString(const QString &value, const QMetaType::Type &type) const
 {
     switch (type) {
@@ -659,7 +664,7 @@ bool SqlSerializer::readString(QString &text, QString &out) const
     int end = -1;
 
     for (int i = 0; i < text.length(); ++i) {
-        if (text.at(i) == '"' && (i == 0 || text.at(i - 1) != QStringLiteral("\\"))) {
+        if (text.at(i) == QLatin1Char('"') && (i == 0 || text.at(i - 1) != QStringLiteral("\\"))) {
             if (start == -1)
                 start = i;
             else
