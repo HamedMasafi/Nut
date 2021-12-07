@@ -30,8 +30,8 @@ jobs:
             MAKEFLAGS: -j3
           - platform: windows-latest
             make: nmake
-            CXXFLAGS: /O1
             QMAKE_MSC_VER: 16.11.31911.196
+            cmake_build_args: --config Release
 
     runs-on: ${{ matrix.platform }}
     env:
@@ -66,5 +66,5 @@ jobs:
         if: startsWith(matrix.qt_version, '6.')
         run: |
           cmake . ${{ matrix.additional_arguments }}
-          cmake --build .
+          cmake --build . $${{ matrix.cmake_build_args }}
   
