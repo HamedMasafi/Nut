@@ -22,20 +22,20 @@ jobs:
             additional_arguments: -D QT_DEFAULT_MAJOR_VERSION=6
           - platform: ubuntu-20.04
             make: make
-            CXXFLAGS: -Wall -Wextra
+            #CXXFLAGS: -Wall -Wextra
             MAKEFLAGS: -j2
           - platform: macos-latest
             make: make
-            CXXFLAGS: -Wall -Wextra
+            #CXXFLAGS: -Wall -Wextra
             MAKEFLAGS: -j3
           - platform: windows-latest
             make: nmake
-            CXXFLAGS: /Wall /MP /Oz
+            CXXFLAGS: /Wall /MP /Od
             QMAKE_MSC_VER: 16.11.31911.196
 
     runs-on: ${{ matrix.platform }}
     env:
-      #CXXFLAGS: ${{ matrix.CXXFLAGS }}
+      CXXFLAGS: ${{ matrix.CXXFLAGS }}
       MAKEFLAGS: ${{ matrix.MAKEFLAGS }}
       QMAKE_MSC_VER: ${{ matrix.QMAKE_MSC_VER }}
       CMAKE_PREFIX_PATH: $Qt6_DIR/lib/cmake
