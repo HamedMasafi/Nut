@@ -30,7 +30,7 @@ jobs:
             MAKEFLAGS: -j3
           - platform: windows-latest
             make: nmake
-            CXXFLAGS: /Wall /MP /O1
+            CXXFLAGS: /Wall /MP4 /Od
             QMAKE_MSC_VER: 16.11.31911.196
 
     runs-on: ${{ matrix.platform }}
