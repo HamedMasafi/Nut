@@ -194,11 +194,14 @@ QString PostgreSqlGenerator::fieldType(FieldModel *field)
 
 QString PostgreSqlGenerator::diffField(FieldModel *oldField, FieldModel *newField)
 {
-    QString sql = QString();
+    if(!oldField && !newField)
+        return QString();
+
     if(oldField && newField)
         if(*oldField == *newField)
             return QString();
 
+    QString sql = QString();
     if(!newField){
         sql = QStringLiteral("DROP COLUMN ") + oldField->name;
     }else{
@@ -290,20 +293,20 @@ QVariant PostgreSqlGenerator::unescapeValue(const QMetaType::Type &type, const Q
         return AbstractSqlGenerator::unescapeValue(QMetaType::QPoint,
                                                dbValue.toString()
                                                    .replace(QStringLiteral("("),
-                                                            QStringLiteral(""))
+                                                            QLatin1String())
                                                    .replace(QStringLiteral(")"),
-                                                            QStringLiteral("")));
+                                                            QLatin1String()));
     if (type == QMetaType::QPointF)
         return AbstractSqlGenerator::unescapeValue(QMetaType::QPointF,
                                                dbValue.toString()
                                                    .replace(QStringLiteral("("),
-                                                            QStringLiteral(""))
+                                                            QLatin1String())
                                                    .replace(QStringLiteral(")"),
-                                                            QStringLiteral("")));
+                                                            QLatin1String()));
     if (type == QMetaType::QStringList)
         return dbValue.toString()
-            .replace(QStringLiteral("{"), QStringLiteral(""))
-            .replace(QStringLiteral("}"), QStringLiteral(""))
+            .replace(QStringLiteral("{"), QLatin1String())
+            .replace(QStringLiteral("}"), QLatin1String())
             .split(QStringLiteral(","));
 
 #ifdef QT_GUI_LIB

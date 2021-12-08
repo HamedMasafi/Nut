@@ -123,6 +123,9 @@ QStringList SqliteGenerator::diffTable(TableModel *oldTable, TableModel *newTabl
 {
     QStringList ret;
 
+    if (!oldTable && !newTable)
+        return ret;
+
     if (oldTable && newTable)
         if (*oldTable == *newTable)
             return ret;
@@ -241,9 +244,8 @@ QString SqliteGenerator::createConditionalPhrase(const PhraseData *d) const
             int i = d->operand.toInt();
             return QStringLiteral("DATE(%1,'%2 %3')")
                 .arg(createConditionalPhrase(d->left),
-                     (i < 0 ? QStringLiteral("") : QStringLiteral("+")) + QString::number(i),
+                     (i < 0 ? QLatin1String() : QStringLiteral("+")) + QString::number(i),
                      dateTimePartName(op));
-            break;
         }
         case PhraseData::AddHours:
         case PhraseData::AddMinutes:
@@ -251,9 +253,8 @@ QString SqliteGenerator::createConditionalPhrase(const PhraseData *d) const
             int i = d->operand.toInt();
             return QStringLiteral("TIME(%1,'%2 %3')")
                 .arg(createConditionalPhrase(d->left),
-                     (i < 0 ? QStringLiteral("") : QStringLiteral("+")) + QString::number(i),
+                     (i < 0 ? QLatin1String() : QStringLiteral("+")) + QString::number(i),
                      dateTimePartName(op));
-            break;
         }
         case PhraseData::AddYearsDateTime:
         case PhraseData::AddMonthsDateTime:
@@ -264,7 +265,7 @@ QString SqliteGenerator::createConditionalPhrase(const PhraseData *d) const
             int i = d->operand.toInt();
             return QStringLiteral("DATETIME(%1,'%2 %3')")
                     .arg(createConditionalPhrase(d->left),
-                     (i < 0 ? QStringLiteral("") : QStringLiteral("+")) + QString::number(i),
+                     (i < 0 ? QLatin1String() : QStringLiteral("+")) + QString::number(i),
                          dateTimePartName(op));
             break;
         }

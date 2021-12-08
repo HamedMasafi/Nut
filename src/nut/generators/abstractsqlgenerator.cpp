@@ -202,11 +202,14 @@ QStringList AbstractSqlGenerator::diffDatabase(const DatabaseModel &lastModel,
 
 QString AbstractSqlGenerator::diffField(FieldModel *oldField, FieldModel *newField)
 {
-    QString sql = QString();
+    if (!oldField && !newField)
+        return QString();
+
     if (oldField && newField)
         if (*oldField == *newField)
-            return sql;
+            return QString();
 
+    QString sql = QString();
     if (!newField) {
         sql = QStringLiteral("DROP COLUMN ") + oldField->name;
     } else {
@@ -498,7 +501,7 @@ QString AbstractSqlGenerator::updateRecord(Table *t, QString tableName)
     QString key = model->primaryKey();
     QStringList values;
 
-    for (auto &f : t->changedProperties())
+    for (const auto &f : t->changedProperties())
         if (f != key)
             values.append(f + QStringLiteral("=")
                           + escapeValue(t->property(f.toLatin1().data())));
@@ -607,7 +610,7 @@ QString AbstractSqlGenerator::selectCommand(const QString &tableName,
             tables << rel->masterTable << rel->slaveTable;
 
         selectText = QString();
-        for (auto &t: tables) {
+        for (auto &t: qAsConst(tables)) {
             if (!selectText.isEmpty())
                 selectText.append(QStringLiteral(", "));
             selectText.append(recordsPhrase(t));
@@ -693,7 +696,7 @@ QString AbstractSqlGenerator::updateCommand(const QString &tableName,
 {
     QString assigmentTexts = QString();
     for (auto &d: assigments.data) {
-        if (assigmentTexts != QStringLiteral(""))
+        if (assigmentTexts != QLatin1String())
             assigmentTexts.append(QStringLiteral(", "));
 
         assigmentTexts.append(createConditionalPhrase(d));
@@ -747,7 +750,7 @@ void AbstractSqlGenerator::removeTableNames(QString &command)
     for (auto &m: _database->model())
         command = command.replace(QStringLiteral("[")
                                       + m->className()
-                                      + QStringLiteral("]."), QStringLiteral(""));
+                                      + QStringLiteral("]."), QLatin1String());
 }
 
 QString AbstractSqlGenerator::dateTimePartName(const PhraseData::Condition &op) const

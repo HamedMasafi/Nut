@@ -112,7 +112,7 @@ void Table::clear()
     d->changedProperties.clear();
 }
 
-QSet<QString> Table::changedProperties() const
+const QSet<QString> &Table::changedProperties() const
 {
     //Q_D(const Table);
     return d->changedProperties;
@@ -170,7 +170,7 @@ void Table::setParentTableSet(AbstractTableSet *parent)
 AbstractTableSet *Table::childTableSet(const QString &name) const
 {
     //Q_D(const Table);
-    for (auto &t: d->childTableSets)
+    for (auto &t: qAsConst(d->childTableSets))
         if (t->childClassName() == name)
             return t;
     return Q_NULLPTR;

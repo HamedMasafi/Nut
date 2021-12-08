@@ -398,13 +398,13 @@ QString SqlSerializer::toString(const QVariant &value) const
     case QMetaType::QVariantMap: {
         QString ret;
         QVariantMap map = value.toMap();
-        for (auto k: map.keys()) {
+        for (auto i = map.begin(); i != map.end(); ++i) {
             if (!ret.isEmpty())
                 ret.append(QStringLiteral("\n"));
-            QVariant v = map.value(k);
+            QVariant v = map.value(i.key());
             QString str = toString(v);
             ret.append(QStringLiteral("\"%1\" \"%2\"")
-                           .arg(escapeString(k), escapeString(str)));
+                           .arg(escapeString(i.key()), escapeString(str)));
 
         }
         return ret;

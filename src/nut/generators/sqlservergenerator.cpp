@@ -135,11 +135,14 @@ QString SqlServerGenerator::fieldType(FieldModel *field)
 
 QString SqlServerGenerator::diffField(FieldModel *oldField, FieldModel *newField)
 {
-    QString sql = QString();
+    if (!oldField && !newField)
+        return QString();
+
     if (oldField && newField)
         if (*oldField == *newField)
-            return sql;
+            return QString();
 
+    QString sql = QString();
     if (!newField) {
         sql = QStringLiteral("DROP COLUMN ") + oldField->name;
     } else {

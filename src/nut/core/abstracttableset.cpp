@@ -42,7 +42,7 @@ AbstractTableSet::AbstractTableSet(Table *parent) : QObject(parent),
 
 AbstractTableSet::~AbstractTableSet()
 {
-    for (auto t: data->childs)
+    for (auto &t: data->childs)
         if (t)
             t->setParentTableSet(nullptr);
 }

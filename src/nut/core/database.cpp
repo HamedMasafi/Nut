@@ -254,11 +254,24 @@ bool DatabasePrivate::getCurrectSchema()
         QMetaProperty tableProperty = q->metaObject()->property(i);
         int typeId = QMetaType::type(tableProperty.typeName());
 
-        if (tables.values().contains(QString::fromUtf8(tableProperty.name()))
+        if ((unsigned) typeId >= QVariant::UserType) {
+            bool contains{false};
+            auto tableName = QString::fromUtf8(tableProperty.name());
+            for (auto i = tables.begin(); i != tables.end(); ++i)
+                if (i.value() == tableName)
+                    contains = true;
+
+            if (contains) {
+                TableModel *sch = new TableModel(typeId, tableName);
+                currentModel.append(sch);
+            }
+        }
+
+        /*if (tables.values().contains(QString::fromUtf8(tableProperty.name()))
             && (unsigned)typeId >= QVariant::UserType) {
             TableModel *sch = new TableModel(typeId, QString::fromUtf8(tableProperty.name()));
             currentModel.append(sch);
-        }
+        }*/
     }
 
     for (auto &table: currentModel) {
@@ -587,7 +600,7 @@ int Database::saveChanges(bool cleanUp)
     }
 
     int rowsAffected = 0;
-    for (auto &ts: d->tableSets)
+    for (const auto &ts: qAsConst(d->tableSets))
         rowsAffected += ts->save(this, cleanUp);
 
     return rowsAffected;
@@ -596,7 +609,7 @@ int Database::saveChanges(bool cleanUp)
 void Database::cleanUp()
 {
     Q_D(Database);
-    for (auto &ts: d->tableSets)
+    for (const auto &ts: qAsConst(d->tableSets))
         ts->clearChilds();
 }
 

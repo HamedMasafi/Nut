@@ -68,7 +68,7 @@ public:
 
     AbstractTableSet *childTableSet(const QString &name) const;
 
-    QSet<QString> changedProperties() const;
+    const QSet<QString> &changedProperties() const;
 
     bool setParentTable(Table *master, TableModel *masterModel, TableModel *model);
 Q_SIGNALS:
