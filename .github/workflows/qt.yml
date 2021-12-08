@@ -60,7 +60,7 @@ jobs:
       - name: Build with QMake
         working-directory: build-qmake
         run: |
-          qmake ../..nut.pro
+          qmake ../../nut.pro
           ${{ matrix.make }} qmake_all
           ${{ matrix.make }}
 
