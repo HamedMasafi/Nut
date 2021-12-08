@@ -58,6 +58,7 @@ jobs:
           uwp: false
           
       - name: Build with QMake
+        working-directory: build-qmake
         run: |
           qmake nut.pro
           ${{ matrix.make }} qmake_all
@@ -65,7 +66,13 @@ jobs:
 
       - name: Build with CMake
         if: startsWith(matrix.qt_version, '6.')
+        working-directory: build-cmake
         run: |
           cmake . ${{ matrix.additional_arguments }}  ${{ matrix.cmake_params }}
           cmake --build .
   
+      - name: Run tests
+        working-directory: build-qmake
+        run: |
+          ${{ matrix.make }} all
+          ${{ matrix.make }} run-tests

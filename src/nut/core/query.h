@@ -402,7 +402,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
                     bool ok = row->metaObject()->invokeMethod(row.data(),
                                                               setterName.toStdString().c_str(),
                                                               Qt::DirectConnection,
-                                                              Q_ARG(Row<Table>,
+                                                              Q_ARG(Nut::Row<Nut::Table>,
                                                                     levels[master].lastRow));
 
                     if (Q_UNLIKELY(!ok))

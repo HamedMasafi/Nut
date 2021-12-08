@@ -60,7 +60,8 @@ void BasicTest::createUser()
     user->setUsername(QStringLiteral("admin"));
     user->setPassword(QStringLiteral("123456"));
     db.users()->append(user);
-    db.saveChanges();
+    QTEST_ASSERT(db.saveChanges() != 0);
+    QTEST_ASSERT(user->id() != 0);
 }
 
 void BasicTest::createPost()
