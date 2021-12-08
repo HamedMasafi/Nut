@@ -87,7 +87,7 @@ void BasicTest::createPost()
         newPost->scores()->append(score);
     }
 
-    db.saveChanges();
+    QTEST_ASSERT(db.saveChanges() != 0);
 
     postId = newPost->id();
 
@@ -116,7 +116,7 @@ void BasicTest::createPost2()
         comment->setPostId(postId);
         db.comments()->append(comment);
     }
-    db.saveChanges();
+    QTEST_ASSERT(db.saveChanges() != 0);
 
     QVERIFY(postId != 0);
 }
@@ -249,6 +249,7 @@ void BasicTest::testDate()
     auto newPost = Nut::create<Post>();
     newPost->setTitle(QStringLiteral("post title"));
     newPost->setSaveDate(d);
+    newPost->setPublic(true);
 
     db.posts()->append(newPost);
 
