@@ -31,7 +31,7 @@ jobs:
           - platform: windows-latest
             make: nmake
             QMAKE_MSC_VER: 16.11.31911.196
-            CMAKE_CXX_FLAGS_DEBUG: /g
+            cmake_params: -D CMAKE_CXX_FLAGS_DEBUG="/g"
 
     runs-on: ${{ matrix.platform }}
     env:
@@ -66,6 +66,6 @@ jobs:
       - name: Build with CMake
         if: startsWith(matrix.qt_version, '6.')
         run: |
-          cmake . ${{ matrix.additional_arguments }}
+          cmake . ${{ matrix.additional_arguments }}  ${{ matrix.cmake_params }}
           cmake --build .
   
