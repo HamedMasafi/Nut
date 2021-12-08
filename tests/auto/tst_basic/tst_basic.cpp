@@ -68,7 +68,7 @@ void BasicTest::createPost()
 {
     TIC();
     auto newPost = Nut::create<Post>();
-    newPost->setTitle("post title");
+    newPost->setTitle(QStringLiteral("post title"));
     newPost->setSaveDate(QDateTime::currentDateTime());
     newPost->setPublic(false);
 

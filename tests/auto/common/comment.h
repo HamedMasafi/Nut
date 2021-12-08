@@ -4,13 +4,13 @@
 #include <QtCore/qglobal.h>
 #include <QtCore/QDateTime>
 #include <QtNut/table.h>
+#include "user.h"
+#include "post.h"
 
 #ifdef NUT_NAMESPACE
 using namespace NUT_NAMESPACE;
 #endif
 
-class Post;
-class User;
 class Comment : public Table
 {
     Q_OBJECT
