@@ -31,6 +31,7 @@ jobs:
           - platform: windows-latest
             make: nmake
             QMAKE_MSC_VER: 16.11.31911.196
+            CMAKE_CXX_FLAGS_DEBUG: /g
             cmake_build_args: --config Release
 
     runs-on: ${{ matrix.platform }}
@@ -39,7 +40,8 @@ jobs:
       MAKEFLAGS: ${{ matrix.MAKEFLAGS }}
       QMAKE_MSC_VER: ${{ matrix.QMAKE_MSC_VER }}
       CMAKE_PREFIX_PATH: $Qt6_DIR/lib/cmake
-
+      CMAKE_CXX_FLAGS_DEBUG: ${{ CMAKE_CXX_FLAGS_DEBUG }}
+      
     steps:
       - name: Clone repo
         uses: actions/checkout@v2.3.4
