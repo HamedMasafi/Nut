@@ -60,7 +60,7 @@ jobs:
       - name: Build with QMake
         working-directory: build-qmake
         run: |
-          qmake ../../nut.pro
+          qmake ../nut.pro
           ${{ matrix.make }} qmake_all
           ${{ matrix.make }}
 
@@ -68,7 +68,7 @@ jobs:
         if: startsWith(matrix.qt_version, '6.')
         working-directory: build-cmake
         run: |
-          cmake ../.. ${{ matrix.additional_arguments }}  ${{ matrix.cmake_params }}
+          cmake .. ${{ matrix.additional_arguments }}  ${{ matrix.cmake_params }}
           cmake --build .
   
       - name: Run tests
