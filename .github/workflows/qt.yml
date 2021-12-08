@@ -40,7 +40,7 @@ jobs:
       MAKEFLAGS: ${{ matrix.MAKEFLAGS }}
       QMAKE_MSC_VER: ${{ matrix.QMAKE_MSC_VER }}
       CMAKE_PREFIX_PATH: $Qt6_DIR/lib/cmake
-      CMAKE_CXX_FLAGS_DEBUG: ${{ CMAKE_CXX_FLAGS_DEBUG }}
+      CMAKE_CXX_FLAGS_DEBUG: ${{ matrix.CMAKE_CXX_FLAGS_DEBUG }}
       
     steps:
       - name: Clone repo
