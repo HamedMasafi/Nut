@@ -24,14 +24,17 @@ jobs:
             make: make
             #CXXFLAGS: -Wall -Wextra
             MAKEFLAGS: -j2
+            run_tests: true
           - platform: macos-latest
             make: make
             #CXXFLAGS: -Wall -Wextra
             MAKEFLAGS: -j3
+            run_tests: false
           - platform: windows-latest
             make: nmake
             QMAKE_MSC_VER: 16.11.31911.196
             cmake_params: -D CMAKE_CXX_FLAGS_DEBUG="/g"
+            run_tests: false
 
     runs-on: ${{ matrix.platform }}
     env:
@@ -74,7 +77,9 @@ jobs:
           cmake --build .
   
       - name: Run tests
+        if: ${{ matrix.run_tests }}
         run: |
           cd build-qmake
+          sudo systemctl start mysql.service
           ${{ matrix.make }} all
           ${{ matrix.make }} run-tests
