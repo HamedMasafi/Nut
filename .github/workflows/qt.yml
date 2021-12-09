@@ -41,7 +41,7 @@ jobs:
             tests: [sqlite, posgtresql]
           - platform: windows-latest
             qt_version: 5.15.2
-            tests: [mysql, mssql]
+            tests: [mssql]
 
     runs-on: ${{ matrix.platform }}
     env:
@@ -116,8 +116,8 @@ jobs:
       - name: Run tests with mysql
         if: contains(matrix.tests, 'mysql')
         run: |
-          del tests\auto\common\test_params.h
-          copy tests\auto\common\test_params_mysql.h tests\auto\common\test_params.h 
+          rm tests\auto\common\test_params.h
+          cp tests\auto\common\test_params_mysql.h tests\auto\common\test_params.h 
           cd build-qmake
           ${{ matrix.make }} all
           ${{ matrix.make }} run-tests
@@ -130,3 +130,21 @@ jobs:
           cd build-qmake
           ${{ matrix.make }} all
           ${{ matrix.make }} run-tests
+
+  deploy:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+          path: source
+      - uses: actions/setup-python@v1
+      - uses: Skycoder42/action-deploy-qt@master
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          version: 5.15.2
+          host: ${{secrets.SSHFS_HOST}}
+          key: ${{secrets.SSHFS_KEY}}
+          port: ${{secrets.SSHFS_PORT}} 
