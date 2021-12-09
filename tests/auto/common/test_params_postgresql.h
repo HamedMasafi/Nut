@@ -1,4 +1,4 @@
 #define DRIVER QStringLiteral("QPSQL")
 #define HOST QStringLiteral("localhost")
-#define USERNAME QString()
-#define PASSWORD QString()
+#define USERNAME QStringLiteral("postgres")
+#define PASSWORD QStringLiteral("postgres")

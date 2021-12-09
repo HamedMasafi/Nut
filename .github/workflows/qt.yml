@@ -37,7 +37,7 @@ jobs:
             run_tests: false
           - platform: ubuntu-20.04
             qt_version: 5.15.2
-            tests: [sqlite, mysql, posgtresql]
+            tests: [sqlite, posgtresql]
 
     runs-on: ${{ matrix.platform }}
     env:
@@ -88,6 +88,10 @@ jobs:
           ${{ matrix.make }} all
           ${{ matrix.make }} run-tests
           
+      - name: Seutp postgres
+        if: contains(matrix.tests, 'posgtresql')
+        uses: ikalnytskyi/action-setup-postgres@v1
+        
       - name: Run tests with posgtresql
         if: contains(matrix.tests, 'posgtresql')
         run: |
