@@ -20,6 +20,7 @@ jobs:
         include:
           - qt_version: 6.2.0
             additional_arguments: -D QT_DEFAULT_MAJOR_VERSION=6
+            build_cmake: true
           - platform: ubuntu-20.04
             make: make
             #CXXFLAGS: -Wall -Wextra
@@ -97,10 +98,11 @@ jobs:
         
       - name: Setup sql server
         if: contains(matrix.tests, 'mssql')
-        uses: 280780363/sqlserver-action@v1.0
+        uses: potatoqualitee/mssqlsuite@v1
         with:
-          accept eula: Y
-          sa password: NUT_SA_PASS
+          install: sqlengine
+          sa-password: NUT_SA_PASS
+          show-log: true
           
       - name: Run tests with posgtresql
         if: contains(matrix.tests, 'posgtresql')
