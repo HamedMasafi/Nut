@@ -116,9 +116,8 @@ jobs:
       - name: Run tests with mysql
         if: contains(matrix.tests, 'mysql')
         run: |
-          rm tests/auto/common/test_params.h
-          cp tests/auto/common/test_params_mysql.h tests/auto/common/test_params.h 
-          sudo systemctl start mysql.service
+          Del tests\auto\common\test_params.h
+          Xcopy tests\auto\common\test_params_mysql.h tests\auto\common\test_params.h 
           cd build-qmake
           ${{ matrix.make }} all
           ${{ matrix.make }} run-tests
