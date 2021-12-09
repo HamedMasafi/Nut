@@ -116,8 +116,8 @@ jobs:
       - name: Run tests with mysql
         if: contains(matrix.tests, 'mysql')
         run: |
-          Del tests\auto\common\test_params.h
-          Xcopy tests\auto\common\test_params_mysql.h tests\auto\common\test_params.h 
+          del tests\auto\common\test_params.h
+          copy tests\auto\common\test_params_mysql.h tests\auto\common\test_params.h 
           cd build-qmake
           ${{ matrix.make }} all
           ${{ matrix.make }} run-tests
