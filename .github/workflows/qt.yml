@@ -82,15 +82,6 @@ jobs:
           cd build-cmake
           cmake .. ${{ matrix.additional_arguments }}  ${{ matrix.cmake_params }}
           cmake --build .
-  
-      - name: Run tests with sqlite
-        if: contains(matrix.tests, 'sqlite')
-        run: |
-          rm tests/auto/common/test_params.h
-          cp tests/auto/common/test_params_sqlite.h tests/auto/common/test_params.h 
-          cd build-qmake
-          ${{ matrix.make }} all
-          ${{ matrix.make }} run-tests
           
       - name: Seutp postgres
         if: contains(matrix.tests, 'posgtresql')
@@ -104,8 +95,19 @@ jobs:
           sa-password: NUT_sa_PASS_1_???
           show-log: true
           
+      - name: Run tests with sqlite
+        if: contains(matrix.tests, 'sqlite')
+        continue-on-error: true
+        run: |
+          rm tests/auto/common/test_params.h
+          cp tests/auto/common/test_params_sqlite.h tests/auto/common/test_params.h 
+          cd build-qmake
+          ${{ matrix.make }} all
+          ${{ matrix.make }} run-tests
+          
       - name: Run tests with posgtresql
         if: contains(matrix.tests, 'posgtresql')
+        continue-on-error: true
         run: |
           rm tests/auto/common/test_params.h
           cp tests/auto/common/test_params_postgresql.h tests/auto/common/test_params.h 
@@ -115,6 +117,7 @@ jobs:
           
       - name: Run tests with mysql
         if: contains(matrix.tests, 'mysql')
+        continue-on-error: true
         run: |
           rm tests\auto\common\test_params.h
           cp tests\auto\common\test_params_mysql.h tests\auto\common\test_params.h 
@@ -124,6 +127,7 @@ jobs:
           
       - name: Run tests with sql server
         if: contains(matrix.tests, 'mssql')
+        continue-on-error: true
         run: |
           rm tests/auto/common/test_params.h
           cp tests/auto/common/test_params_mssql.h tests/auto/common/test_params.h 
