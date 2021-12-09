@@ -45,7 +45,7 @@ void DataTypesTest::initTestCase()
     f_real = 1.2;
     f_float = 2.3f;
 
-    f_url = QUrl("http://google.com/search?q=nut");
+    f_url = QUrl(QStringLiteral("http://google.com/search?q=nut"));
 
     f_time = QTime::currentTime();
     f_time.setHMS(f_time.hour(), f_time.minute(), f_time.second());
@@ -58,17 +58,17 @@ void DataTypesTest::initTestCase()
     f_jsonDoc = QJsonDocument::fromJson("{\"a\": 1}");
     f_jsonObj = f_jsonDoc.object();
     f_jsonArray.insert(0, QJsonValue(1));
-    f_jsonArray.insert(1, QJsonValue("Hi"));
+    f_jsonArray.insert(1, QJsonValue(QString::fromUtf8("Hi")));
     f_jsonArray.insert(2, QJsonValue(true));
 
     f_jsonValue = QJsonValue(true);
 
-    f_stringList.append("One");
-    f_stringList.append("Two");
-    f_stringList.append("Three");
-    f_string = "this is \n sample ' unescapped \r\n text";
+    f_stringList.append(QStringLiteral("One"));
+    f_stringList.append(QStringLiteral("Two"));
+    f_stringList.append(QStringLiteral("Three"));
+    f_string = QStringLiteral("this is \n sample ' unescapped \r\n text");
 
-    f_qchar = QChar('z');
+    f_qchar = QLatin1Char('z');
 
 #ifdef QT_GUI_LIB
     f_point = QPoint(1, 2);

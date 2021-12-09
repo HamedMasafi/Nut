@@ -57,6 +57,7 @@ QT += nut
 CONFIG += testcase
 
 DEFINES += NUT_PATH=\\\"$$PWD/../../\\\"
+DEFINES += NUT_PRINT_DEBUG_INFO
 
 runtarget.target = run-tests
 runtarget.CONFIG = recursive

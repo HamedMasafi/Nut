@@ -161,7 +161,7 @@ void BasicTest::selectPosts()
 
     auto posts = q.toList();
     post = posts.at(0);
-    post->setBody(QStringLiteral(""));
+    post->setBody(QLatin1String());
 
     PRINT(posts.length());
     PRINT(posts.at(0)->comments()->length());

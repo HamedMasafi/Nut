@@ -346,6 +346,17 @@ QVariant PostgreSqlGenerator::unescapeValue(const QMetaType::Type &type, const Q
     return AbstractSqlGenerator::unescapeValue(type, dbValue);
 }
 
+void PostgreSqlGenerator::appendSkipTake(QString &sql, int skip, int take)
+{
+    if (take > 0 && skip > 0) {
+        sql.append(QStringLiteral(" LIMIT %1 OFFSET %2")
+                       .arg(take)
+                       .arg(skip));
+    } else if (take > 0) {
+        sql.append(QStringLiteral(" LIMIT %1").arg(take));
+    }
+}
+
 QString PostgreSqlGenerator::createConditionalPhrase(const PhraseData *d) const
 {
     if (!d)

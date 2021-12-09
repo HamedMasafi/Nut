@@ -44,6 +44,12 @@
 #include <QtNut/tablemodel.h>
 #include <QtNut/sqlmodel.h>
 
+#ifdef NUT_PRINT_DEBUG_INFO
+#   define printSql(sql) qDebug().noquote() << "[Nut][" << __FUNCTION__ << "] sql=" << sql;
+#else
+#   define printSql(sql)
+#endif
+
 QT_BEGIN_NAMESPACE
 
 NUT_BEGIN_NAMESPACE
@@ -166,6 +172,7 @@ Q_OUTOFLINE_TEMPLATE QList<O> Query<T>::select(const std::function<O (const QSql
                                                         d->skip,
                                                         d->take);
 
+    printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
 
     while (q.next()) {
@@ -238,6 +245,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
                 d->tableName, d->fieldPhrase, d->wherePhrase, d->orderPhrase,
                 d->relations, d->skip, count);
 
+    printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
     if (q.lastError().isValid()) {
         qDebug() << q.lastError().text();
@@ -438,6 +446,7 @@ Q_OUTOFLINE_TEMPLATE QList<F> Query<T>::select(const FieldPhrase<F> f)
                 d->relations,
                 d->skip, d->take);
 
+    printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
 
     while (q.next()) {
@@ -473,6 +482,7 @@ Q_OUTOFLINE_TEMPLATE int Query<T>::count()
                 QStringLiteral("*"),
                 d->wherePhrase,
                 d->relations);
+    printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
 
     if (q.next())
@@ -491,6 +501,7 @@ Q_OUTOFLINE_TEMPLATE QVariant Query<T>::max(const FieldPhrase<int> &f)
                 AbstractSqlGenerator::Max, f.data->toString(),
                 d->wherePhrase,
                 d->relations);
+    printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
 
     if (q.next())
@@ -509,6 +520,7 @@ Q_OUTOFLINE_TEMPLATE QVariant Query<T>::min(const FieldPhrase<int> &f)
                 AbstractSqlGenerator::Min, f.data->toString(),
                 d->wherePhrase,
                 d->relations);
+    printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
 
     if (q.next())
@@ -527,6 +539,7 @@ Q_OUTOFLINE_TEMPLATE QVariant Query<T>::sum(const FieldPhrase<int> &f)
                 AbstractSqlGenerator::Sum, f.data->toString(),
                 d->wherePhrase,
                 d->relations);
+    printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
 
     if (q.next())
@@ -545,6 +558,7 @@ Q_OUTOFLINE_TEMPLATE QVariant Query<T>::average(const FieldPhrase<int> &f)
                 AbstractSqlGenerator::Average, f.data->toString(),
                 d->wherePhrase,
                 d->relations);
+    printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
 
     if (q.next())
@@ -558,6 +572,7 @@ Q_OUTOFLINE_TEMPLATE QVariant Query<T>::insert(const AssignmentPhraseList &p)
     //Q_D(AbstractQuery);
     d->sql = d->database->sqlGenerator()
             ->insertCommand(d->tableName, p);
+    printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
 
    return q.lastInsertId();
@@ -652,7 +667,7 @@ Q_OUTOFLINE_TEMPLATE int Query<T>::update(const AssignmentPhraseList &ph)
                 d->tableName,
                 ph,
                 d->wherePhrase);
-
+    printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
 
     return q.numRowsAffected();
@@ -665,6 +680,7 @@ Q_OUTOFLINE_TEMPLATE int Query<T>::remove()
 
     d->sql = d->database->sqlGenerator()->deleteCommand(
                 d->tableName, d->wherePhrase);
+    printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
 
     return q.numRowsAffected();
@@ -688,6 +704,7 @@ Q_OUTOFLINE_TEMPLATE void Query<T>::toModel(QSqlQueryModel *model)
                 d->fieldPhrase,
                 d->wherePhrase, d->orderPhrase, d->relations,
                 d->skip, d->take);
+    printSql(d->sql);
 
     DatabaseModel dbModel = d->database->model();
     model->setQuery(d->sql, d->database->database());
@@ -725,6 +742,8 @@ Q_OUTOFLINE_TEMPLATE void Query<T>::toModel(SqlModel *model)
                 d->fieldPhrase,
                 d->wherePhrase, d->orderPhrase, d->relations,
                 d->skip, d->take);
+
+    printSql(d->sql);
 
     model->setTable(toList());
 }
