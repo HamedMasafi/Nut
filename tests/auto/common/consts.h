@@ -12,6 +12,9 @@
     .arg(timer.elapsed() / 1000.) \
     .arg(QString::fromUtf8(__func__))
 
+
+#define DATABASE QStringLiteral("nut_test_%1_db") \
+.arg(QString::fromUtf8(metaObject()->className())).toLower()
 #include "test_params.h"
 
 /*
@@ -21,8 +24,6 @@
 #define PASSWORD QStringLiteral("lDexDJGvQwx20sfgtsetDSupmn9")
 */
 
-#define DATABASE QStringLiteral("nut_test_%1_db") \
-    .arg(QString::fromUtf8(metaObject()->className())).toLower()
 
 #ifdef Q_OS_LINUX
 #   define OS "Linux"

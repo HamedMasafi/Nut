@@ -38,6 +38,9 @@ jobs:
           - platform: ubuntu-20.04
             qt_version: 5.15.2
             tests: [sqlite, posgtresql]
+          - platform: windows-latest
+            qt_version: 5.15.2
+            tests: [mysql, mssql]
 
     runs-on: ${{ matrix.platform }}
     env:
@@ -92,6 +95,13 @@ jobs:
         if: contains(matrix.tests, 'posgtresql')
         uses: ikalnytskyi/action-setup-postgres@v1
         
+      - name: Setup sql server
+        if: contains(matrix.tests, 'mssql')
+        uses: 280780363/sqlserver-action@v1.0
+        with:
+          accept eula: Y
+          sa password: NUT_SA_PASS
+          
       - name: Run tests with posgtresql
         if: contains(matrix.tests, 'posgtresql')
         run: |
@@ -107,6 +117,15 @@ jobs:
           rm tests/auto/common/test_params.h
           cp tests/auto/common/test_params_mysql.h tests/auto/common/test_params.h 
           sudo systemctl start mysql.service
+          cd build-qmake
+          ${{ matrix.make }} all
+          ${{ matrix.make }} run-tests
+          
+      - name: Run tests with sql server
+        if: contains(matrix.tests, 'mssql')
+        run: |
+          rm tests/auto/common/test_params.h
+          cp tests/auto/common/test_params_mssql.h tests/auto/common/test_params.h 
           cd build-qmake
           ${{ matrix.make }} all
           ${{ matrix.make }} run-tests
