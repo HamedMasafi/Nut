@@ -101,7 +101,7 @@ jobs:
         uses: potatoqualitee/mssqlsuite@v1
         with:
           install: sqlengine
-          sa-password: NUT_SA_PASS
+          sa-password: NUT_sa_PASS_1_???
           show-log: true
           
       - name: Run tests with posgtresql
