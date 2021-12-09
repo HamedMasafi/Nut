@@ -42,12 +42,10 @@ public:
 
     QString diffField(FieldModel *oldField, FieldModel *newField) override;
 
-    // SqlGeneratorBase interface
-public:
     QString escapeValue(const QVariant &v) const override;
     QVariant unescapeValue(const QMetaType::Type &type, const QVariant &dbValue) override;
+    void appendSkipTake(QString &sql, int skip = -1, int take = -1) override;
 
-    // SqlGeneratorBase interface
 protected:
     QString createConditionalPhrase(const PhraseData *d) const override;
 };
