@@ -35,7 +35,7 @@ jobs:
             QMAKE_MSC_VER: 16.11.31911.196
             cmake_params: -D CMAKE_CXX_FLAGS_DEBUG="/g"
             run_tests: false
-          - platform: ubuntu-latest
+          - platform: ubuntu-20.04
             qt_version: 5.15.2
             tests: [sqlite, mysql, posgtresql]
 
