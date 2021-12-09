@@ -36,7 +36,7 @@ jobs:
             cmake_params: -D CMAKE_CXX_FLAGS_DEBUG="/g"
             run_tests: false
           - platform: ubuntu-latest
-            qt_version: 5.15
+            qt_version: 5.15.2
             tests: [sqlite, mysql, posgtresql]
 
     runs-on: ${{ matrix.platform }}
