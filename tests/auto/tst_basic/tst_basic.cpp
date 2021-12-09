@@ -141,11 +141,11 @@ void BasicTest::updatePostOnTheFly()
 void BasicTest::selectPublicts()
 {
     auto publinPostsCount = db.posts()->query()
-            .where(Post::isPublicField())
+            .where(Post::isPublicField() == true)
             .count();
 
     auto nonPublicPostsCount = db.posts()->query()
-            .where(!Post::isPublicField())
+            .where(Post::isPublicField() == false)
             .count();
 
     QCOMPARE(publinPostsCount, 1);
