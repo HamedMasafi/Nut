@@ -4,6 +4,7 @@
 #include <QtCore/qglobal.h>
 #include <QtCore/QDateTime>
 #include <QtNut/table.h>
+#include <QSharedPointer>
 
 #ifdef NUT_NAMESPACE
 using namespace NUT_NAMESPACE;

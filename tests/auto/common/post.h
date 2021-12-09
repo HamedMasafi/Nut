@@ -6,6 +6,7 @@
 #include <QtNut/table.h>
 #include <QtNut/database.h>
 #include <QtNut/databasemodel.h>
+#include <QSharedPointer>
 
 #ifdef NUT_NAMESPACE
 using namespace NUT_NAMESPACE;

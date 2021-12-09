@@ -6,6 +6,7 @@
 
 #include <QtCore/QUuid>
 #include <QtCore/QString>
+#include <QSharedPointer>
 
 #ifdef NUT_NAMESPACE
 using namespace NUT_NAMESPACE;

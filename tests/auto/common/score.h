@@ -3,6 +3,8 @@
 
 #include <QUuid>
 #include <QtNut/table.h>
+#include <QSharedPointer>
+#include <QMetaType>
 
 class User;
 class Post;

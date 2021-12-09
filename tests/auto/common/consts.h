@@ -12,11 +12,8 @@
     .arg(timer.elapsed() / 1000.) \
     .arg(QString::fromUtf8(__func__))
 
+#include "test_params.h"
 
-#define DRIVER QStringLiteral("QSQLITE")
-#define HOST QString()
-#define USERNAME QString()
-#define PASSWORD QString()
 /*
 #define DRIVER QStringLiteral("QMYSQL")
 #define HOST QStringLiteral("192.168.10.2")

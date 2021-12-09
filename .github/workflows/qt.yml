@@ -35,6 +35,9 @@ jobs:
             QMAKE_MSC_VER: 16.11.31911.196
             cmake_params: -D CMAKE_CXX_FLAGS_DEBUG="/g"
             run_tests: false
+          - platform: ubuntu-latest
+            qt_version: 5.15
+            tests: [sqlite, mysql, posgtresql]
 
     runs-on: ${{ matrix.platform }}
     env:
@@ -76,10 +79,30 @@ jobs:
           cmake .. ${{ matrix.additional_arguments }}  ${{ matrix.cmake_params }}
           cmake --build .
   
-      - name: Run tests
-        if: ${{ matrix.run_tests }}
+      - name: Run tests with sqlite
+        if: contains(${{ matrix.tests }}, 'sqlite')
         run: |
+          rm tests/auto/common/test_params.h
+          cp tests/auto/common/test_params_sqlite.h tests/auto/common/test_params.h 
           cd build-qmake
+          ${{ matrix.make }} all
+          ${{ matrix.make }} run-tests
+          
+      - name: Run tests with mysql
+        if: contains(${{ matrix.tests }}, 'mysql')
+        run: |
+          rm tests/auto/common/test_params.h
+          cp tests/auto/common/test_params_mysql.h tests/auto/common/test_params.h 
           sudo systemctl start mysql.service
+          cd build-qmake
+          ${{ matrix.make }} all
+          ${{ matrix.make }} run-tests
+          
+      - name: Run tests with posgtresql
+        if: contains(${{ matrix.tests }}, 'posgtresql')
+        run: |
+          rm tests/auto/common/test_params.h
+          cp tests/auto/common/test_params_postgresql.h tests/auto/common/test_params.h 
+          cd build-qmake
           ${{ matrix.make }} all
           ${{ matrix.make }} run-tests
