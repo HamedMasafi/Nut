@@ -145,7 +145,7 @@ QString MySqlGenerator::escapeValue(const QVariant &v) const
         return v.toDateTime().toString(QStringLiteral("''yyyy-MM-dd HH:mm:ss''"));
 
     if (VARIANT_TYPE_COMPARE(v, Uuid))
-        return v.toUuid().toString(QUuid::Id128);
+        return QStringLiteral("'") + v.toUuid().toString(QUuid::Id128) + QStringLiteral("'");
 
 //#ifdef QT_GUI_LIB
 //    if (v.type() == QVariant::Polygon) {
