@@ -78,7 +78,7 @@ void DataTypesTest::initTestCase()
     f_color = Qt::red;
 #endif
 
-    QTEST_ASSERT(ok);
+    QVERIFY(ok);
 
     db.sampleTables()->query().remove();
 }
@@ -131,57 +131,55 @@ void DataTypesTest::insert()
 void DataTypesTest::retrive()
 {
     Nut::RowList<SampleTable> list = db.sampleTables()->query().toList();
-    QTEST_ASSERT(list.count() == 1);
+    QCOMPARE(list.count(), 1);
     Nut::Row<SampleTable> t = list.first();
 
-    QTEST_ASSERT(t->f_int8() == f_int8);
-    QTEST_ASSERT(t->f_int16() == f_int16);
-    QTEST_ASSERT(t->f_int32() == f_int32);
-    QTEST_ASSERT(t->f_int64() == f_int64);
+    QCOMPARE(t->f_int8(), f_int8);
+    QCOMPARE(t->f_int16(), f_int16);
+    QCOMPARE(t->f_int32(), f_int32);
+    QCOMPARE(t->f_int64(), f_int64);
 
-    QTEST_ASSERT(t->f_uint8() == f_uint8);
-    QTEST_ASSERT(t->f_uint16() == f_uint16);
-    QTEST_ASSERT(t->f_uint32() == f_uint32);
-    QTEST_ASSERT(t->f_uint64() == f_uint64);
+    QCOMPARE(t->f_uint8(), f_uint8);
+    QCOMPARE(t->f_uint16(), f_uint16);
+    QCOMPARE(t->f_uint32(), f_uint32);
+    QCOMPARE(t->f_uint64(), f_uint64);
 
     qDebug() << t->f_real()
              << f_real
              << qAbs(t->f_real() - f_real) * 1000000000000.f
              << qFuzzyCompare(t->f_real(), f_real);
-//    QTEST_ASSERT(qFuzzyCompare(t->f_real(), f_real));
-//    QTEST_ASSERT(qFuzzyCompare(t->f_float(), f_float));
+//    QCOMPARE(qFuzzyCompare(t->f_real(), f_real));
+//    QCOMPARE(qFuzzyCompare(t->f_float(), f_float));
 
 
-    QTEST_ASSERT(t->f_url() == f_url);
-    QTEST_ASSERT(t->f_uuid() == f_uuid);
+    QCOMPARE(t->f_url(), f_url);
+    QCOMPARE(t->f_uuid(), f_uuid);
 
-    QTEST_ASSERT(t->f_time() == f_time);
-    QTEST_ASSERT(t->f_date() == f_date);
-    QTEST_ASSERT(t->f_dateTime() == f_dateTime);
+    QCOMPARE(t->f_time(), f_time);
+    QCOMPARE(t->f_date(), f_date);
+    QCOMPARE(t->f_dateTime(), f_dateTime);
 
-    QTEST_ASSERT(t->f_jsonDoc() == f_jsonDoc);
-    QTEST_ASSERT(t->f_jsonObj() == f_jsonObj);
-    QTEST_ASSERT(t->f_jsonArray() == f_jsonArray);
-    QTEST_ASSERT(t->f_jsonValue() == f_jsonValue);
+    QCOMPARE(t->f_jsonDoc(), f_jsonDoc);
+    QCOMPARE(t->f_jsonObj(), f_jsonObj);
+    QCOMPARE(t->f_jsonArray(), f_jsonArray);
+    QCOMPARE(t->f_jsonValue(), f_jsonValue);
 
-    QTEST_ASSERT(t->f_string() == f_string);
-    QTEST_ASSERT(t->f_stringList() == f_stringList);
-    QTEST_ASSERT(t->f_qchar() == f_qchar);
+    QCOMPARE(t->f_string(), f_string);
+    QCOMPARE(t->f_stringList(), f_stringList);
+    QCOMPARE(t->f_qchar(), f_qchar);
 #ifdef QT_GUI_LIB
-    QTEST_ASSERT(t->f_point() == f_point);
-    QTEST_ASSERT(t->f_pointf() == f_pointf);
+    QCOMPARE(t->f_point(), f_point);
+    QCOMPARE(t->f_pointf(), f_pointf);
 
-    QTEST_ASSERT(t->f_polygon() == f_polygon);
-    QTEST_ASSERT(t->f_polygonf() == f_polygonf);
-    QTEST_ASSERT(t->f_color() == f_color);
+    QCOMPARE(t->f_polygon(), f_polygon);
+    QCOMPARE(t->f_polygonf(), f_polygonf);
+    QCOMPARE(t->f_color(), f_color);
 #endif
 }
 
-#define CHECK(name) \
-    c = db.sampleTables()->query()                                             \
-            .where(SampleTable::f_ ## name ## Field() == f_ ## name)          \
-            .count();                                                         \
-    QTEST_ASSERT(c == 1);
+#define CHECK(name)                                                                                \
+    c = db.sampleTables()->query().where(SampleTable::f_##name##Field() == f_##name).count();      \
+    QCOMPARE(c, 1);
 
 void DataTypesTest::check()
 {

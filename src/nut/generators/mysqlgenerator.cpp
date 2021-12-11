@@ -87,7 +87,7 @@ QString MySqlGenerator::fieldType(FieldModel *field)
         break;
 
     case QMetaType::QUuid:
-        dbType = QStringLiteral("VARCHAR(36)");
+        dbType = QStringLiteral("VARCHAR(38)");
         break;
 
     case QMetaType::QPolygon:
