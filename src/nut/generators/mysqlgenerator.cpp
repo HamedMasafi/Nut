@@ -86,15 +86,15 @@ QString MySqlGenerator::fieldType(FieldModel *field)
             dbType = QStringLiteral("TEXT");
         break;
 
+    case QMetaType::QUuid:
+        dbType = QStringLiteral("VARCHAR(36)");
+        break;
 
     case QMetaType::QPolygon:
     case QMetaType::QPolygonF:
 //        dbType = "POLYGON";
 //        break;
 
-    case QMetaType::QUuid:
-//        dbType = "VARCHAR(64)";
-//        break;
 
     case QMetaType::QPoint:
     case QMetaType::QPointF:
