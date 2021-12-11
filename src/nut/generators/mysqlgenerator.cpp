@@ -237,6 +237,9 @@ QVariant MySqlGenerator::unescapeValue(const QMetaType::Type &type, const QVaria
     if (type == QMetaType::QDate)
         return dbValue.toDate();
 
+    if (type == QMetaType::QUuid)
+        return dbValue.toUuid();
+
     return AbstractSqlGenerator::unescapeValue(type, dbValue);
 }
 
