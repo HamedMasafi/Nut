@@ -56,6 +56,8 @@ jobs:
       CMAKE_PREFIX_PATH: $Qt6_DIR/lib/cmake
       CMAKE_CXX_FLAGS_DEBUG: ${{ matrix.CMAKE_CXX_FLAGS_DEBUG }}
       
+    name: ${{ matrix.node-platform }} - Qt ${{ matrix.qt_version }}
+        
     steps:
       - name: Clone repo
         uses: actions/checkout@v2.3.4
@@ -130,8 +132,8 @@ jobs:
         if: contains(matrix.tests, 'mysql')
         continue-on-error: true
         run: |
-          rm tests\auto\common\test_params.h
-          cp tests\auto\common\test_params_mysql.h tests\auto\common\test_params.h 
+          rm tests/auto/common/test_params.h
+          cp tests/auto/common/test_params_mysql.h tests/auto/common/test_params.h 
           cd build-qmake
           ${{ matrix.make }} all
           ${{ matrix.make }} run-tests
