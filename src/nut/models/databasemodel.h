@@ -18,8 +18,8 @@
 **
 **************************************************************************/
 
-#ifndef DATABASEMODEL_H
-#define DATABASEMODEL_H
+#ifndef DATABASE_MODEL_H
+#define DATABASE_MODEL_H
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
@@ -82,4 +82,4 @@ NUT_END_NAMESPACE
 
 QT_END_NAMESPACE
 
-#endif // DATABASEMODEL_H
+#endif // DATABASE_MODEL_H

@@ -39,6 +39,9 @@ jobs:
           - platform: ubuntu-20.04
             qt_version: 5.15.2
             tests: [sqlite, posgtresql]
+          - platform: ubuntu-20.04
+            qt_version: system
+            tests: [sqlite, posgtresql, mysql]
           - platform: windows-latest
             qt_version: 5.15.2
             tests: [mssql]
@@ -58,10 +61,16 @@ jobs:
           submodules: recursive
           
       - name: Install Qt
+        if: ${{ matrix.qt_version }} != 'system'
         uses: jurplel/install-qt-action@v2.14.0
         with:
           version: ${{ matrix.qt_version }}
 
+      - name: Install Qt from package manager
+        if: ${{ matrix.qt_version }} == 'system'
+        run: |
+          sudo apt install qt5-default qt5-qmake qt5-qmake-bin libqt5core5a libqt5gui5 libqt5sql5 libqt5sql5-psql libqt5sql5-mysql
+          
       - name: Setup MSVC environment for QMake
         uses: ilammy/msvc-dev-cmd@v1
         with:

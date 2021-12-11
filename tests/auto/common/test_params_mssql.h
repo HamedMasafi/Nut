@@ -1,11 +1,11 @@
 #include <QtGlobal>
 
 #ifdef DATABASE
-#define DBNAME DATABASE
+#undef DATABASE
 #endif
 
 #define DATABASE                                                                                   \
-    QLatin1String("DRIVER={SQL SERVER};SERVER=.;UID=sa;PWD=NUT_sa_PASS_1_???;DATABASE=")                 \
+    QLatin1String("DRIVER={SQL SERVER};SERVER=.;UID=sa;PWD=NUT_sa_PASS_1_???;DATABASE=")           \
         + QStringLiteral("nut_test_%1_db")                                                         \
               .arg(QString::fromUtf8(metaObject()->className()))                                   \
               .toLower()
