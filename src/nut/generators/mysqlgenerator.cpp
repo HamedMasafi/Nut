@@ -26,6 +26,8 @@
 #include <QtCore/QTime>
 #include <QtCore/QDate>
 #include <QtCore/QDateTime>
+#include <QtCore/QUuid>
+
 #ifdef QT_GUI_LIB
 #   include <QtGui/QPolygon>
 #   include <QtGui/QPolygonF>
@@ -141,6 +143,9 @@ QString MySqlGenerator::escapeValue(const QVariant &v) const
 
     if (VARIANT_TYPE_COMPARE(v, DateTime))
         return v.toDateTime().toString(QStringLiteral("''yyyy-MM-dd HH:mm:ss''"));
+
+    if (VARIANT_TYPE_COMPARE(v, Uuid))
+        return v.toUuid().toString(QUuid::Id128);
 
 //#ifdef QT_GUI_LIB
 //    if (v.type() == QVariant::Polygon) {
