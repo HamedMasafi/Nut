@@ -42,6 +42,8 @@ jobs:
           - platform: ubuntu-20.04
             qt_version: system
             tests: [sqlite, posgtresql, mysql]
+            make: make
+            name: ubuntu-20.04, system
           - platform: windows-latest
             qt_version: 5.15.2
             tests: [mssql]
