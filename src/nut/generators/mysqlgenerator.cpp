@@ -331,14 +331,14 @@ QString MySqlGenerator::createConditionalPhrase(const PhraseData *d) const
 
             if (interval < 0)
                 return QStringLiteral("DATE_SUB(%1, INTERVAL %2 %3)")
-                    .arg(createConditionalPhrase(d->left),
-                         d->operand.toString(),
-                         AbstractSqlGenerator::dateTimePartName(op));
+                    .arg(createConditionalPhrase(d->left))
+                    .arg(-interval)
+                    .arg(AbstractSqlGenerator::dateTimePartName(op));
             else
                 return QStringLiteral("DATE_ADD(%1, INTERVAL %2 %3)")
-                    .arg(createConditionalPhrase(d->left),
-                         d->operand.toString(),
-                         AbstractSqlGenerator::dateTimePartName(op));
+                    .arg(createConditionalPhrase(d->left))
+                    .arg(interval)
+                    .arg(AbstractSqlGenerator::dateTimePartName(op));
         }
 
         default:
