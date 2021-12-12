@@ -109,7 +109,7 @@ void DateTimeTest::dateAdd()
 
 void DateTimeTest::timeAdd()
 {
-    QTime t = QTime::currentTime();
+    QTime t(12, 34, 56);
 
     TEST_TIME(t, addHours, 10, HOUR(10));
     TEST_TIME(t, addMinutes, 10, MINUTE(10));
@@ -122,7 +122,7 @@ void DateTimeTest::timeAdd()
 
 void DateTimeTest::dateTimeAdd()
 {
-    QDateTime dt = QDateTime::currentDateTime();
+    QDateTime dt({2021, 12, 23}, {12, 34, 56});
 
     TEST_DATE2(dt, addYears, 10);
     TEST_DATE2(dt, addMonths, 10);
