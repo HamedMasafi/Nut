@@ -46,6 +46,7 @@ void DateTimeTest::initTestCase()
                          .where(SampleTable::dField().command(n) == date.command(n))               \
                          .count();                                                                 \
         QVERIFY(count > 0);                                                                        \
+        db.sampleTables()->query().remove();                                                       \
     } while (false)
 
 #define TEST_TIME(time, command, n, num)                                                           \
@@ -59,6 +60,7 @@ void DateTimeTest::initTestCase()
                          .where(SampleTable::tField().command(n) == time.addSecs(num))             \
                          .count();                                                                 \
         QVERIFY(count > 0);                                                                        \
+        db.sampleTables()->query().remove();                                                       \
     } while (false)
 
 #define TEST_DATE2(datetime, command, n)                                                           \
@@ -72,6 +74,7 @@ void DateTimeTest::initTestCase()
                          .where(SampleTable::dtField().command(n) == datetime.command(n))          \
                          .count();                                                                 \
         QVERIFY(count > 0);                                                                        \
+        db.sampleTables()->query().remove();                                                       \
     } while (false)
 
 #define TEST_TIME2(datetime, command, n, num)                                                      \
@@ -85,6 +88,7 @@ void DateTimeTest::initTestCase()
                          .where(SampleTable::dtField().command(n) == datetime.addSecs(num))        \
                          .count();                                                                 \
         QVERIFY(count > 0);                                                                        \
+        db.sampleTables()->query().remove();                                                       \
     } while (false)
 
 #define MINUTE(m) m * 60

@@ -326,11 +326,20 @@ QString MySqlGenerator::createConditionalPhrase(const PhraseData *d) const
         case PhraseData::AddMinutes:
         case PhraseData::AddMinutesDateTime:
         case PhraseData::AddSeconds:
-        case PhraseData::AddSecondsDateTime:
-            return QStringLiteral("DATE_ADD(%1, INTERVAL %2 %3)")
+        case PhraseData::AddSecondsDateTime: {
+            auto interval = d->operand.toInt();
+
+            if (interval < 0)
+                return QStringLiteral("DATE_SUB(%1, INTERVAL %2 %3)")
                     .arg(createConditionalPhrase(d->left),
                          d->operand.toString(),
                          AbstractSqlGenerator::dateTimePartName(op));
+            else
+                return QStringLiteral("DATE_ADD(%1, INTERVAL %2 %3)")
+                    .arg(createConditionalPhrase(d->left),
+                         d->operand.toString(),
+                         AbstractSqlGenerator::dateTimePartName(op));
+        }
 
         default:
             break;
