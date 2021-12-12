@@ -130,7 +130,7 @@ jobs:
           
       - name: Run tests with mysql
         if: contains(matrix.tests, 'mysql')
-        continue-on-error: true
+        #continue-on-error: true
         run: |
           sudo systemctl start mysql.service
           rm tests/auto/common/test_params.h
