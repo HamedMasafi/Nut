@@ -35,6 +35,8 @@ void BasicTest::initTestCase()
     db.setUserName(USERNAME);
     db.setPassword(PASSWORD);
 
+    qDebug().noquote() << "Connecting to" << DATABASE;
+
     bool ok = db.open();
     QVERIFY(ok);
 
