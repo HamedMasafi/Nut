@@ -6,7 +6,7 @@
 
 #define DATABASE                                                                                   \
     QStringLiteral(                                                                                \
-        "DRIVER=SQL SERVER;SERVER=localhost;Trusted_Connection=true;UID=sa;PWD=NUT_sa_PASS_1_???;Database=nut_test_%1_db")      \
+        "DRIVER={SQL SERVER};SERVER=localhost;Trusted_Connection=true;UID=sa;PWD=NUT_sa_PASS_1_???;Database=nut_test_%1_db")      \
         .arg(QString::fromUtf8(metaObject()->className()).toLower())
 
 #define DRIVER QStringLiteral("QODBC")
