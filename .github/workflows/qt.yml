@@ -100,13 +100,13 @@ jobs:
         if: contains(matrix.tests, 'posgtresql')
         uses: ikalnytskyi/action-setup-postgres@v1
         
-      - name: Setup sql server
-        if: contains(matrix.tests, 'mssql')
-        uses: potatoqualitee/mssqlsuite@v1
-        with:
-          install: sqlengine
-          sa-password: NUT_sa_PASS_1_???
-          show-log: true
+      #- name: Setup sql server
+        #if: contains(matrix.tests, 'mssql')
+        #uses: potatoqualitee/mssqlsuite@v1
+        #with:
+          #install: sqlengine
+          #sa-password: NUT_sa_PASS_1_???
+          #show-log: true
           
       - name: Run tests with sqlite
         if: contains(matrix.tests, 'sqlite')
