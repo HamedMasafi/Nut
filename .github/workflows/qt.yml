@@ -102,15 +102,11 @@ jobs:
         
       - name: Setup sql server
         if: contains(matrix.tests, 'mssql')
-        uses: 280780363/sqlserver-action@v1.0
+        uses: sharathck087/sqlserver-github-action@v1
         with:
-          accept eula: 
-          sa password: NUT_sa_PASS_1_???
-        #uses: potatoqualitee/mssqlsuite@v1
-        #with:
-          #install: sqlengine
-          #sa-password: NUT_sa_PASS_1_???
-          #show-log: true
+          install: sqlengine
+          sa-password: NUT_sa_PASS_1_???
+          show-log: true
           
       - name: Run tests with sqlite
         if: contains(matrix.tests, 'sqlite')
