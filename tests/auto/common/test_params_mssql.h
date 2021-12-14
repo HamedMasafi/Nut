@@ -5,11 +5,10 @@
 #endif
 
 #define DATABASE                                                                                   \
-    QStringLiteral("DRIVER={SQL SERVER};SERVER=localhost;PORT=1433;USER ID=sa;"                    \
-                   "PASSWORD=NUT_sa_PASS_1_???;Database=nut_test_%1_db")                           \
+    QStringLiteral("DRIVER={SQL Server Native Client 11.0};Server=.;Database=nut_test_%1_db")      \
         .arg(QString::fromUtf8(metaObject()->className()).toLower())
 
 #define DRIVER QStringLiteral("QODBC")
-#define HOST QLatin1String("localhost")
-#define USERNAME QLatin1String("sa")
-#define PASSWORD QLatin1String("NUT_sa_PASS_1_???")
+#define HOST QStringLiteral("localhost")
+#define USERNAME QStringLiteral("sa")
+#define PASSWORD QStringLiteral("NUT_sa_PASS_1_???")
