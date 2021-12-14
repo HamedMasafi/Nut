@@ -100,8 +100,12 @@ jobs:
         if: contains(matrix.tests, 'posgtresql')
         uses: ikalnytskyi/action-setup-postgres@v1
         
-      #- name: Setup sql server
-        #if: contains(matrix.tests, 'mssql')
+      - name: Setup sql server
+        if: contains(matrix.tests, 'mssql')
+        uses: 280780363/sqlserver-action@v1.0
+        with:
+          accept eula: 
+          sa password: NUT_sa_PASS_1_???
         #uses: potatoqualitee/mssqlsuite@v1
         #with:
           #install: sqlengine
