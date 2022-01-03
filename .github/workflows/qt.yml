@@ -25,19 +25,15 @@ jobs:
             make: make
             #CXXFLAGS: -Wall -Wextra
             MAKEFLAGS: -j2
-            run_tests: true
           - platform: macos-latest
             make: make
             #CXXFLAGS: -Wall -Wextra
             MAKEFLAGS: -j3
-            run_tests: false
           - platform: windows-latest
             make: nmake
             QMAKE_MSC_VER: 16.11.31911.196
             cmake_params: -D CMAKE_CXX_FLAGS_DEBUG="/g"
-            run_tests: false
           - platform: ubuntu-20.04
-            qt_version: 5.15.2
             tests: [sqlite, posgtresql]
           - platform: ubuntu-20.04
             qt_version: system
@@ -102,7 +98,7 @@ jobs:
         
       - name: Setup sql server
         if: contains(matrix.tests, 'mssql')
-        uses: sharathck087/sqlserver-github-action@v1
+        uses: potatoqualitee/mssqlsuite@v1
         with:
           install: sqlengine
           sa-password: NUT_sa_PASS_1_???

@@ -10,6 +10,11 @@
 using namespace NUT_NAMESPACE;
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+Q_MOC_INCLUDE("user.h")
+Q_MOC_INCLUDE("post.h")
+#endif
+
 class User;
 class Post;
 class Comment : public Table
