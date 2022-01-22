@@ -105,8 +105,8 @@ jobs:
           show-log: true
        
        - name: Check sql server
-          if: contains(matrix.tests, 'mssql')
-          run: sqlcmd -S localhost -U sa -P NUT_sa_PASS_1_??? -d tempdb -Q "SELECT @@version;"
+        if: contains(matrix.tests, 'mssql')
+        run: sqlcmd -S localhost -U sa -P NUT_sa_PASS_1_??? -d tempdb -Q "SELECT @@version;"
         
       - name: Run tests with sqlite
         if: contains(matrix.tests, 'sqlite')
