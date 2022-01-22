@@ -55,6 +55,7 @@ QT_BEGIN_NAMESPACE
 NUT_BEGIN_NAMESPACE
 
 struct NUT_EXPORT QueryData {
+    bool hasCustomCommand{false};
     QString sql;
     QString className;
     QString tableName;
@@ -154,6 +155,8 @@ public:
 
     //debug purpose
     QString sqlCommand() const;
+
+    Query<T> &setSqlCommand(const QString &command);
 };
 
 template<typename T>
@@ -163,16 +166,18 @@ Q_OUTOFLINE_TEMPLATE QList<O> Query<T>::select(const std::function<O (const QSql
     //Q_D(AbstractQuery);
     QList<O> ret;
 
-    d->joins.prepend(d->tableName);
-    d->sql = d->database->sqlGenerator()->selectCommand(d->tableName,
-                                                        AbstractSqlGenerator::SingleField,
-                                                        QStringLiteral("*"),
-                                                        d->wherePhrase,
-                                                        d->relations,
-                                                        d->skip,
-                                                        d->take);
+    if (!d->hasCustomCommand) {
+        d->joins.prepend(d->tableName);
+        d->sql = d->database->sqlGenerator()->selectCommand(d->tableName,
+                                                            AbstractSqlGenerator::SingleField,
+                                                            QStringLiteral("*"),
+                                                            d->wherePhrase,
+                                                            d->relations,
+                                                            d->skip,
+                                                            d->take);
 
-    printSql(d->sql);
+        printSql(d->sql);
+    }
     QSqlQuery q = d->database->exec(d->sql);
 
     while (q.next()) {
@@ -241,9 +246,14 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
     RowList<T> returnList;
     d->select = QStringLiteral("*");
 
-    d->sql = d->database->sqlGenerator()->selectCommand(
-                d->tableName, d->fieldPhrase, d->wherePhrase, d->orderPhrase,
-                d->relations, d->skip, count);
+    if (!d->hasCustomCommand)
+        d->sql = d->database->sqlGenerator()->selectCommand(d->tableName,
+                                                            d->fieldPhrase,
+                                                            d->wherePhrase,
+                                                            d->orderPhrase,
+                                                            d->relations,
+                                                            d->skip,
+                                                            count);
 
     printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
@@ -438,15 +448,18 @@ Q_OUTOFLINE_TEMPLATE QList<F> Query<T>::select(const FieldPhrase<F> f)
     //Q_D(AbstractQuery);
     QList<F> ret;
 
-    d->joins.prepend(d->tableName);
-    d->sql = d->database->sqlGenerator()->selectCommand(
-                d->tableName,
-                AbstractSqlGenerator::SingleField, f.data->toString(),
-                d->wherePhrase,
-                d->relations,
-                d->skip, d->take);
+    if (!d->hasCustomCommand) {
+        d->joins.prepend(d->tableName);
+        d->sql = d->database->sqlGenerator()->selectCommand(d->tableName,
+                                                            AbstractSqlGenerator::SingleField,
+                                                            f.data->toString(),
+                                                            d->wherePhrase,
+                                                            d->relations,
+                                                            d->skip,
+                                                            d->take);
 
-    printSql(d->sql);
+        printSql(d->sql);
+    }
     QSqlQuery q = d->database->exec(d->sql);
 
     while (q.next()) {
@@ -474,15 +487,16 @@ Q_OUTOFLINE_TEMPLATE int Query<T>::count()
 {
     //Q_D(AbstractQuery);
 
-    d->joins.prepend(d->tableName);
-    d->select = QStringLiteral("COUNT(*)");
-    d->sql = d->database->sqlGenerator()->selectCommand(
-                d->tableName,
-                AbstractSqlGenerator::Count,
-                QStringLiteral("*"),
-                d->wherePhrase,
-                d->relations);
-    printSql(d->sql);
+    if (!d->hasCustomCommand) {
+        d->joins.prepend(d->tableName);
+        d->select = QStringLiteral("COUNT(*)");
+        d->sql = d->database->sqlGenerator()->selectCommand(d->tableName,
+                                                            AbstractSqlGenerator::Count,
+                                                            QStringLiteral("*"),
+                                                            d->wherePhrase,
+                                                            d->relations);
+        printSql(d->sql);
+    }
     QSqlQuery q = d->database->exec(d->sql);
 
     if (q.next())
@@ -570,8 +584,8 @@ template<class T>
 Q_OUTOFLINE_TEMPLATE QVariant Query<T>::insert(const AssignmentPhraseList &p)
 {
     //Q_D(AbstractQuery);
-    d->sql = d->database->sqlGenerator()
-            ->insertCommand(d->tableName, p);
+    if (!d->hasCustomCommand)
+        d->sql = d->database->sqlGenerator()->insertCommand(d->tableName, p);
     printSql(d->sql);
     QSqlQuery q = d->database->exec(d->sql);
 
@@ -753,6 +767,13 @@ Q_OUTOFLINE_TEMPLATE QString Query<T>::sqlCommand() const
 {
     //Q_D(const AbstractQuery);
     return d->sql;
+}
+
+template<class T>
+Q_OUTOFLINE_TEMPLATE Query<T> &Query<T>::setSqlCommand(const QString &command)
+{
+    d->hasCustomCommand = true;
+    d->sql = command;
 }
 
 NUT_END_NAMESPACE
