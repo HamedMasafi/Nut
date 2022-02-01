@@ -40,7 +40,7 @@ QString SqlServerGenerator::masterDatabaseName(QString databaseName)
     return databaseName.replace(
         QRegularExpression(QStringLiteral("DATABASE\\=(\\w+)"),
                            QRegularExpression::CaseInsensitiveOption),
-        QStringLiteral("DATABASE="));
+        QStringLiteral("DATABASE=master"));
 }
 
 QString SqlServerGenerator::fieldType(FieldModel *field)
