@@ -133,6 +133,11 @@ bool DatabasePrivate::updateDatabase()
 {
     Q_Q(Database);
 
+    QString databaseHistoryName = driver + "\t" + databaseName + "\t" + hostName;
+
+    if (updatedDatabases.contains(databaseHistoryName))
+        return true;
+
     if (!getCurrectSchema())
         return true;
 
@@ -184,6 +189,7 @@ bool DatabasePrivate::updateDatabase()
         if (!last.count())
             q->databaseCreated();
 
+        updatedDatabases.append(databaseHistoryName);
     } else {
         qWarning("Unable update database, error = %s",
                  db.lastError().text().toLatin1().data());

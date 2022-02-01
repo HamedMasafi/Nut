@@ -75,6 +75,7 @@ public:
 
     static QMap<QString, DatabaseModel> allTableMaps;
     static qulonglong lastId;
+    static QStringList updatedDatabases;
 
     QSet<AbstractTableSet *> tableSets;
 
