@@ -205,7 +205,7 @@ bool DatabasePrivate::getCurrectSchema()
     //is not first instanicate of this class
     if (allTableMaps.contains(QString::fromUtf8(q->metaObject()->className()))) {
         currentModel = allTableMaps[QString::fromUtf8(q->metaObject()->className())];
-        return false;
+//        return false;
     }
 
     QMap<QString, QString> tables;
