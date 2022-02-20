@@ -35,6 +35,7 @@ NUT_BEGIN_NAMESPACE
 class Table;
 class Database;
 class AbstractTableSetData;
+class TableModel;
 class NUT_EXPORT AbstractTableSet : public QObject
 {
 
@@ -44,7 +45,7 @@ public:
     virtual ~AbstractTableSet();
 
     virtual int save(Database *db, bool cleanUp = false);
-    void clearChilds();
+    void clearChildren();
     QString childClassName() const;
 
     Database *database() const;
@@ -60,10 +61,14 @@ public://TODO: change this to private
 //    void remove(Table *t);
 
     void add(Row<Table> t);
+    void add(WeakRow<Table> t);
     void remove(Row<Table> t);
+    void remove(WeakRow<Table> t);
 
     friend class Table;
     friend class QueryBase;
+private:
+    void saveChangedOnRow(Nut::Table *t, Nut::TableModel *masterModel);
 };
 
 NUT_END_NAMESPACE

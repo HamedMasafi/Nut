@@ -147,7 +147,7 @@ bool DatabasePrivate::updateDatabase()
     if (last == current) {
         qDebug("Database is up-to-date");
         //TODO: crash without this and I don't know why!
-        changeLogs->clearChilds();
+        changeLogs->clearChildren();
         return true;
     }
 
@@ -198,7 +198,7 @@ bool DatabasePrivate::updateDatabase()
     return ok;
 }
 
-bool DatabasePrivate::getCurrectSchema()
+bool DatabasePrivate::getCurrentSchema()
 {
     Q_Q(Database);
 
@@ -616,7 +616,7 @@ void Database::cleanUp()
 {
     Q_D(Database);
     for (const auto &ts: qAsConst(d->tableSets))
-        ts->clearChilds();
+        ts->clearChildren();
 }
 
 NUT_END_NAMESPACE

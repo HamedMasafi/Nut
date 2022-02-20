@@ -100,16 +100,16 @@ Q_OUTOFLINE_TEMPLATE BulkInserter TableSet<T>::bulkInserter()
 template<class T>
 Q_OUTOFLINE_TEMPLATE int TableSet<T>::length() const
 {
-    return data->childs.count();
+    return data->children.count();
 }
 
 template<class T>
 Q_OUTOFLINE_TEMPLATE Row<T> TableSet<T>::at(int i) const
 {
 #ifdef NUT_RAW_POINTER
-    return reinterpret_cast<T*>(data->childs.at(i));
+    return reinterpret_cast<T*>(data->children.at(i));
 #else
-    return data->childs.at(i).template objectCast<T>();
+    return data->children.at(i).template objectCast<T>();
 #endif
 }
 
@@ -138,7 +138,7 @@ template<class T>
 Q_OUTOFLINE_TEMPLATE void TableSet<T>::append(Row<T> t)
 {
     data.detach();
-    data->childs.append(t);
+    data->children.append(t);
 //    data->tables.insert(t.data());
 //    data->childRows.append(t.data());
 
@@ -161,9 +161,9 @@ template<class T>
 Q_OUTOFLINE_TEMPLATE void TableSet<T>::remove(Row<T> t)
 {
     data.detach();
-//    data->childs.removeOne(t.data());
+//    data->children.removeOne(t.data());
 //    data->tables.remove(t.data());
-    data->childs.removeOne(t);
+    data->children.removeOne(t);
     t->setStatus(Table::Deleted);
 }
 

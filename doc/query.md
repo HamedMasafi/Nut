@@ -30,7 +30,7 @@ auto posts = db.posts().query()
     ->orderBy(Post::idField())
     ->toList();
 ```
-Also you can sort descending by adding **!** to field name
+Also, you can sort descending by adding **!** to field name
 ```cpp
 auto posts = db.posts().query()
     ->where(Post::idField() == 1)

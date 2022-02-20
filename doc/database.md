@@ -1,4 +1,4 @@
-Database class must inherits from Nut::Database class.
+Database class must inherit from Nut::Database class.
 Database class can have NUT_DB_VERSION for declaring version number, version will be stored in database if upgrade needed.
 ```cpp
 NUT_DB_VERSION(major, minor)

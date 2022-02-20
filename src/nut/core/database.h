@@ -59,7 +59,7 @@ public:
 
     QSqlQuery exec(const QString& sql);
 
-    int saveChanges(bool cleanUp = false);
+    int saveChanges(bool cleanUp = true);
     void cleanUp();
 
     QString databaseName() const;
@@ -77,7 +77,6 @@ public:
     QSqlDatabase database();
 
 protected:
-    //remove minor version
     virtual void databaseCreated();
     virtual void databaseUpdated(int oldVersion, int newVersion);
 

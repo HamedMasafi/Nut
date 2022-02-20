@@ -44,7 +44,8 @@ public:
 
 //    QSet<Table*> tables;
 //    QList<Table*> childRows;
-    RowList<Table> childs;
+    RowList<Table> children;
+    WeakRowList<Table> weakChildren;
 
     Database *database;
     Table *table;

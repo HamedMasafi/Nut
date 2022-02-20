@@ -240,12 +240,11 @@ void DatabaseModel::deleteAllModels()
 DatabaseModel operator +(const DatabaseModel &l, const DatabaseModel &r)
 {
     DatabaseModel model;
-    DatabaseModel::const_iterator i;
 
-    for (i = r.constBegin(); i != r.constEnd(); ++i)
+    for (auto i = r.constBegin(); i != r.constEnd(); ++i)
         model.append(*i);
 
-    for (i = l.constBegin(); i != l.constEnd(); ++i)
+    for (auto i = l.constBegin(); i != l.constEnd(); ++i)
         model.append(*i);
 
     return model;
@@ -254,17 +253,16 @@ DatabaseModel operator +(const DatabaseModel &l, const DatabaseModel &r)
 DatabaseModel operator |(const DatabaseModel &l, const DatabaseModel &r)
 {
     DatabaseModel ret;
-    DatabaseModel::const_iterator i;
     QSet<QString> tables;
 
-    for (i = r.constBegin(); i != r.constEnd(); ++i) {
+    for (auto i = r.constBegin(); i != r.constEnd(); ++i) {
         if (tables.contains((*i)->name()))
             continue;
         ret.append(*i);
         tables.insert((*i)->name());
     }
 
-    for (i = l.constBegin(); i != l.constEnd(); ++i) {
+    for (auto i = l.constBegin(); i != l.constEnd(); ++i) {
         if (tables.contains((*i)->name()))
             continue;
         ret.append(*i);
