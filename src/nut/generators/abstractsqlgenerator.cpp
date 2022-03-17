@@ -131,7 +131,7 @@ QString AbstractSqlGenerator::insertBulk(const QString &tableName, const PhraseL
     for (auto &list: vars) {
         QStringList values;
         for (auto &v: list)
-            values.append(escapeValue(v));
+            values.append("`" + escapeValue(v) + "`");
 
         if (!sql.isEmpty())
             sql.append(QLatin1String(", "));
