@@ -131,7 +131,7 @@ QString AbstractSqlGenerator::insertBulk(const QString &tableName, const PhraseL
     for (auto &list: vars) {
         QStringList values;
         for (auto &v: list)
-            values.append("`" + escapeValue(v) + "`");
+            values.append(escapeValue(v));
 
         if (!sql.isEmpty())
             sql.append(QLatin1String(", "));
@@ -1075,7 +1075,7 @@ QString AbstractSqlGenerator::createFieldPhrase(const PhraseList &ph)
     for (const auto &d: ph.data) {
         if (!ret.isEmpty())
             ret.append(QStringLiteral(", "));
-        ret.append(d->toString());
+        ret.append("`" + d->toString() + "`");
         if (d->isNot)
             qDebug() << "Operator ! is ignored in fields phrase";
     }
