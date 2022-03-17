@@ -56,7 +56,7 @@ public:
     void createChangeLogs();
     bool putModelToDatabase();
     DatabaseModel getLastSchema();
-    bool getCurrectSchema();
+    bool getCurrentSchema();
 
     QSqlDatabase db;
 

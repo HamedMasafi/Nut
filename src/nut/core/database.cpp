@@ -138,7 +138,7 @@ bool DatabasePrivate::updateDatabase()
     if (updatedDatabases.contains(databaseHistoryName))
         return true;
 
-    if (!getCurrectSchema())
+    if (!getCurrentSchema())
         return true;
 
     DatabaseModel last = isDatabaseNew ? DatabaseModel() : getLastSchema();
