@@ -1138,7 +1138,7 @@ QString AbstractSqlGenerator::createFieldPhrase(const PhraseList &ph)
     Q_FOREACH (const PhraseData *d, ph.data) {
         if (!ret.isEmpty())
             ret.append(QStringLiteral(", "));
-        ret.append(d->toString());
+        ret.append("`" + d->toString() + "`");
         if (d->isNot)
             qDebug() << "Operator ! is ignored in fields phrase";
     }
