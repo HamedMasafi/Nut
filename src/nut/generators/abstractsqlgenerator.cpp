@@ -147,7 +147,7 @@ QString AbstractSqlGenerator::fieldDeclare(FieldModel *field)
     if (type.isEmpty())
         return type;
 
-    QString ret = escaleFieldName(field->name) + QStringLiteral(" ") + type;
+    QString ret = escapeFieldName(field->name) + QStringLiteral(" ") + type;
     if (field->notNull)
         ret.append(QStringLiteral(" NOT NULL"));
 
@@ -157,7 +157,7 @@ QString AbstractSqlGenerator::fieldDeclare(FieldModel *field)
     return ret;
 }
 
-QString AbstractSqlGenerator::escaleFieldName(const QString &fieldName) const
+QString AbstractSqlGenerator::escapeFieldName(const QString &fieldName) const
 {
     return fieldName;
 }
@@ -478,7 +478,7 @@ QString AbstractSqlGenerator::insertRecord(Table *t, QString tableName)
 
         if (changedPropertiesText != QLatin1String(""))
             changedPropertiesText.append(QStringLiteral(", "));
-        changedPropertiesText.append(escaleFieldName(f));
+        changedPropertiesText.append(escapeFieldName(f));
     }
     sql = QStringLiteral("INSERT INTO %1 (%2) VALUES (%3)")
               .arg(tableName, changedPropertiesText, values.join(QStringLiteral(", ")));
@@ -717,14 +717,14 @@ QString AbstractSqlGenerator::insertCommand(const QString &tableName, const Assi
 
     QString fieldNames;
     QString values;
-    Q_FOREACH (PhraseData *d, assigments.data) {
+    for (auto &d : assigments.data) {
         if (!fieldNames.isEmpty())
             fieldNames.append(QStringLiteral(", "));
 
         if (!values.isEmpty())
             values.append(QStringLiteral(", "));
 
-        fieldNames.append(escaleFieldName(QString::fromUtf8(d->left->fieldName)));
+        fieldNames.append(escapeFieldName(QString::fromUtf8(d->left->fieldName)));
         values.append(escapeValue(d->operand));
     }
     return QStringLiteral("INSERT INTO %1 (%2) VALUES (%3);")
@@ -1138,7 +1138,7 @@ QString AbstractSqlGenerator::createFieldPhrase(const PhraseList &ph)
     Q_FOREACH (const PhraseData *d, ph.data) {
         if (!ret.isEmpty())
             ret.append(QStringLiteral(", "));
-        ret.append("`" + d->toString() + "`");
+        ret.append(escapeFieldName(d->toString()));
         if (d->isNot)
             qDebug() << "Operator ! is ignored in fields phrase";
     }
