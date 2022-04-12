@@ -53,6 +53,7 @@ QT_BEGIN_NAMESPACE
 
 NUT_BEGIN_NAMESPACE
 
+QStringList DatabasePrivate::updatedDatabases;
 qulonglong DatabasePrivate::lastId = 0;
 QMap<QString, DatabaseModel> DatabasePrivate::allTableMaps;
 
