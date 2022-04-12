@@ -26,6 +26,8 @@
 #include <QtNut/conditionalphrase.h>
 #include <QtNut/phraselist.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 class PhraseData;
@@ -46,7 +48,7 @@ public:
     ConditionalPhrase in(QList<T> list)
     {
         QVariantList vlist;
-        Q_FOREACH (T t, list)
+        for (auto &t: list)
             vlist.append(QVariant::fromValue(t));
 
         return ConditionalPhrase(this, PhraseData::In, vlist);
@@ -86,5 +88,7 @@ protected:
 };
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // ABSTRACTFIELDPHRASE_H

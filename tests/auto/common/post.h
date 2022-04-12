@@ -6,9 +6,15 @@
 #include <QtNut/table.h>
 #include <QtNut/database.h>
 #include <QtNut/databasemodel.h>
+#include <QSharedPointer>
 
 #ifdef NUT_NAMESPACE
 using namespace NUT_NAMESPACE;
+#endif
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+Q_MOC_INCLUDE("comment.h")
+Q_MOC_INCLUDE("score.h")
 #endif
 
 class Comment;

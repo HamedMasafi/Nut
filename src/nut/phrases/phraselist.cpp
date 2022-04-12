@@ -21,6 +21,8 @@
 #include "abstractfieldphrase.h"
 #include "phraselist.h"
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 PhraseList::PhraseList() : isValid(false)
@@ -83,7 +85,7 @@ PhraseList PhraseList::operator |(const AbstractFieldPhrase &other) {
 
 void PhraseList::incAllDataParents()
 {
-//    Q_FOREACH (PhraseData *d, data)
+//    for (auto &d: data)
 //        d->parents++;
 }
 
@@ -92,3 +94,5 @@ PhraseList PhraseList::operator |(PhraseList &other) {
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

@@ -7,6 +7,13 @@
 using namespace NUT_NAMESPACE;
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+Q_MOC_INCLUDE("user.h")
+Q_MOC_INCLUDE("post.h")
+Q_MOC_INCLUDE("score.h")
+Q_MOC_INCLUDE("comment.h")
+#endif
+
 class Post;
 class Comment;
 class User;

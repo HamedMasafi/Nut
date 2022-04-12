@@ -27,6 +27,8 @@
 
 #include <QtNut/nut_global.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 class Database;
@@ -44,9 +46,10 @@ public:
 //    explicit SqlModel(Query *q);
     explicit SqlModel(Database *database, AbstractTableSet *tableSet, QObject *parent = Q_NULLPTR);
 
-    int rowCount(const QModelIndex &parent) const;
-    int columnCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
+    int rowCount(const QModelIndex &parent) const override;
+    int columnCount(const QModelIndex &parent) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
     template<class T>
     void setTable(RowList<T> rows);
@@ -54,7 +57,6 @@ public:
     void setRows(RowList<Table> rows);
     void append(Row<Table> table);
 //    void append(Table *table);
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     Row<Table> at(const int &i) const;
 
     void setRenderer(const std::function<QVariant (int, QVariant)> &renderer);
@@ -67,12 +69,13 @@ template<class T>
 Q_OUTOFLINE_TEMPLATE void SqlModel::setTable(RowList<T> rows)
 {
     RowList<Table> tab;
-    Q_FOREACH (auto t, rows)
+    for (auto t: rows)
         tab.append(t);
     setRows(tab);
 }
 
-
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // SQLMODEL_H

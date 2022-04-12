@@ -20,6 +20,8 @@
 
 #include "fieldphrase_date.h"
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 FieldPhrase<QDate>::FieldPhrase(const char *className, const char *s) :
@@ -145,3 +147,5 @@ COMMON_OPERATORS_IMPL(QTime)
 COMMON_OPERATORS_IMPL(QDateTime)
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

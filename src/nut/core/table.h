@@ -29,6 +29,8 @@
 #include <QtNut/tablemodel.h>
 #include <QtNut/phrase.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 class Database;
@@ -66,7 +68,7 @@ public:
 
     AbstractTableSet *childTableSet(const QString &name) const;
 
-    QSet<QString> changedProperties() const;
+    const QSet<QString> &changedProperties() const;
 
     bool setParentTable(Table *master, TableModel *masterModel, TableModel *model);
 Q_SIGNALS:
@@ -102,5 +104,10 @@ private:
 };
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE(NUT_WRAP_NAMESPACE(Table)*)
+Q_DECLARE_METATYPE(NUT_WRAP_NAMESPACE(Row<NUT_WRAP_NAMESPACE(Table)>))
 
 #endif // TABLE_H

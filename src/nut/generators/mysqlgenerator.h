@@ -25,6 +25,8 @@
 
 #include <QtNut/abstractsqlgenerator.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 class NUT_EXPORT MySqlGenerator : public AbstractSqlGenerator
@@ -47,5 +49,7 @@ private:
 };
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // MYSQLGENERATOR_H

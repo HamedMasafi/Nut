@@ -22,6 +22,8 @@
 #include "assignmentphrase.h"
 #include "phrasedata.h"
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 AssignmentPhrase::AssignmentPhrase(PhraseData *d) : data(d)
@@ -61,3 +63,5 @@ AssignmentPhrase::~AssignmentPhrase()
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

@@ -26,6 +26,9 @@
 
 #include "tablemodel.h"
 #include "nut_global.h"
+#include "nut_p.h"
+
+QT_BEGIN_NAMESPACE
 
 NUT_BEGIN_NAMESPACE
 
@@ -74,7 +77,7 @@ FieldModel *TableModel::field(int n) const
 
 FieldModel *TableModel::field(const QString &name) const
 {
-    Q_FOREACH (FieldModel *f, _fields)
+    for (auto &f: _fields)
         if(f->name == name)
             return f;
 
@@ -94,7 +97,7 @@ QList<RelationModel *> TableModel::foreignKeys() const
 QStringList TableModel::fieldsNames() const
 {
     QStringList ret;
-    Q_FOREACH (FieldModel *f, _fields)
+    for (auto &f: _fields)
         ret.append(f->name);
     return ret;
 }
@@ -106,7 +109,7 @@ bool TableModel::operator ==(const TableModel &t) const{
     if(fields().count() != t.fields().count())
         return false;
 
-    Q_FOREACH (FieldModel *f, _fields) {
+    for (auto &f: _fields) {
         FieldModel *tf = t.field(f->name);
         if(!tf)
             return false;
@@ -129,7 +132,7 @@ TableModel::TableModel(int typeId, const QString &tableName)
 //    if  (findByTypeId(typeId))
 //        return;
 
-    const QMetaObject *tableMetaObject = QMetaType::metaObjectForType(typeId);
+    const QMetaObject *tableMetaObject = QMetaType(typeId).metaObject();
 
     _typeId = typeId;
     _name = tableName;
@@ -162,12 +165,16 @@ TableModel::TableModel(int typeId, const QString &tableName)
         QMetaProperty fieldProperty = tableMetaObject->property(j);
         auto name = QString::fromUtf8(fieldProperty.name());
         FieldModel *fieldObj = field(name);
-        Q_FOREACH (FieldModel *f, _fields)
+        for (auto &f: _fields)
             if(f->name == name)
-                f = fieldObj;
+                fieldObj = f;
         if(!fieldObj)
             continue;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        fieldObj->type = static_cast<QMetaType::Type>(fieldProperty.metaType().id());
+#else
         fieldObj->type = static_cast<QMetaType::Type>(fieldProperty.type());
+#endif
         fieldObj->typeName = QString::fromUtf8(fieldProperty.typeName());
     }
 
@@ -244,13 +251,17 @@ TableModel::TableModel(const QJsonObject &json, const QString &tableName) : _typ
 
     QJsonObject fields = json.value(QStringLiteral(__FIELDS)).toObject();
     QJsonObject relations = json.value(QStringLiteral(__FOREIGN_KEYS)).toObject();
-    Q_FOREACH (QString key, fields.keys()) {
+    for (auto &key: fields.keys()) {
         QJsonObject fieldObject = fields.value(key).toObject();
         //TODO: use FieldModel(QJsonObject) ctor
         auto *f = new FieldModel;
         f->name = fieldObject.value(QStringLiteral(__NAME)).toString();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        f->type = static_cast<QMetaType::Type>(QMetaType::fromName(fieldObject.value(QStringLiteral(__TYPE)).toString().toLatin1()).id());
+#else
         f->type = static_cast<QMetaType::Type>(QMetaType::type(fieldObject.value(QStringLiteral(__TYPE)).toString().toLatin1().data()));
-        f->typeName = QString::fromUtf8(QMetaType::typeName(f->type));
+#endif
+        f->typeName = QString::fromUtf8(METATYPE_TO_NAME(f->type));
 
         if(fieldObject.contains(QStringLiteral(__nut_NOT_NULL)))
             f->notNull = fieldObject.value(QStringLiteral(__nut_NOT_NULL)).toBool();
@@ -266,7 +277,7 @@ TableModel::TableModel(const QJsonObject &json, const QString &tableName) : _typ
         _fields.append(f);
     }
 
-    Q_FOREACH (QString key, relations.keys()) {
+    for (auto &key: relations.keys()) {
         QJsonObject relObject = fields.value(key).toObject();
         _foreignKeys.append(new RelationModel(relObject));
     }
@@ -284,10 +295,10 @@ QJsonObject TableModel::toJson() const
     QJsonObject fieldsObj;
     QJsonObject foreignKeysObj;
 
-    Q_FOREACH (FieldModel *f, _fields) {
+    for (auto &f: _fields) {
         QJsonObject fieldObj;
         fieldObj.insert(QStringLiteral(__NAME), f->name);
-        fieldObj.insert(QStringLiteral(__TYPE), QString::fromUtf8(QVariant::typeToName(f->type)));
+        fieldObj.insert(QStringLiteral(__TYPE), QString::fromUtf8(METATYPE_TO_NAME(f->type)));
 
         if(f->length)
             fieldObj.insert(QStringLiteral(__nut_LEN), f->length);
@@ -309,7 +320,7 @@ QJsonObject TableModel::toJson() const
 
         fieldsObj.insert(f->name, fieldObj);
     }
-    Q_FOREACH (RelationModel *rel, _foreignKeys)
+    for (auto &rel: _foreignKeys)
         foreignKeysObj.insert(rel->localColumn, rel->toJson());
 
     obj.insert(QStringLiteral(__FIELDS), fieldsObj);
@@ -320,7 +331,7 @@ QJsonObject TableModel::toJson() const
 
 RelationModel *TableModel::foreignKey(const QString &otherTable) const
 {
-    Q_FOREACH (RelationModel *fk, _foreignKeys)
+    for (auto &fk: _foreignKeys)
         if(fk->masterClassName == otherTable)
             return fk;
 
@@ -329,7 +340,7 @@ RelationModel *TableModel::foreignKey(const QString &otherTable) const
 
 RelationModel *TableModel::foreignKeyByField(const QString &fieldName) const
 {
-    Q_FOREACH (RelationModel *fk, _foreignKeys)
+    for (auto &fk: _foreignKeys)
         if(fk->localColumn == fieldName)
             return fk;
 
@@ -339,9 +350,9 @@ RelationModel *TableModel::foreignKeyByField(const QString &fieldName) const
 QString TableModel::toString() const
 {
     QStringList sl;
-    Q_FOREACH (FieldModel *f, _fields)
+    for (auto &f: _fields)
         sl.append(f->name + QStringLiteral(" ")
-                  + QString::fromUtf8(QVariant::typeToName(f->type)));
+                  + QString::fromUtf8(METATYPE_TO_NAME(f->type)));
 
     QString ret = QStringLiteral("%1 (%2)")
                       .arg(_name, sl.join(QStringLiteral(", ")));
@@ -350,7 +361,7 @@ QString TableModel::toString() const
 
 QString TableModel::primaryKey() const
 {
-    Q_FOREACH (FieldModel *f, _fields)
+    for (auto &f: _fields)
         if(f->isPrimaryKey)
             return f->name;
     return QString();
@@ -381,7 +392,7 @@ QJsonObject FieldModel::toJson() const
 {
     QJsonObject fieldObj;
     fieldObj.insert(QStringLiteral(__NAME), name);
-    fieldObj.insert(QStringLiteral(__TYPE), QString::fromUtf8(QVariant::typeToName(type)));
+    fieldObj.insert(QStringLiteral(__TYPE), QString::fromUtf8(METATYPE_TO_NAME(type)));
     fieldObj.insert(QStringLiteral(__nut_LEN), length);
     fieldObj.insert(QStringLiteral(__nut_NOT_NULL), notNull);
     fieldObj.insert(QStringLiteral(__nut_UNIQUE), isUnique);
@@ -424,3 +435,5 @@ bool operator !=(const RelationModel &l, const RelationModel &r)
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

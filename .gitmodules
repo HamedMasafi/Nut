@@ -1,3 +1,0 @@
-[submodule "src/nut/3rdparty/serializer"]
-	path = src/nut/3rdparty/serializer
-	url = https://github.com/HamedMasafi/Serializer.git

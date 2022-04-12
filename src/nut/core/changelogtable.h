@@ -24,6 +24,8 @@
 #include <QtCore/qglobal.h>
 #include <QtNut/table.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 class NUT_EXPORT ChangeLogTable : public Table
@@ -43,6 +45,8 @@ public:
 
 NUT_END_NAMESPACE
 
-Q_DECLARE_METATYPE(Nut::ChangeLogTable*)
+QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE(NUT_WRAP_NAMESPACE(ChangeLogTable*))
 
 #endif // CHANGELOGTABLE_H

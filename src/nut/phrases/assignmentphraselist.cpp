@@ -22,8 +22,9 @@
 #include "phrasedata.h"
 #include "assignmentphrase.h"
 
-NUT_BEGIN_NAMESPACE
+QT_BEGIN_NAMESPACE
 
+NUT_BEGIN_NAMESPACE
 
 AssignmentPhraseList AssignmentPhrase::operator &(const AssignmentPhrase &other)
 {
@@ -68,18 +69,14 @@ AssignmentPhraseList AssignmentPhraseList::operator &(const AssignmentPhrase
 
 AssignmentPhraseList::~AssignmentPhraseList()
 {
-//    Q_FOREACH (PhraseData *d, data)
-//        if (!d->ref.deref())
-//            delete d;
-//    qDeleteAll(data);
-    //    data.clear();
 }
 
 void AssignmentPhraseList::incAllDataParents()
 {
-    Q_FOREACH (PhraseData *d, data)
+    for (auto &d: data)
         d->ref.ref();
 }
 
-
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

@@ -18,6 +18,16 @@
 **
 **************************************************************************/
 
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the Nut API.  This header
+// file may change from version to version without notice, or even be removed.
+//
+// We mean it.
+//
+
 #ifndef DATABASE_P_H
 #define DATABASE_P_H
 
@@ -26,6 +36,8 @@
 
 #include <QtNut/database.h>
 #include <QtNut/databasemodel.h>
+
+QT_BEGIN_NAMESPACE
 
 NUT_BEGIN_NAMESPACE
 
@@ -44,7 +56,7 @@ public:
     void createChangeLogs();
     bool putModelToDatabase();
     DatabaseModel getLastSchema();
-    bool getCurrectSchema();
+    bool getCurrentSchema();
 
     QSqlDatabase db;
 
@@ -63,6 +75,7 @@ public:
 
     static QMap<QString, DatabaseModel> allTableMaps;
     static qulonglong lastId;
+    static QStringList updatedDatabases;
 
     QSet<AbstractTableSet *> tableSets;
 
@@ -72,5 +85,7 @@ public:
 };
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // DATABASE_P_H

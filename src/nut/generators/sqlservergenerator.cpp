@@ -21,9 +21,12 @@
 #include "sqlservergenerator.h"
 #include "table.h"
 #include "tablemodel.h"
+#include "nut_p.h"
 
 #include <QtCore/QPoint>
 #include <QtCore/QRegularExpression>
+
+QT_BEGIN_NAMESPACE
 
 NUT_BEGIN_NAMESPACE
 
@@ -37,7 +40,7 @@ QString SqlServerGenerator::masterDatabaseName(QString databaseName)
     return databaseName.replace(
         QRegularExpression(QStringLiteral("DATABASE\\=(\\w+)"),
                            QRegularExpression::CaseInsensitiveOption),
-        QStringLiteral("DATABASE="));
+        QStringLiteral("DATABASE=master"));
 }
 
 QString SqlServerGenerator::fieldType(FieldModel *field)
@@ -130,13 +133,16 @@ QString SqlServerGenerator::fieldType(FieldModel *field)
     }
 }
 
-QString SqlServerGenerator::diff(FieldModel *oldField, FieldModel *newField)
+QString SqlServerGenerator::diffField(FieldModel *oldField, FieldModel *newField)
 {
-    QString sql = QString();
+    if (!oldField && !newField)
+        return QString();
+
     if (oldField && newField)
         if (*oldField == *newField)
-            return sql;
+            return QString();
 
+    QString sql = QString();
     if (!newField) {
         sql = QStringLiteral("DROP COLUMN ") + oldField->name;
     } else {
@@ -152,44 +158,44 @@ QString SqlServerGenerator::diff(FieldModel *oldField, FieldModel *newField)
 
 QString SqlServerGenerator::escapeValue(const QVariant &v) const
 {
-    switch (v.type()) {
-    case QVariant::String:
-    case QVariant::Char:
-    case QVariant::Polygon:
-    case QVariant::PolygonF:
-    case QVariant::Size:
-    case QVariant::SizeF:
-    case QVariant::Rect:
-    case QVariant::RectF:
-    case QVariant::Line:
-    case QVariant::LineF:
-    case QVariant::Color:
-    case QVariant::StringList:
-//    case QVariant::JsonArray:
-//    case QVariant::JsonValue:
-//    case QVariant::JsonObject:
-//    case QVariant::JsonDocument:
-    case QVariant::Url:
+    switch (METATYPE_ID(v)) {
+    case QMetaType::QString:
+    case QMetaType::QChar:
+    case QMetaType::QPolygon:
+    case QMetaType::QPolygonF:
+    case QMetaType::QSize:
+    case QMetaType::QSizeF:
+    case QMetaType::QRect:
+    case QMetaType::QRectF:
+    case QMetaType::QLine:
+    case QMetaType::QLineF:
+    case QMetaType::QColor:
+    case QMetaType::QStringList:
+//    case QMetaType::QJsonArray:
+//    case QMetaType::QJsonValue:
+//    case QMetaType::QJsonObject:
+//    case QMetaType::QJsonDocument:
+    case QMetaType::QUrl:
         return QStringLiteral("N") + AbstractSqlGenerator::escapeValue(v);
 
-//    case QVariant::Point: {
+//    case QMetaType::QPoint: {
 //        QPoint pt = v.toPoint();
 //        return QString("geography::POINT(%1, %2, 4326)").arg(pt.x()).arg(
 //                    pt.y());
 //    }
-//    case QVariant::PointF: {
+//    case QMetaType::QPointF: {
 //        QPointF pt = v.toPointF();
 //        return QString("geography::POINT(%1, %2, 4326)").arg(pt.x()).arg(
 //                    pt.y());
 //    }
 
-    case QVariant::Time:
+    case QMetaType::QTime:
         return v.toTime().toString(QStringLiteral("''HH:mm:ss''"));
 
-    case QVariant::Date:
+    case QMetaType::QDate:
         return v.toDate().toString(QStringLiteral("''yyyy-MM-dd''"));
 
-    case QVariant::DateTime:
+    case QMetaType::QDateTime:
         return v.toDateTime().toString(QStringLiteral("''yyyy-MM-dd HH:mm:ss''"));
 
     default:
@@ -279,3 +285,5 @@ QString SqlServerGenerator::createConditionalPhrase(const PhraseData *d) const
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

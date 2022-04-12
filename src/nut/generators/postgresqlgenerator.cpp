@@ -32,6 +32,9 @@
 #include "table.h"
 #include "tablemodel.h"
 #include "sqlserializer.h"
+#include "nut_p.h"
+
+QT_BEGIN_NAMESPACE
 
 NUT_BEGIN_NAMESPACE
 
@@ -43,12 +46,12 @@ bool PostgreSqlGenerator::readInsideParentese(QString &text, QString &out)
     for (int i = 0; i < text.length(); ++i) {
         QChar ch = text.at(i);
 
-        if (ch == '(') {
+        if (ch == QLatin1Char('(')) {
             if (start == -1)
                 start = i;
             pc++;
         }
-        if (ch == ')') {
+        if (ch == QLatin1Char(')')) {
             pc--;
 
             if (!pc && end == -1)
@@ -63,14 +66,14 @@ bool PostgreSqlGenerator::readInsideParentese(QString &text, QString &out)
     return false;
 }
 
-bool PostgreSqlGenerator::isPostGisType(const QVariant::Type &t) const
+bool PostgreSqlGenerator::isPostGisType(const QMetaType::Type &t) const
 {
-    return t == QVariant::Point
-            || t == QVariant::PointF
-            || t == QVariant::Rect
-            || t == QVariant::RectF
-            || t == QVariant::Polygon
-            || t == QVariant::PolygonF;
+    return t == QMetaType::QPoint
+           || t == QMetaType::QPointF
+           || t == QMetaType::QRect
+           || t == QMetaType::QRectF
+           || t == QMetaType::QPolygon
+           || t == QMetaType::QPolygonF;
 }
 
 PostgreSqlGenerator::PostgreSqlGenerator(Database *parent) : AbstractSqlGenerator (parent)
@@ -189,13 +192,16 @@ QString PostgreSqlGenerator::fieldType(FieldModel *field)
     return dbType;
 }
 
-QString PostgreSqlGenerator::diff(FieldModel *oldField, FieldModel *newField)
+QString PostgreSqlGenerator::diffField(FieldModel *oldField, FieldModel *newField)
 {
-    QString sql = QString();
+    if(!oldField && !newField)
+        return QString();
+
     if(oldField && newField)
         if(*oldField == *newField)
             return QString();
 
+    QString sql = QString();
     if(!newField){
         sql = QStringLiteral("DROP COLUMN ") + oldField->name;
     }else{
@@ -212,25 +218,25 @@ QString PostgreSqlGenerator::diff(FieldModel *oldField, FieldModel *newField)
 
 QString PostgreSqlGenerator::escapeValue(const QVariant &v) const
 {
-    if (v.type() == QVariant::Time)
+    if (VARIANT_TYPE_COMPARE(v, Time))
         return v.toTime().toString(QStringLiteral("''HH:mm:ss''"));
 
-    if (v.type() == QVariant::Date)
+    if (VARIANT_TYPE_COMPARE(v, Date))
         return v.toDate().toString(QStringLiteral("''yyyy-MM-dd''"));
 
-    if (v.type() == QVariant::DateTime)
+    if (VARIANT_TYPE_COMPARE(v, DateTime))
         return v.toDateTime().toString(QStringLiteral("''yyyy-MM-dd HH:mm:ss''"));
 
-    if (v.type() == QVariant::StringList)
+    if (VARIANT_TYPE_COMPARE(v, StringList))
         return QStringLiteral("'{")
                                        + v.toStringList().join(QStringLiteral(","))
                                        + QStringLiteral("}'");
 
-    if (v.type() == QVariant::Point) {
+    if (VARIANT_TYPE_COMPARE(v, Point)) {
         QPoint pt = v.toPoint();
         return QStringLiteral("point(%1, %2)").arg(pt.x()).arg(pt.y());
     }
-    if (v.type() == QVariant::PointF) {
+    if (VARIANT_TYPE_COMPARE(v, PointF)) {
         QPointF pt = v.toPointF();
         return QStringLiteral("point(%1, %2)").arg(pt.x()).arg(pt.y());
     }
@@ -241,7 +247,7 @@ QString PostgreSqlGenerator::escapeValue(const QVariant &v) const
     }
 
 #ifdef QT_GUI_LIB
-    if (v.type() == QVariant::Polygon) {
+    if (VARIANT_TYPE_COMPARE(v, Polygon)) {
         QString ret;
         QPoint pt;
         QPolygon pol = v.value<QPolygon>();
@@ -254,7 +260,7 @@ QString PostgreSqlGenerator::escapeValue(const QVariant &v) const
         }
         return QStringLiteral("'((") + ret + QStringLiteral("))'");
     }
-    if (v.type() == QVariant::PolygonF) {
+    if (VARIANT_TYPE_COMPARE(v, PolygonF)) {
         QString ret;
         QPointF pt;
         QPolygonF pol = v.value<QPolygonF>();
@@ -287,20 +293,20 @@ QVariant PostgreSqlGenerator::unescapeValue(const QMetaType::Type &type, const Q
         return AbstractSqlGenerator::unescapeValue(QMetaType::QPoint,
                                                dbValue.toString()
                                                    .replace(QStringLiteral("("),
-                                                            QStringLiteral(""))
+                                                            QLatin1String())
                                                    .replace(QStringLiteral(")"),
-                                                            QStringLiteral("")));
+                                                            QLatin1String()));
     if (type == QMetaType::QPointF)
         return AbstractSqlGenerator::unescapeValue(QMetaType::QPointF,
                                                dbValue.toString()
                                                    .replace(QStringLiteral("("),
-                                                            QStringLiteral(""))
+                                                            QLatin1String())
                                                    .replace(QStringLiteral(")"),
-                                                            QStringLiteral("")));
+                                                            QLatin1String()));
     if (type == QMetaType::QStringList)
         return dbValue.toString()
-            .replace(QStringLiteral("{"), QStringLiteral(""))
-            .replace(QStringLiteral("}"), QStringLiteral(""))
+            .replace(QStringLiteral("{"), QLatin1String())
+            .replace(QStringLiteral("}"), QLatin1String())
             .split(QStringLiteral(","));
 
 #ifdef QT_GUI_LIB
@@ -340,6 +346,17 @@ QVariant PostgreSqlGenerator::unescapeValue(const QMetaType::Type &type, const Q
     return AbstractSqlGenerator::unescapeValue(type, dbValue);
 }
 
+void PostgreSqlGenerator::appendSkipTake(QString &sql, int skip, int take)
+{
+    if (take > 0 && skip > 0) {
+        sql.append(QStringLiteral(" LIMIT %1 OFFSET %2")
+                       .arg(take)
+                       .arg(skip));
+    } else if (take > 0) {
+        sql.append(QStringLiteral(" LIMIT %1").arg(take));
+    }
+}
+
 QString PostgreSqlGenerator::createConditionalPhrase(const PhraseData *d) const
 {
     if (!d)
@@ -353,7 +370,7 @@ QString PostgreSqlGenerator::createConditionalPhrase(const PhraseData *d) const
     }
 
     if (d->type == PhraseData::WithVariant) {
-        if (isPostGisType(d->operand.type()) && d->operatorCond == PhraseData::Equal) {
+        if (isPostGisType(METATYPE_ID(d->operand)) && d->operatorCond == PhraseData::Equal) {
             return QStringLiteral("%1 ~= %2")
                     .arg(AbstractSqlGenerator::createConditionalPhrase(d->left),
                          escapeValue(d->operand));
@@ -402,3 +419,5 @@ QString PostgreSqlGenerator::createConditionalPhrase(const PhraseData *d) const
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

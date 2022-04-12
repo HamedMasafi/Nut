@@ -18,8 +18,8 @@
 **
 **************************************************************************/
 
-#ifndef DATABASEMODEL_H
-#define DATABASEMODEL_H
+#ifndef DATABASE_MODEL_H
+#define DATABASE_MODEL_H
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
@@ -28,6 +28,8 @@
 #include <QtNut/nut_global.h>
 
 class QJsonObject;
+
+QT_BEGIN_NAMESPACE
 
 NUT_BEGIN_NAMESPACE
 
@@ -66,7 +68,7 @@ public:
 
     bool remove(const QString &tableName);
 
-    //TODO: may be private (called from DatabasePrivate::getCurrectSchema only)
+    //TODO: may be private (called from DatabasePrivate::getCurrentSchema only)
     void fixRelations();
 
     static DatabaseModel *modelByName(const QString &name);
@@ -78,4 +80,6 @@ DatabaseModel operator |(const DatabaseModel &l, const DatabaseModel &r);
 
 NUT_END_NAMESPACE
 
-#endif // DATABASEMODEL_H
+QT_END_NAMESPACE
+
+#endif // DATABASE_MODEL_H

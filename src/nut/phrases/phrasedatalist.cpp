@@ -20,6 +20,8 @@
 
 #include "phrasedatalist.h"
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 PhraseDataList::PhraseDataList() : QList<PhraseData*>()
@@ -43,7 +45,7 @@ void PhraseDataList::append(PhraseData *d)
 
 void PhraseDataList::append(QList<PhraseData *> &dl)
 {
-    Q_FOREACH (PhraseData *d, dl)
+    for (auto &d: dl)
         d->ref.ref();
     QList<PhraseData*>::append(dl);
 }
@@ -59,3 +61,5 @@ PhraseDataList::~PhraseDataList()
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

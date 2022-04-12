@@ -21,6 +21,9 @@
 #include "sqlitegenerator.h"
 #include "table.h"
 #include "tablemodel.h"
+#include "nut_p.h"
+
+QT_BEGIN_NAMESPACE
 
 NUT_BEGIN_NAMESPACE
 
@@ -116,15 +119,18 @@ bool SqliteGenerator::supportAutoIncrement(const QMetaType::Type &type)
 }
 
 
-QStringList SqliteGenerator::diff(TableModel *oldTable, TableModel *newTable)
+QStringList SqliteGenerator::diffTable(TableModel *oldTable, TableModel *newTable)
 {
     QStringList ret;
+
+    if (!oldTable && !newTable)
+        return ret;
 
     if (oldTable && newTable)
         if (*oldTable == *newTable)
             return ret;
 
-    QStringList newTableSql = AbstractSqlGenerator::diff(nullptr, newTable);
+    QStringList newTableSql = AbstractSqlGenerator::diffTable(nullptr, newTable);
 
     if (!newTable)
         return QStringList() << QStringLiteral("DROP TABLE ") + oldTable->name();
@@ -135,22 +141,22 @@ QStringList SqliteGenerator::diff(TableModel *oldTable, TableModel *newTable)
     QList<QString> fieldNames;
     QList<QString> relations;
 
-    Q_FOREACH (FieldModel *f, oldTable->fields())
+    for (auto &f: oldTable->fields())
         if (!fieldNames.contains(f->name))
             fieldNames.append(f->name);
-    Q_FOREACH (RelationModel *r, oldTable->foreignKeys())
+    for (auto &r: oldTable->foreignKeys())
         if (!relations.contains(r->localColumn))
             relations.append(r->localColumn);
 
-    Q_FOREACH (FieldModel *f, newTable->fields())
+    for (auto &f: newTable->fields())
         if (!fieldNames.contains(f->name))
             fieldNames.append(f->name);
-    Q_FOREACH (RelationModel *r, newTable->foreignKeys())
+    for (auto &r: newTable->foreignKeys())
         if (!relations.contains(r->localColumn))
             relations.append(r->localColumn);
 
     QString columns;
-    Q_FOREACH (FieldModel *f, oldTable->fields()) {
+    for (auto &f: oldTable->fields()) {
         if (!newTable->field(f->name))
             continue;
 
@@ -238,9 +244,8 @@ QString SqliteGenerator::createConditionalPhrase(const PhraseData *d) const
             int i = d->operand.toInt();
             return QStringLiteral("DATE(%1,'%2 %3')")
                 .arg(createConditionalPhrase(d->left),
-                     (i < 0 ? QStringLiteral("") : QStringLiteral("+")) + QString::number(i),
+                     (i < 0 ? QLatin1String() : QStringLiteral("+")) + QString::number(i),
                      dateTimePartName(op));
-            break;
         }
         case PhraseData::AddHours:
         case PhraseData::AddMinutes:
@@ -248,9 +253,8 @@ QString SqliteGenerator::createConditionalPhrase(const PhraseData *d) const
             int i = d->operand.toInt();
             return QStringLiteral("TIME(%1,'%2 %3')")
                 .arg(createConditionalPhrase(d->left),
-                     (i < 0 ? QStringLiteral("") : QStringLiteral("+")) + QString::number(i),
+                     (i < 0 ? QLatin1String() : QStringLiteral("+")) + QString::number(i),
                      dateTimePartName(op));
-            break;
         }
         case PhraseData::AddYearsDateTime:
         case PhraseData::AddMonthsDateTime:
@@ -261,7 +265,7 @@ QString SqliteGenerator::createConditionalPhrase(const PhraseData *d) const
             int i = d->operand.toInt();
             return QStringLiteral("DATETIME(%1,'%2 %3')")
                     .arg(createConditionalPhrase(d->left),
-                     (i < 0 ? QStringLiteral("") : QStringLiteral("+")) + QString::number(i),
+                     (i < 0 ? QLatin1String() : QStringLiteral("+")) + QString::number(i),
                          dateTimePartName(op));
             break;
         }
@@ -308,13 +312,13 @@ QString SqliteGenerator::createConditionalPhrase(const PhraseData *d) const
 
 QString SqliteGenerator::escapeValue(const QVariant &v) const
 {
-    if (v.type() == QVariant::Time)
+    if (VARIANT_TYPE_COMPARE(v, Time))
         return v.toTime().toString(QStringLiteral("''HH:mm:ss''"));
 
-    if (v.type() == QVariant::Date)
+    if (VARIANT_TYPE_COMPARE(v, Date))
         return v.toDate().toString(QStringLiteral("''yyyy-MM-dd''"));
 
-    if (v.type() == QVariant::DateTime)
+    if (VARIANT_TYPE_COMPARE(v, DateTime))
         return v.toDateTime().toString(QStringLiteral("''yyyy-MM-dd HH:mm:ss''"));
 
     return AbstractSqlGenerator::escapeValue(v);
@@ -335,3 +339,5 @@ QVariant SqliteGenerator::unescapeValue(const QMetaType::Type &type, const QVari
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

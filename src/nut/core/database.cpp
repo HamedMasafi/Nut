@@ -49,8 +49,11 @@
 #   define __CHANGE_LOG_TABLE_NAME "__change_logs"
 #endif
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
+QStringList DatabasePrivate::updatedDatabases;
 qulonglong DatabasePrivate::lastId = 0;
 QMap<QString, DatabaseModel> DatabasePrivate::allTableMaps;
 
@@ -131,7 +134,12 @@ bool DatabasePrivate::updateDatabase()
 {
     Q_Q(Database);
 
-    if (!getCurrectSchema())
+    QString databaseHistoryName = driver + "\t" + databaseName + "\t" + hostName;
+
+    if (updatedDatabases.contains(databaseHistoryName))
+        return true;
+
+    if (!getCurrentSchema())
         return true;
 
     DatabaseModel last = isDatabaseNew ? DatabaseModel() : getLastSchema();
@@ -140,12 +148,12 @@ bool DatabasePrivate::updateDatabase()
     if (last == current) {
         qDebug("Database is up-to-date");
         //TODO: crash without this and I don't know why!
-        changeLogs->clearChilds();
+        changeLogs->clearChildren();
         return true;
     }
 
-    Q_FOREACH (TableModel *tm, current) {
-        Q_FOREACH (FieldModel *fm, tm->fields()) {
+    for (auto &tm: current) {
+        for (auto &fm: tm->fields()) {
             if (sqlGenerator->fieldType(fm).isEmpty()) {
                 qWarning("The type (%s) is not supported for field %s::%s",
                          QMetaType::typeName(fm->type),
@@ -160,10 +168,10 @@ bool DatabasePrivate::updateDatabase()
     else
         qDebug("Database is changed");
 
-    QStringList sql = sqlGenerator->diff(last, current);
+    QStringList sql = sqlGenerator->diffDatabase(last, current);
 
     db.transaction();
-    Q_FOREACH (QString s, sql) {
+    for (auto &s: sql) {
         db.exec(s);
 
         if (db.lastError().type() != QSqlError::NoError) {
@@ -182,6 +190,7 @@ bool DatabasePrivate::updateDatabase()
         if (!last.count())
             q->databaseCreated();
 
+        updatedDatabases.append(databaseHistoryName);
     } else {
         qWarning("Unable update database, error = %s",
                  db.lastError().text().toLatin1().data());
@@ -190,14 +199,14 @@ bool DatabasePrivate::updateDatabase()
     return ok;
 }
 
-bool DatabasePrivate::getCurrectSchema()
+bool DatabasePrivate::getCurrentSchema()
 {
     Q_Q(Database);
 
     //is not first instanicate of this class
     if (allTableMaps.contains(QString::fromUtf8(q->metaObject()->className()))) {
         currentModel = allTableMaps[QString::fromUtf8(q->metaObject()->className())];
-        return false;
+//        return false;
     }
 
     QMap<QString, QString> tables;
@@ -252,15 +261,28 @@ bool DatabasePrivate::getCurrectSchema()
         QMetaProperty tableProperty = q->metaObject()->property(i);
         int typeId = QMetaType::type(tableProperty.typeName());
 
-        if (tables.values().contains(QString::fromUtf8(tableProperty.name()))
+        if ((unsigned) typeId >= QVariant::UserType) {
+            bool contains{false};
+            auto tableName = QString::fromUtf8(tableProperty.name());
+            for (auto i = tables.begin(); i != tables.end(); ++i)
+                if (i.value() == tableName)
+                    contains = true;
+
+            if (contains) {
+                TableModel *sch = new TableModel(typeId, tableName);
+                currentModel.append(sch);
+            }
+        }
+
+        /*if (tables.values().contains(QString::fromUtf8(tableProperty.name()))
             && (unsigned)typeId >= QVariant::UserType) {
             TableModel *sch = new TableModel(typeId, QString::fromUtf8(tableProperty.name()));
             currentModel.append(sch);
-        }
+        }*/
     }
 
-    Q_FOREACH (TableModel *table, currentModel) {
-        Q_FOREACH (FieldModel *f, table->fields()) {
+    for (auto &table: currentModel) {
+        for (auto &f: table->fields()) {
             if (f->isPrimaryKey && ! sqlGenerator->supportPrimaryKey(f->type))
                 qFatal("The field of type %s does not support as primary key",
                        qPrintable(f->typeName));
@@ -270,7 +292,7 @@ bool DatabasePrivate::getCurrectSchema()
                        qPrintable(f->typeName));
         }
 
-        Q_FOREACH (RelationModel *fk, table->foreignKeys())
+        for (auto &fk: table->foreignKeys())
             fk->masterTable = currentModel.tableByClassName(fk->masterClassName);
     }
 
@@ -295,28 +317,8 @@ DatabaseModel DatabasePrivate::getLastSchema()
 
         DatabaseModel ret = json;
         return ret;
-        /*
-        Q_FOREACH (QString key, json.keys()) {
-            TableModel *sch = new TableModel(json.value(key).toObject(), key);
-            ret.append(sch);
-        }*/
     }
     return DatabaseModel();
-
-    //    QSqlQuery query = q->exec("select * from __change_logs order by id
-    //    desc limit 1");
-    //    DatabaseModel ret;
-    //    if(query.next()){
-    //        QJsonObject json =
-    //        QJsonDocument::fromJson(query.value("data").toByteArray()).object();
-
-    //        Q_FOREACH (QString key, json.keys()) {
-    //            TableModel *sch = new TableModel(json.value(key).toObject(),
-    //            key);
-    //            ret.append(sch);
-    //        }
-    //    }
-    //    return ret;
 }
 
 bool DatabasePrivate::putModelToDatabase()
@@ -333,26 +335,16 @@ bool DatabasePrivate::putModelToDatabase()
     changeLog->deleteLater();
 
     return true;
-
-    //    QSqlQuery query(db);
-    //    query.prepare("insert into __change_logs (data) values (:data)");
-    //    query.bindValue(":data",
-    //    QString(QJsonDocument(currentModel.toJson()).toJson()));
-    //    bool ret = query.exec();
-    //    if(query.lastError().type() != QSqlError::NoError)
-    //        qWarning(QString("storeSchemaInDB" +
-    //        query.lastError().text()).toLatin1().data());
-    //    return ret;
 }
 
 void DatabasePrivate::createChangeLogs()
 {
     //    currentModel.model("change_log")
-    QStringList diff = sqlGenerator->diff(nullptr,
+    QStringList diff = sqlGenerator->diffTable(nullptr,
                                           currentModel.tableByName(
                                               QStringLiteral("__change_log")));
 
-    Q_FOREACH (QString s, diff)
+    for (auto &s: diff)
         db.exec(s);
 }
 
@@ -564,12 +556,12 @@ bool Database::open(bool updateDatabase)
     else if (d->driver == QStringLiteral("QODBC") || d->driver == QStringLiteral("QODBC3")) {
         QString driverName = QString();
         QStringList parts = d->databaseName.toLower().split(';');
-        Q_FOREACH (QString p, parts)
+        for (auto &p: parts)
             if (p.trimmed().startsWith(QStringLiteral("driver=")))
                 driverName = p.split('=').at(1).toLower().trimmed();
 
 //        if (driverName == "{sql server}")
-            d->sqlGenerator = new SqlServerGenerator(this);
+        d->sqlGenerator = new SqlServerGenerator(this);
         // TODO: add ODBC driver for mysql, postgres, ...
     }
 
@@ -615,7 +607,7 @@ int Database::saveChanges(bool cleanUp)
     }
 
     int rowsAffected = 0;
-    Q_FOREACH (AbstractTableSet *ts, d->tableSets)
+    for (const auto &ts: qAsConst(d->tableSets))
         rowsAffected += ts->save(this, cleanUp);
 
     return rowsAffected;
@@ -624,8 +616,10 @@ int Database::saveChanges(bool cleanUp)
 void Database::cleanUp()
 {
     Q_D(Database);
-    Q_FOREACH (AbstractTableSet *ts, d->tableSets)
-        ts->clearChilds();
+    for (const auto &ts: qAsConst(d->tableSets))
+        ts->clearChildren();
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

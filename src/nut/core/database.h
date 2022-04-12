@@ -29,6 +29,8 @@
 #include <QtNut/nut_global.h>
 #include <QtNut/tableset.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 class DatabaseModel;
@@ -57,7 +59,7 @@ public:
 
     QSqlQuery exec(const QString& sql);
 
-    int saveChanges(bool cleanUp = false);
+    int saveChanges(bool cleanUp = true);
     void cleanUp();
 
     QString databaseName() const;
@@ -75,7 +77,6 @@ public:
     QSqlDatabase database();
 
 protected:
-    //remove minor version
     virtual void databaseCreated();
     virtual void databaseUpdated(int oldVersion, int newVersion);
 
@@ -95,5 +96,7 @@ private:
 };
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif  // NUTDATABASE_H

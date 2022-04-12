@@ -3,7 +3,7 @@
 
 #include "table.h"
 
-class Table1 : public Nut::Table
+class Table1 : public NUT_WRAP_NAMESPACE(Table)
 {
     Q_OBJECT
 

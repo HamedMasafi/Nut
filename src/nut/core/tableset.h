@@ -35,6 +35,8 @@
 #include <QtNut/databasemodel.h>
 #include <QtNut/abstracttablesetdata.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 template<class T>
@@ -98,16 +100,16 @@ Q_OUTOFLINE_TEMPLATE BulkInserter TableSet<T>::bulkInserter()
 template<class T>
 Q_OUTOFLINE_TEMPLATE int TableSet<T>::length() const
 {
-    return data->childs.count();
+    return data->children.count();
 }
 
 template<class T>
 Q_OUTOFLINE_TEMPLATE Row<T> TableSet<T>::at(int i) const
 {
 #ifdef NUT_RAW_POINTER
-    return reinterpret_cast<T*>(data->childs.at(i));
+    return reinterpret_cast<T*>(data->children.at(i));
 #else
-    return data->childs.at(i).template objectCast<T>();
+    return data->children.at(i).template objectCast<T>();
 #endif
 }
 
@@ -136,7 +138,7 @@ template<class T>
 Q_OUTOFLINE_TEMPLATE void TableSet<T>::append(Row<T> t)
 {
     data.detach();
-    data->childs.append(t);
+    data->children.append(t);
 //    data->tables.insert(t.data());
 //    data->childRows.append(t.data());
 
@@ -151,7 +153,7 @@ Q_OUTOFLINE_TEMPLATE void TableSet<T>::append(Row<T> t)
 template<class T>
 Q_OUTOFLINE_TEMPLATE void TableSet<T>::append(RowList<T> t)
 {
-    Q_FOREACH (Row<T> i, t)
+    for (auto &i: t)
         append(i);
 }
 
@@ -159,19 +161,21 @@ template<class T>
 Q_OUTOFLINE_TEMPLATE void TableSet<T>::remove(Row<T> t)
 {
     data.detach();
-//    data->childs.removeOne(t.data());
+//    data->children.removeOne(t.data());
 //    data->tables.remove(t.data());
-    data->childs.removeOne(t);
+    data->children.removeOne(t);
     t->setStatus(Table::Deleted);
 }
 
 template<class T>
 Q_OUTOFLINE_TEMPLATE void TableSet<T>::remove(RowList<T> t)
 {
-    Q_FOREACH (Row<T> i, t)
+    for (auto &i: t)
         remove(i);
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // TABLESET_H

@@ -7,7 +7,7 @@
 
 #include "table.h"
 
-class SampleTable : public Nut::Table
+class SampleTable : public NUT_WRAP_NAMESPACE(Table)
 {
     Q_OBJECT
 
@@ -19,7 +19,7 @@ class SampleTable : public Nut::Table
     NUT_DECLARE_FIELD(QDateTime, dt, dt, setDT)
 
 public:
-    Q_INVOKABLE SampleTable(QObject *parent = Q_NULLPTR);
+    Q_INVOKABLE SampleTable(QObject *parent = nullptr);
 };
 
 Q_DECLARE_METATYPE(SampleTable*)

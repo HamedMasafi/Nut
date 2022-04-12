@@ -1,10 +1,6 @@
 #ifndef NUT_NAMESPACE_H
 #define NUT_NAMESPACE_H
 
-#ifndef NUT_GLOBAL_H
-#   error "Do not include nut_namespace.h header directly!"
-#endif
-
 //avoid ide warnings
 #include <QtNut/nut_global.h>
 
@@ -12,6 +8,8 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 #include <QtCore/QMetaClassInfo>
+
+QT_BEGIN_NAMESPACE
 
 NUT_BEGIN_NAMESPACE
 
@@ -84,59 +82,77 @@ inline bool nutClassInfoInt(const QMetaClassInfo &classInfo,
 }
 
 #ifdef NUT_RAW_POINTER
-    template <typename T>
-    using RowList = QList<T*>;
-
-    template <typename T>
-    using RowSet = QSet<T*>;
-
-    template <typename T>
-    using Row = T*;
+    template<typename T>
+    using RowList = QList<T *>;
 
     template<class T>
-    inline Row<T> create() {
+    using WeakRowList = QList<T *>;
+
+    template<typename T>
+    using RowSet = QSet<T *>;
+
+    template<typename T>
+    using Row = T *;
+
+    template<class T>
+    inline Row<T> create()
+    {
         return new T;
     }
 
     template<class T>
-    inline T *get(const Row<T> row) {
+    inline T *get(const Row<T> row)
+    {
         return row;
     }
 
     template<class T>
-    inline T *get(const QSharedPointer<T> row) {
+    inline T *get(const QSharedPointer<T> row)
+    {
         return row.data();
     }
 #else
-    template <class T>
+    template<class T>
     using RowList = QList<QSharedPointer<T>>;
 
-    template <class T>
-    using RowSet = QSet<QSharedPointer<T>>;
-
-    template <typename T>
-    using Row = QSharedPointer<T>;
+    template<class T>
+    using WeakRowList = QList<QWeakPointer<T>>;
 
     template<class T>
-    inline Row<T> create() {
+    using RowSet = QSet<QSharedPointer<T>>;
+
+    template<typename T>
+    using Row = QSharedPointer<T>;
+
+    template<typename T>
+    using WeakRow = QWeakPointer<T>;
+
+    template<class T>
+    inline Row<T> create()
+    {
         return QSharedPointer<T>(new T);
     }
 
     template<class T>
-    inline Row<T> create(QObject *parent) {
+    inline Row<T> create(QObject *parent)
+    {
         return QSharedPointer<T>(new T(parent));
     }
 
     template<class T>
-    inline Row<T> createFrom(T *row) {
+    inline Row<T> createFrom(T *row)
+    {
         return QSharedPointer<T>(row);
     }
     template<class T>
-    inline Row<T> createFrom(const QSharedPointer<T> row) {
+    inline Row<T> createFrom(const QSharedPointer<T> row)
+    {
         return row;
     }
 #endif
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // NUT_NAMESPACE_H

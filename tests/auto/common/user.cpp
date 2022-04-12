@@ -3,9 +3,9 @@
 
 #include "user.h"
 
-User::User(QObject *tableSet) : Table(tableSet),
-    m_comments(new TableSet<Comment>(this)),
-    m_scores(new TableSet<Score>(this))
+User::User(QObject *tableSet) : Nut::Table(tableSet),
+      m_comments(new Nut::TableSet<Comment>(this)),
+    m_scores(new Nut::TableSet<Score>(this))
 {
     init();
 }

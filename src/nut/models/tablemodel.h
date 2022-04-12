@@ -28,6 +28,8 @@
 
 class QJsonObject;
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 class TableModel;
@@ -134,5 +136,7 @@ private:
 };
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // TABLEMODEL_H

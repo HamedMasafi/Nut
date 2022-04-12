@@ -27,7 +27,8 @@
 
 #include <QtNut/phrase.h>
 
-class SqlSerializer;
+
+QT_BEGIN_NAMESPACE
 
 NUT_BEGIN_NAMESPACE
 
@@ -37,6 +38,7 @@ class DatabaseModel;
 class TableModel;
 class Database;
 struct RelationModel;
+class SqlSerializer;
 class NUT_EXPORT AbstractSqlGenerator : public QObject
 {
 //    Q_OBJECT
@@ -91,11 +93,11 @@ public:
 
     virtual QString relationDeclare(const RelationModel *relation);
 
-    virtual QStringList diff(const DatabaseModel &lastModel, const DatabaseModel &newModel);
-    virtual QString diff(FieldModel *oldField, FieldModel *newField);
-    virtual QStringList diff(TableModel *oldTable, TableModel *newTable);
+    virtual QStringList diffDatabase(const DatabaseModel &lastModel, const DatabaseModel &newModel);
+    virtual QString diffField(FieldModel *oldField, FieldModel *newField);
+    virtual QStringList diffTable(TableModel *oldTable, TableModel *newTable);
     virtual QStringList diffRelation(TableModel *oldTable, TableModel *newTable);
-    virtual QStringList diff(RelationModel *oldRel, RelationModel *newRel);
+    virtual QStringList diffRelation2(RelationModel *oldRel, RelationModel *newRel);
 
     virtual QString join(const QString &mainTable,
                          const QList<RelationModel*> &list,
@@ -168,5 +170,7 @@ protected:
 };
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // NUT_ABSTRACTSQLGENERATOR_H

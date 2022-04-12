@@ -4,7 +4,7 @@
 #include "database.h"
 
 class Test;
-class TestDatabase : public Nut::Database
+class TestDatabase : public NUT_WRAP_NAMESPACE(Database)
 {
     Q_OBJECT
 

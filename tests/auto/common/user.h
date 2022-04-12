@@ -6,14 +6,20 @@
 
 #include <QtCore/QUuid>
 #include <QtCore/QString>
+#include <QSharedPointer>
 
 #ifdef NUT_NAMESPACE
 using namespace NUT_NAMESPACE;
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+Q_MOC_INCLUDE("comment.h")
+Q_MOC_INCLUDE("score.h")
+#endif
+
 class Comment;
 class Score;
-class User : public Nut::Table
+class User : public NUT_WRAP_NAMESPACE(Table)
 {
     Q_OBJECT
 

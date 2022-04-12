@@ -23,6 +23,8 @@
 
 #include <QtNut/nut_global.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 class PhraseData;
@@ -46,5 +48,7 @@ private:
 };
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // ASSIGNMENTPHRASELIST_H

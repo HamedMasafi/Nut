@@ -27,6 +27,8 @@
 
 #include <QtNut/nut_global.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 class NUT_EXPORT DbGeography
@@ -49,6 +51,8 @@ public:
 };
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 Q_DECLARE_METATYPE(NUT_WRAP_NAMESPACE(DbGeography))
 

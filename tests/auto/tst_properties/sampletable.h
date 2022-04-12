@@ -3,7 +3,7 @@
 
 #include <QtNut/table.h>
 
-class SampleTable : public Nut::Table
+class SampleTable : public NUT_WRAP_NAMESPACE(Table)
 {
     Q_OBJECT
     Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged)

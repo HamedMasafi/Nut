@@ -24,6 +24,8 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 QMap<QString, DatabaseModel*> DatabaseModel::_models;
@@ -48,7 +50,7 @@ DatabaseModel::DatabaseModel(const QJsonObject &json) :
     setVersion(json.value(NODE_VERSION).toInt());
 
     QJsonObject tables = json.value(NODE_TABLES).toObject();
-    Q_FOREACH (QString key, tables.keys()) {
+    for (auto &key: tables.keys()) {
         if(!tables.value(key).isObject())
             continue;
 
@@ -146,7 +148,7 @@ RelationModel *DatabaseModel::relationByClassNames(const QString &masterClassNam
     if(!childTable)
         return nullptr;
 
-    Q_FOREACH (RelationModel *rel, childTable->foreignKeys())
+    for (auto &rel: childTable->foreignKeys())
         if(rel->masterClassName == masterClassName)
             return rel;
 
@@ -160,7 +162,7 @@ RelationModel *DatabaseModel::relationByTableNames(const QString &masterTableNam
     if(!childTable)
         return nullptr;
 
-    Q_FOREACH (RelationModel *rel, childTable->foreignKeys())
+    for (auto &rel: childTable->foreignKeys())
         if(rel->masterTable->name() == masterTableName)
             return rel;
 
@@ -174,7 +176,7 @@ DatabaseModel DatabaseModel::fromJson(QJsonObject &json)
     model.setVersion(json.value(NODE_VERSION).toInt());
 
     QJsonObject tables = json.value(NODE_TABLES).toObject();
-    Q_FOREACH (QString key, tables.keys()) {
+    for (auto &key: tables.keys()) {
         if(!json.value(key).isObject())
             continue;
 
@@ -209,8 +211,8 @@ bool DatabaseModel::remove(const QString &tableName)
 void DatabaseModel::fixRelations()
 {
     /*TODO: fixme
-    Q_FOREACH (TableModel *table, currentModel)
-        Q_FOREACH (RelationModel *fk, table->foreignKeys())
+    for (auto &table: currentModel)
+        for (auto &fk: table->foreignKeys())
             fk->masterTable = currentModel.tableByClassName(fk->masterClassName);
             */
 }
@@ -238,12 +240,11 @@ void DatabaseModel::deleteAllModels()
 DatabaseModel operator +(const DatabaseModel &l, const DatabaseModel &r)
 {
     DatabaseModel model;
-    DatabaseModel::const_iterator i;
 
-    for (i = r.constBegin(); i != r.constEnd(); ++i)
+    for (auto i = r.constBegin(); i != r.constEnd(); ++i)
         model.append(*i);
 
-    for (i = l.constBegin(); i != l.constEnd(); ++i)
+    for (auto i = l.constBegin(); i != l.constEnd(); ++i)
         model.append(*i);
 
     return model;
@@ -252,17 +253,16 @@ DatabaseModel operator +(const DatabaseModel &l, const DatabaseModel &r)
 DatabaseModel operator |(const DatabaseModel &l, const DatabaseModel &r)
 {
     DatabaseModel ret;
-    DatabaseModel::const_iterator i;
     QSet<QString> tables;
 
-    for (i = r.constBegin(); i != r.constEnd(); ++i) {
+    for (auto i = r.constBegin(); i != r.constEnd(); ++i) {
         if (tables.contains((*i)->name()))
             continue;
         ret.append(*i);
         tables.insert((*i)->name());
     }
 
-    for (i = l.constBegin(); i != l.constEnd(); ++i) {
+    for (auto i = l.constBegin(); i != l.constEnd(); ++i) {
         if (tables.contains((*i)->name()))
             continue;
         ret.append(*i);
@@ -273,3 +273,5 @@ DatabaseModel operator |(const DatabaseModel &l, const DatabaseModel &r)
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

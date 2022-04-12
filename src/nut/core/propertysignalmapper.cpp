@@ -20,6 +20,9 @@
 
 #include "propertysignalmapper.h"
 #include "table.h"
+#include "nut_global.h"
+
+QT_BEGIN_NAMESPACE
 
 NUT_BEGIN_NAMESPACE
 
@@ -71,3 +74,5 @@ QString PropertySignalMapper::changedProperty(QObject *obj, int senderSignalInde
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

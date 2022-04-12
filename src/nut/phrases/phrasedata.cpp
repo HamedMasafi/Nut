@@ -20,18 +20,20 @@
 
 #include "phrasedata.h"
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 PhraseData::PhraseData()
     : className(""), fieldName(""), type(Field), operatorCond(NotAssign),
-      left(nullptr), right(nullptr), operand(QVariant::Invalid), isNot(false),
+      left(nullptr), right(nullptr), operand(), isNot(false),
       ref(1)
 { }
 
 PhraseData::PhraseData(const char *className, const char *fieldName)
     : className(className), fieldName(fieldName), type(Field),
       operatorCond(NotAssign), left(nullptr), right(nullptr),
-      operand(QVariant::Invalid), isNot(false), ref(1)
+      operand(), isNot(false), ref(1)
 { }
 
 PhraseData::PhraseData(PhraseData *l, PhraseData::Condition o)
@@ -115,3 +117,5 @@ void PhraseData::cleanUp(PhraseData *d)
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE

@@ -1,89 +1,158 @@
-name: CI build
+name: CI Build
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - "releases/**"
+    paths-ignore:
+      - "**.md"
+  pull_request:
+    paths-ignore:
+      - "**.md"
 
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        version:
-          - 5.15.0
-          
-        platform:
-          - gcc_64
-          - android
-          - msvc2019
-          - msvc2019_64
-          - winrt_x64_msvc2019
-          - winrt_x86_msvc2019
-          - winrt_armv7_msvc2019
-          - mingw81_64
-          - mingw81_32
-          - clang_64
-          
+        qt_version: [5.12.11, 5.15.2, 6.2.0]
+        platform: [ubuntu-20.04, windows-latest, macos-latest]
         include:
-          - platform: gcc_64
-            os: ubuntu-latest
-          - platform: android
-            os: ubuntu-latest
-          - platform: msvc2019_64
-            os: windows-latest
-          - platform: msvc2019
-            os: windows-latest
-          - platform: winrt_x64_msvc2019
-            os: windows-latest
-          - platform: winrt_x86_msvc2019
-            os: windows-latest
-          - platform: winrt_armv7_msvc2019
-            os: windows-latest
-          - platform: mingw81_64
-            os: windows-latest
-          - platform: mingw81_32
-            os: windows-latest
-          - platform: clang_64
-            os: macos-latest
-            
-    runs-on: ${{matrix.os}}
+          - qt_version: 6.2.0
+            additional_arguments: -D QT_DEFAULT_MAJOR_VERSION=6
+            build_cmake: true
+          - platform: ubuntu-20.04
+            make: make
+            #CXXFLAGS: -Wall -Wextra
+            MAKEFLAGS: -j2
+          - platform: macos-latest
+            make: make
+            #CXXFLAGS: -Wall -Wextra
+            MAKEFLAGS: -j3
+          - platform: windows-latest
+            make: nmake
+            QMAKE_MSC_VER: 16.11.31911.196
+            cmake_params: -D CMAKE_CXX_FLAGS_DEBUG="/g"
+          - platform: ubuntu-20.04
+            tests: [sqlite, posgtresql]
+          - platform: ubuntu-20.04
+            qt_version: system
+            tests: [sqlite, posgtresql, mysql]
+            make: make
+            name: ubuntu-20.04, system
+          - platform: windows-latest
+            qt_version: 5.15.2
+            tests: [mssql]
+
+    runs-on: ${{ matrix.platform }}
+    name: ${{ matrix.platform }} - Qt ${{ matrix.qt_version }}
+      
+    env:
+      CXXFLAGS: ${{ matrix.CXXFLAGS }}
+      MAKEFLAGS: ${{ matrix.MAKEFLAGS }}
+      QMAKE_MSC_VER: ${{ matrix.QMAKE_MSC_VER }}
+      CMAKE_PREFIX_PATH: $Qt6_DIR/lib/cmake
+      CMAKE_CXX_FLAGS_DEBUG: ${{ matrix.CMAKE_CXX_FLAGS_DEBUG }}
+        
     steps:
-      - uses: actions/checkout@v1
+      - name: Clone repo
+        uses: actions/checkout@v2.3.4
         with:
           submodules: recursive
-      - uses: actions/setup-python@v1
-      - uses: Skycoder42/action-setup-qt@master
-        id: qt
+          
+      - name: Install Qt
+        if: matrix.qt_version != 'system'
+        uses: jurplel/install-qt-action@v2.14.0
         with:
-          version: ${{matrix.version}}
-          platform: ${{matrix.platform}}
-          packages: qt.tools.ifw.32
-      - name: qmake
+          version: ${{ matrix.qt_version }}
+
+      - name: Install Qt from package manager
+        if: matrix.qt_version == 'system'
         run: |
-          qmake CONFIG+=install_ok QT_PLATFORM=${{matrix.platform}} "QT_TOOL_PATH=${{steps.qt.outputs.qtdir}}/Tools" nut.pro
-          ${{steps.qt.outputs.make}} qmake_all
-      - name: make module
-        run: |
-          ${{steps.qt.outputs.make}}
-          ${{steps.qt.outputs.make}} INSTALL_ROOT="${{steps.qt.outputs.installdir}}" install
-      - name: make tests
-        if: steps.qt.outputs.tests == 'true'
-        run: |
-          ${{steps.qt.outputs.make}} all
-          ${{steps.qt.outputs.make}} ${{steps.qt.outputs.testflags}} run-tests
-      - name: upload module to releases
-        uses: Skycoder42/action-upload-release@master
-        if: startsWith(github.ref, 'refs/tags/')
+          sudo apt install qt5-default qt5-qmake qt5-qmake-bin libqt5core5a libqt5gui5 libqt5sql5 libqt5sql5-psql libqt5sql5-mysql libqt5sql5-sqlite
+          
+      - name: Setup MSVC environment for QMake
+        uses: ilammy/msvc-dev-cmd@v1
         with:
-          repo_token: ${{secrets.GITHUB_TOKEN}}
-          directory: ${{steps.qt.outputs.outdir}}
-          platform: ${{matrix.platform}}
-          asset_name: nut-${{matrix.platform}}-${{matrix.version}}
-          tag: ${{github.ref}}
-          overwrite: true
+          uwp: false
+          
+      - name: Build with QMake
+        run: |
+          mkdir build-qmake
+          cd build-qmake
+          qmake ../nut.pro
+          ${{ matrix.make }} qmake_all
+          ${{ matrix.make }}
+
+      - name: Build with CMake
+        if: startsWith(matrix.qt_version, '6.')
+        run: |
+          mkdir build-cmake
+          cd build-cmake
+          cmake .. ${{ matrix.additional_arguments }}  ${{ matrix.cmake_params }}
+          cmake --build .
+          
+      - name: Seutp postgres
+        if: contains(matrix.tests, 'posgtresql')
+        uses: ikalnytskyi/action-setup-postgres@v1
+        
+      - name: Setup sql server
+        if: contains(matrix.tests, 'mssql')
+        uses: potatoqualitee/mssqlsuite@v1
+        with:
+          install: sqlengine
+          sa-password: NUT_sa_PASS_1_???
+          show-log: true
+       
+      - name: Check sql server
+        if: contains(matrix.tests, 'mssql')
+        run: sqlcmd -S localhost -U sa -P NUT_sa_PASS_1_??? -d tempdb -Q "SELECT @@version;"
+        
+      - name: Run tests with sqlite
+        if: contains(matrix.tests, 'sqlite')
+        continue-on-error: true
+        run: |
+          rm tests/auto/common/test_params.h
+          cp tests/auto/common/test_params_sqlite.h tests/auto/common/test_params.h 
+          cd build-qmake
+          ${{ matrix.make }} all
+          ${{ matrix.make }} run-tests
+          
+      - name: Run tests with posgtresql
+        if: contains(matrix.tests, 'posgtresql')
+        #continue-on-error: true
+        run: |
+          rm tests/auto/common/test_params.h
+          cp tests/auto/common/test_params_postgresql.h tests/auto/common/test_params.h 
+          cd build-qmake
+          ${{ matrix.make }} all
+          ${{ matrix.make }} run-tests
+          
+      - name: Run tests with mysql
+        if: contains(matrix.tests, 'mysql')
+        #continue-on-error: true
+        run: |
+          sudo systemctl start mysql.service
+          rm tests/auto/common/test_params.h
+          cp tests/auto/common/test_params_mysql.h tests/auto/common/test_params.h 
+          cd build-qmake
+          ${{ matrix.make }} all
+          ${{ matrix.make }} run-tests
+          
+      - name: Run tests with sql server
+        if: contains(matrix.tests, 'mssql')
+        continue-on-error: true
+        run: |
+          rm tests/auto/common/test_params.h
+          cp tests/auto/common/test_params_mssql.h tests/auto/common/test_params.h 
+          cd build-qmake
+          ${{ matrix.make }} all
+          ${{ matrix.make }} run-tests
 
   deploy:
     if: startsWith(github.ref, 'refs/tags/')
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v1
         with:
@@ -93,7 +162,7 @@ jobs:
       - uses: Skycoder42/action-deploy-qt@master
         with:
           token: ${{secrets.GITHUB_TOKEN}}
-          version: 5.15.0
+          version: 5.15.2
           host: ${{secrets.SSHFS_HOST}}
           key: ${{secrets.SSHFS_KEY}}
           port: ${{secrets.SSHFS_PORT}} 

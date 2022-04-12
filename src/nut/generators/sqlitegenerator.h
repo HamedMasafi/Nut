@@ -25,6 +25,8 @@
 
 #include <QtNut/abstractsqlgenerator.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 class NUT_EXPORT SqliteGenerator : public AbstractSqlGenerator
@@ -40,7 +42,7 @@ public:
     void appendSkipTake(QString &sql, int skip, int take) override;
 
     QString primaryKeyConstraint(const TableModel *table) const override;
-    QStringList diff(TableModel *oldTable, TableModel *newTable) override;
+    QStringList diffTable(TableModel *oldTable, TableModel *newTable) override;
 
     QString createConditionalPhrase(const PhraseData *d) const override;
 
@@ -49,5 +51,7 @@ public:
 };
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // SQLITEGENERATOR_H

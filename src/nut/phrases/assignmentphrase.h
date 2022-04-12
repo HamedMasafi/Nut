@@ -23,6 +23,9 @@
 
 #include <QtNut/nut_global.h>
 #include <QtNut/assignmentphraselist.h>
+#include <QtNut/NutGlobal>
+
+QT_BEGIN_NAMESPACE
 
 NUT_BEGIN_NAMESPACE
 
@@ -45,5 +48,6 @@ public:
 };
 
 NUT_END_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // ASSIGNMENTPHRASE_H

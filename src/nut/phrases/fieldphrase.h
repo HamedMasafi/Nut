@@ -24,6 +24,8 @@
 #include <QtNut/nut_global.h>
 #include <QtNut/abstractfieldphrase.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 template<typename T>
@@ -59,5 +61,7 @@ Q_OUTOFLINE_TEMPLATE ConditionalPhrase FieldPhrase<T>::operator ==(const QVarian
 
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // FIELDPHRASE_H

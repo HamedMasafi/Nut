@@ -21,6 +21,9 @@
 #ifndef PHRASE_H
 #define PHRASE_H
 
+#include <QtGlobal>
+
+
 #include <QtNut/nut_global.h>
 #include <QtNut/conditionalphrase.h>
 #include <QtNut/abstractfieldphrase.h>
@@ -34,5 +37,8 @@
 #include <QtNut/fieldphrase_date.h>
 #include <QtNut/fieldphrase_qstring.h>
 #include <QtNut/fieldphrase_bool.h>
+
+QT_BEGIN_NAMESPACE
+QT_END_NAMESPACE
 
 #endif // PHRASE_H

@@ -25,30 +25,33 @@
 
 #include <QtNut/abstractsqlgenerator.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 class NUT_EXPORT PostgreSqlGenerator : public AbstractSqlGenerator
 {
 private:
     bool readInsideParentese(QString &text, QString &out);
-    bool isPostGisType(const QVariant::Type &t) const;
+    bool isPostGisType(const QMetaType::Type &t) const;
+
 public:
     explicit PostgreSqlGenerator(Database *parent = nullptr);
 
     QString fieldType(FieldModel *field) override;
 
-    QString diff(FieldModel *oldField, FieldModel *newField) override;
+    QString diffField(FieldModel *oldField, FieldModel *newField) override;
 
-    // SqlGeneratorBase interface
-public:
     QString escapeValue(const QVariant &v) const override;
     QVariant unescapeValue(const QMetaType::Type &type, const QVariant &dbValue) override;
+    void appendSkipTake(QString &sql, int skip = -1, int take = -1) override;
 
-    // SqlGeneratorBase interface
 protected:
     QString createConditionalPhrase(const PhraseData *d) const override;
 };
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // POSTGRESQLGENERATOR_H

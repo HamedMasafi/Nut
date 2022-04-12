@@ -5,6 +5,8 @@
 #include <QtNut/fieldphrase.h>
 #include <QtNut/fieldphrase.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 template<>
@@ -34,5 +36,7 @@ public:
 };
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // NUT_FIELDPHRASE_BOOL_H

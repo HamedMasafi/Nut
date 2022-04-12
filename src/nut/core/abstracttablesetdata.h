@@ -25,6 +25,8 @@
 
 #include <QtNut/nut_global.h>
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 class Table;
@@ -42,13 +44,17 @@ public:
 
 //    QSet<Table*> tables;
 //    QList<Table*> childRows;
-    RowList<Table> childs;
+    RowList<Table> children;
+    WeakRowList<Table> weakChildren;
 
     Database *database;
     Table *table;
     QString childClassName;
 };
 
+
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
 
 #endif // NUT_ABSTRACTTABLESETDATA_H

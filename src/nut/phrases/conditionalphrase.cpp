@@ -24,6 +24,8 @@
 #include "conditionalphrase.h"
 #include "phrasedata.h"
 
+QT_BEGIN_NAMESPACE
+
 NUT_BEGIN_NAMESPACE
 
 ConditionalPhrase::ConditionalPhrase() : data(nullptr)
@@ -232,3 +234,5 @@ ConditionalPhrase operator >=(ConditionalPhrase &&l, ConditionalPhrase &&r)
 }
 
 NUT_END_NAMESPACE
+
+QT_END_NAMESPACE
