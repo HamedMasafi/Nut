@@ -92,6 +92,7 @@ void BasicTest::createPost()
     postId = newPost->id();
 
     QTEST_ASSERT(newPost->id() != 0);
+
     TOC();
 }
 
