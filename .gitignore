@@ -54,3 +54,5 @@ test/tst_quuid/tst_uuid*
 test/tst_upgrades/tst_upgrades*
 
 .idea
+
+CMakeLists.txt.user
