@@ -21,7 +21,6 @@ jobs:
           - mingw81_64
           - mingw81_32
           - clang_64
-          - ios
           
         include:
           - platform: gcc_64
