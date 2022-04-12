@@ -56,28 +56,45 @@ int AbstractTableSet::save(Database *db, bool cleanUp)
     if (data->table)
         masterModel = db->model().tableByClassName(QString::fromUtf8(data->table->metaObject()->className()));
 
-    for (auto &t : data->children) {
-        if (data->table)
+    if (data->table)
+        for (auto &t : data->children) {
+            if (t) {
+#ifdef NUT_RAW_POINTER
+                row->deleteLater();
+#else
+                remove(t);
+#endif
+                continue;
+            }
+
             t->setParentTable(data->table,
                               masterModel,
                               db->model().tableByClassName(
                                   QString::fromUtf8(t->metaObject()->className())));
 
-        if (t->status() == Table::Added || t->status() == Table::Modified
-            || t->status() == Table::Deleted) {
-            rowsAffected += t->save(db);
-            if (cleanUp)
+            if (t->status() == Table::Added || t->status() == Table::Modified
+                || t->status() == Table::Deleted) {
+                rowsAffected += t->save(db);
+                if (cleanUp)
 #ifdef NUT_RAW_POINTER
-                t->deleteLater();
+                    t->deleteLater();
 #else
-                remove(t);
+                    remove(t);
 #endif
+            }
         }
-    }
 
-    for (auto &row : data->weakChildren) {
-        auto t = row.lock();
-        if (data->table)
+    if (data->table)
+        for (auto &row : data->weakChildren) {
+            if (row) {
+#ifdef NUT_RAW_POINTER
+                row->deleteLater();
+#else
+                remove(row);
+#endif
+                continue;
+            }
+            auto t = row.lock();
             t->setParentTable(data->table,
                               masterModel,
                               db->model().tableByClassName(
