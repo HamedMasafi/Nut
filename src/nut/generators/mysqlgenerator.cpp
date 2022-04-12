@@ -382,7 +382,7 @@ QString MySqlGenerator::primaryKeyConstraint(const TableModel *table) const
         .arg(table->primaryKey());
 }
 
-QString MySqlGenerator::escaleFieldName(const QString &fieldName) const
+QString MySqlGenerator::escapeFieldName(const QString &fieldName) const
 {
     return "`" + fieldName + "`";
 }
