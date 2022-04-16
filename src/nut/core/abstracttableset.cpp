@@ -54,9 +54,10 @@ int AbstractTableSet::save(Database *db, bool cleanUp)
     int rowsAffected = 0;
     TableModel *masterModel = nullptr;
     if (data->table)
-        masterModel = db->model().tableByClassName(QString::fromUtf8(data->table->metaObject()->className()));
+        masterModel = db->model().tableByClassName(
+            QString::fromUtf8(data->table->metaObject()->className()));
 
-    if (data->table)
+    if (data->table) {
         for (auto &t : data->children) {
             if (!t) {
 #ifdef NUT_RAW_POINTER
@@ -82,40 +83,42 @@ int AbstractTableSet::save(Database *db, bool cleanUp)
                     remove(t);
 #endif
             }
+        }
 
-            for (auto &row : data->weakChildren) {
-                if (!row) {
+        for (auto &row : data->weakChildren) {
+            if (!row) {
 #ifdef NUT_RAW_POINTER
-                    row->deleteLater();
+                row->deleteLater();
+#else
+                remove(row);
+#endif
+                continue;
+            }
+            auto t = row.lock();
+            t->setParentTable(data->table,
+                              masterModel,
+                              db->model().tableByClassName(
+                                  QString::fromUtf8(t->metaObject()->className())));
+
+            if (t->status() == Table::Added || t->status() == Table::Modified
+                || t->status() == Table::Deleted) {
+                rowsAffected += t->save(db);
+                if (cleanUp)
+#ifdef NUT_RAW_POINTER
+                    t->deleteLater();
 #else
                     remove(row);
 #endif
-                    continue;
-                }
-                auto t = row.lock();
-                t->setParentTable(data->table,
-                                  masterModel,
-                                  db->model().tableByClassName(
-                                      QString::fromUtf8(t->metaObject()->className())));
-
-                if (t->status() == Table::Added || t->status() == Table::Modified
-                    || t->status() == Table::Deleted) {
-                    rowsAffected += t->save(db);
-                    if (cleanUp)
-#ifdef NUT_RAW_POINTER
-                        t->deleteLater();
-#else
-                        remove(row);
-#endif
-                }
             }
+        }
+    }
 
-            if (cleanUp) {
-                data->children.clear();
-                data->weakChildren.clear();
-            }
+    if (cleanUp) {
+        data->children.clear();
+        data->weakChildren.clear();
+    }
 
-            return rowsAffected;
+    return rowsAffected;
         }
 
     void AbstractTableSet::clearChildren()
