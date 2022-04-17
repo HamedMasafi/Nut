@@ -179,7 +179,7 @@ AbstractTableSet *Table::childTableSet(const QString &name) const
 int Table::save(Database *db)
 {
     //Q_D(Table);
-
+    qDebug() << db->sqlGenerator()->saveRecord(this, db->tableName(QString::fromUtf8(metaObject()->className())));
     QSqlQuery q = db->exec(db->sqlGenerator()->saveRecord(this, db->tableName(QString::fromUtf8(metaObject()->className()))));
 
     auto model = db->model().tableByClassName(QString::fromUtf8(metaObject()->className()));
