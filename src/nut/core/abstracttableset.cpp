@@ -95,6 +95,8 @@ int AbstractTableSet::save(Database *db, bool cleanUp)
                 continue;
             }
             auto t = row.lock();
+            if (t.isNull())
+                continue;
             t->setParentTable(data->table,
                               masterModel,
                               db->model().tableByClassName(
