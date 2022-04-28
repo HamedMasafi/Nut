@@ -57,7 +57,7 @@ int AbstractTableSet::save(Database *db, bool cleanUp)
         masterModel = db->model().tableByClassName(
             QString::fromUtf8(data->table->metaObject()->className()));
 
-    for (auto &t : data->children) {
+    for (auto t : data->children) {
         if (!t) {
 #ifdef NUT_RAW_POINTER
             row->deleteLater();
