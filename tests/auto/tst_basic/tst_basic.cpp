@@ -257,7 +257,7 @@ void BasicTest::testDate()
 
     db.posts()->append(newPost);
 
-    db.saveChanges(true);
+    db.saveChanges();
 
     auto q = db.posts()->query()
             .where(Post::idField() == newPost->id())
