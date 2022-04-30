@@ -86,6 +86,7 @@ void BasicTest::createPost()
     for (int i = 0; i < 10; ++i) {
         auto score = Nut::create<Score>();
         score->setScore(i % 5);
+        score->setCondition(1); // test keyword on mysql
         newPost->scores()->append(score);
     }
 
@@ -94,6 +95,7 @@ void BasicTest::createPost()
     postId = newPost->id();
 
     QTEST_ASSERT(newPost->id() != 0);
+
     TOC();
 }
 

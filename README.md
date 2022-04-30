@@ -188,10 +188,8 @@ auto biggestId = db.items()->query().max(SampleTable::idField());
 ## Help needed!
 We need more documentation or wiki. If you can help to improve docs please fork now!
 
-### Donate
-Bitcoin address: 1Dn1WHKkaxanXe4cTGDk4cFRRABxLUpEVj
+### Technology sponsership
+Thanks to [JetBrains](http://https://www.jetbrains.com/) to their useful IDEs.
 
 
-![Wallet address](btc-qr.png)
-
-For more information read [Wiki](wiki).
+<img alt="JetBrains Logo (Main) logo" src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" width="100" /><img alt="CLion logo" src="https://resources.jetbrains.com/storage/products/company/brand/logos/CLion_icon.png" width="100" />
