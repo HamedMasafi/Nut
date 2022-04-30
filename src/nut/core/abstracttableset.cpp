@@ -100,11 +100,14 @@ int AbstractTableSet::save(Database *db)
             || t->status() == Table::Deleted) {
             rowsAffected += t->save(db);
             data->weakChildren.append(t.toWeakRef());
+
+            i = data->children.erase(i);
+            continue;
         }
         i++;
     }
 
-    data->children.clear();
+//    data->children.clear();
 
     return rowsAffected;
 }
