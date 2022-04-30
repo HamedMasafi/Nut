@@ -45,7 +45,7 @@ void TestJson::store()
     qDebug() << e.errorString();
     t->setDoc(doc);
     db.sampleTable()->append(t);
-    db.saveChanges(true);
+    db.saveChanges();
 
     int id = t->id();
     auto newObj = db.sampleTable()->query()
