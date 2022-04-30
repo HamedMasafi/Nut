@@ -134,7 +134,7 @@ bool DatabasePrivate::updateDatabase()
 {
     Q_Q(Database);
 
-    QString databaseHistoryName = driver + "\t" + databaseName + "\t" + hostName;
+    QString databaseHistoryName = driver + QStringLiteral("\t") + databaseName + QStringLiteral("\t") + hostName;
 
     if (updatedDatabases.contains(databaseHistoryName))
         return true;
@@ -331,7 +331,7 @@ bool DatabasePrivate::putModelToDatabase()
     changeLog->setData(QString::fromUtf8(QJsonDocument(current.toJson()).toJson(QJsonDocument::Compact)));
     changeLog->setVersion(current.version());
     changeLogs->append(changeLog);
-    q->saveChanges(true);
+    q->saveChanges();
     changeLog->deleteLater();
 
     return true;
@@ -597,7 +597,7 @@ void Database::add(AbstractTableSet *t)
     d->tableSets.insert(t);
 }
 
-int Database::saveChanges(bool cleanUp)
+int Database::saveChanges()
 {
     Q_D(Database);
 
@@ -608,7 +608,7 @@ int Database::saveChanges(bool cleanUp)
 
     int rowsAffected = 0;
     for (const auto &ts: qAsConst(d->tableSets))
-        rowsAffected += ts->save(this, cleanUp);
+        rowsAffected += ts->save(this);
 
     return rowsAffected;
 }

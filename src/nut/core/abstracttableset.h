@@ -44,7 +44,7 @@ public:
     explicit AbstractTableSet(Table *parent);
     virtual ~AbstractTableSet();
 
-    virtual int save(Database *db, bool cleanUp = false);
+    virtual int save(Database *db);
     void clearChildren();
     QString childClassName() const;
 

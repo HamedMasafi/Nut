@@ -59,7 +59,7 @@ public:
 
     QSqlQuery exec(const QString& sql);
 
-    int saveChanges(bool cleanUp = true);
+    int saveChanges();
     void cleanUp();
 
     QString databaseName() const;

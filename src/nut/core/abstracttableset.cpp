@@ -49,7 +49,7 @@ AbstractTableSet::~AbstractTableSet()
             t->setParentTableSet(nullptr);
 }
 
-int AbstractTableSet::save(Database *db, bool cleanUp)
+int AbstractTableSet::save(Database *db)
 {
     int rowsAffected = 0;
     TableModel *masterModel = nullptr;
@@ -57,46 +57,18 @@ int AbstractTableSet::save(Database *db, bool cleanUp)
         masterModel = db->model().tableByClassName(
             QString::fromUtf8(data->table->metaObject()->className()));
 
-    for (auto t : data->children) {
-        if (!t) {
-#ifdef NUT_RAW_POINTER
-            row->deleteLater();
-#else
-            remove(t);
-#endif
-            continue;
-        }
+    for (auto i = data->weakChildren.begin(); i != data->weakChildren.end(); ) {
+        auto &row = *i;
 
-        if (data->table)
-            t->setParentTable(data->table,
-                              masterModel,
-                              db->model().tableByClassName(
-                                  QString::fromUtf8(t->metaObject()->className())));
-
-        if (t->status() == Table::Added || t->status() == Table::Modified
-            || t->status() == Table::Deleted) {
-            rowsAffected += t->save(db);
-            if (cleanUp)
-#ifdef NUT_RAW_POINTER
-                t->deleteLater();
-#else
-                remove(t);
-#endif
-        }
-    }
-
-    for (auto &row : data->weakChildren) {
         if (!row) {
-#ifdef NUT_RAW_POINTER
-            row->deleteLater();
-#else
-            remove(row);
-#endif
+            i = data->weakChildren.erase(i);
             continue;
         }
         auto t = row.lock();
-        if (t.isNull())
+        if (t.isNull()) {
+            i = data->weakChildren.erase(i);
             continue;
+        }
 
         if (data->table)
             t->setParentTable(data->table,
@@ -107,22 +79,35 @@ int AbstractTableSet::save(Database *db, bool cleanUp)
         if (t->status() == Table::Added || t->status() == Table::Modified
             || t->status() == Table::Deleted) {
             rowsAffected += t->save(db);
-            if (cleanUp)
-#ifdef NUT_RAW_POINTER
-                t->deleteLater();
-#else
-                remove(row);
-#endif
         }
+        i++;
     }
 
-    if (cleanUp) {
-        data->children.clear();
-        data->weakChildren.clear();
+    for (auto i = data->children.begin(); i != data->children.end(); ) {
+        auto &t = *i;
+        if (!t) {
+            i = data->children.erase(i);
+            continue;
+        }
+
+        if (data->table)
+            t->setParentTable(data->table,
+                              masterModel,
+                              db->model().tableByClassName(
+                                  QString::fromUtf8(t->metaObject()->className())));
+
+        if (t->status() == Table::Added || t->status() == Table::Modified
+            || t->status() == Table::Deleted) {
+            rowsAffected += t->save(db);
+            data->weakChildren.append(t.toWeakRef());
+        }
+        i++;
     }
+
+    data->children.clear();
 
     return rowsAffected;
-        }
+}
 
     void AbstractTableSet::clearChildren()
     {
@@ -151,6 +136,11 @@ void AbstractTableSet::remove(Row<Table> t)
 {
     data.detach();
     data->children.removeAll(t);
+
+#ifdef NUT_RAW_POINTER
+    t->deleteLater();
+#endif
+
 }
 
 void AbstractTableSet::remove(WeakRow<Table> t)
