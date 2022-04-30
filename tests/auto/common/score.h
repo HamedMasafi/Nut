@@ -22,6 +22,8 @@ class Score : public NUT_WRAP_NAMESPACE(Table)
 
     NUT_DECLARE_FIELD(int, score, score, setScore)
 
+    NUT_DECLARE_FIELD(int, condition, condition, setCondition)
+
     NUT_FOREIGN_KEY_DECLARE(Post, int, post, post, setPost)
     NUT_FOREIGN_KEY_DECLARE(User, QUuid, author, author, setAuthor)
 
