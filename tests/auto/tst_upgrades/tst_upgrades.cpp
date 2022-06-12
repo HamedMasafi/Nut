@@ -54,7 +54,7 @@ void Upgrades::version1()
 
 void Upgrades::version2()
 {
-    DB2 db;
+    /*DB2 db;
     initDb(db);
     QTEST_ASSERT(db.open());
 
@@ -62,7 +62,7 @@ void Upgrades::version2()
     t->setStr("0");
     db.sampleTable()->append(t);
     db.saveChanges();
-    id = t->id();
+    id = t->id();*/
 }
 
 void Upgrades::version3()
