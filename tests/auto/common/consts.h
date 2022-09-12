@@ -49,17 +49,17 @@
 #   define CC "Unknown"
 #endif
 
-#define PRINT_FORM(db) \
-    qDebug() << "\n\n****************************"                             \
-             << "\nAll tests passed,"                                          \
-             << "please fill in bellow form and email it to me at"             \
-             << "hamed.masafi@gmail.com"                                       \
-             << "\n\tDriver:" << db.driver()                                   \
-             << "\n\tOS: " OS " (version: ________)"                           \
-             << "\n\tCompiler: " CC " (version: ________)"                     \
-             << "\n\tQt version: " QT_VERSION_STR                              \
-             << "\n\tTest:" << metaObject()->className()                       \
-             << "\n****************************\n";
+#define PRINT_FORM(db)
+//    qDebug() << "\n\n****************************"                             \
+//             << "\nAll tests passed,"                                          \
+//             << "please fill in bellow form and email it to me at"             \
+//             << "hamed.masafi@gmail.com"                                       \
+//             << "\n\tDriver:" << db.driver()                                   \
+//             << "\n\tOS: " OS " (version: ________)"                           \
+//             << "\n\tCompiler: " CC " (version: ________)"                     \
+//             << "\n\tQt version: " QT_VERSION_STR                              \
+//             << "\n\tTest:" << metaObject()->className()                       \
+//             << "\n****************************\n";
 
 
 #endif // CONSTS_H

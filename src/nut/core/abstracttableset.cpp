@@ -57,16 +57,17 @@ int AbstractTableSet::save(Database *db)
         masterModel = db->model().tableByClassName(
             QString::fromUtf8(data->table->metaObject()->className()));
 
-    for (auto i = data->weakChildren.begin(); i != data->weakChildren.end(); ) {
-        auto &row = *i;
+    QMutableListIterator<QWeakPointer<Table>> weaks(data->weakChildren);
+    while (weaks.hasNext()) {
+        auto &row = weaks.next();
 
         if (!row) {
-            i = data->weakChildren.erase(i);
+            weaks.remove();
             continue;
         }
         auto t = row.lock();
         if (t.isNull()) {
-            i = data->weakChildren.erase(i);
+            weaks.remove();
             continue;
         }
 
@@ -80,31 +81,31 @@ int AbstractTableSet::save(Database *db)
             || t->status() == Table::Deleted) {
             rowsAffected += t->save(db);
         }
-        i++;
     }
 
-    for (auto i = data->children.begin(); i != data->children.end(); ) {
-        auto &t = *i;
-        if (!t) {
-            i = data->children.erase(i);
+    QMutableListIterator<QSharedPointer<Table>> childs(data->children);
+
+    while (childs.hasNext()) {
+        auto &row = childs.next();
+        if (!row) {
+            childs.remove();
             continue;
         }
 
         if (data->table)
-            t->setParentTable(data->table,
+            row->setParentTable(data->table,
                               masterModel,
                               db->model().tableByClassName(
-                                  QString::fromUtf8(t->metaObject()->className())));
+                                  QString::fromUtf8(row->metaObject()->className())));
 
-        if (t->status() == Table::Added || t->status() == Table::Modified
-            || t->status() == Table::Deleted) {
-            rowsAffected += t->save(db);
-            data->weakChildren.append(t.toWeakRef());
+        if (row->status() == Table::Added || row->status() == Table::Modified
+            || row->status() == Table::Deleted) {
+            rowsAffected += row->save(db);
+            data->weakChildren.append(row.toWeakRef());
 
-            i = data->children.erase(i);
+            childs.remove();
             continue;
         }
-        i++;
     }
 
 //    data->children.clear();
