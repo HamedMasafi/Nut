@@ -1,14 +1,6 @@
 name: CI Build
 
-on:
-  push:
-    branches-ignore:
-      - "releases/**"
-    paths-ignore:
-      - "**.md"
-  pull_request:
-    paths-ignore:
-      - "**.md"
+on: [push]
 
 jobs:
   build:
