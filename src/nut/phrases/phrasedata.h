@@ -80,7 +80,8 @@ public:
         DatePartHour,
         DatePartMinute,
         DatePartSecond,
-        DatePartMilisecond
+        DatePartMilisecond,
+        DatePartDayOfWeek
 //        // special types
 //        Distance
     };
