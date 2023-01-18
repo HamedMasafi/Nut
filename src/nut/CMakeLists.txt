@@ -59,6 +59,7 @@ qt_internal_add_module(Nut
         Qt::Core
         Qt::Gui
         Qt::Sql
+    GENERATE_CPP_EXPORTS
 )
 
 #### Keys ignored in scope 1:.:.:nut.pro:<TRUE>:
