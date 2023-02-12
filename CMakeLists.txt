@@ -5,9 +5,9 @@ cmake_minimum_required(VERSION 3.16)
 set(CMAKE_AUTOMOC ON)
 
 include(.cmake.conf)
-project(Nut
-    VERSION "0.7.0"
-    DESCRIPTION "Nut"
+project(QtNut
+    VERSION "${QT_REPO_MODULE_VERSION}"
+    DESCRIPTION "Qt orm library"
     HOMEPAGE_URL "https://github.com/HamedMasafi/Nut"
     LANGUAGES CXX C
 )

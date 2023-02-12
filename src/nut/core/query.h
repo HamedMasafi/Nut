@@ -30,6 +30,7 @@
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlQueryModel>
 #include <QtSql/QSqlQuery>
+#include <QHashIterator>
 
 #ifndef NUT_RAW_POINTER
 #include <QtCore/QSharedPointer>
@@ -293,10 +294,7 @@ Q_OUTOFLINE_TEMPLATE RowList<T> Query<T>::toList(int count)
         for (int j = 0; j < levels.count(); ++j) {
             LevelData &dt = levels[j];
 
-            QHashIterator<QString, QString> it(masters);
-            while (it.hasNext()) {
-                it.next();
-
+            for (auto it = masters.constBegin(); it != masters.constEnd(); ++it) {
                 if (dt.table->name() == it.key()) {
                     data.masters.append(j);
                     data.masterFields.append(it.value());

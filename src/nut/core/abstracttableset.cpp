@@ -19,6 +19,8 @@
 **************************************************************************/
 
 #include <QWeakPointer>
+#include <QList>
+#include <QMutableListIterator>
 
 #include "table.h"
 #include "database.h"
@@ -57,19 +59,16 @@ int AbstractTableSet::save(Database *db)
         masterModel = db->model().tableByClassName(
             QString::fromUtf8(data->table->metaObject()->className()));
 
-    QMutableListIterator<QWeakPointer<Table>> weaks(data->weakChildren);
-    while (weaks.hasNext()) {
-        auto &row = weaks.next();
+    //TODO: find a better replacement for QMutableListIterator
+    auto tmp = data->weakChildren;
+    data->weakChildren.clear();
+    for (auto &w: tmp) {
 
-        if (!row) {
-            weaks.remove();
+        if (!w)
             continue;
-        }
-        auto t = row.lock();
-        if (t.isNull()) {
-            weaks.remove();
+        auto t = w.lock();
+        if (t.isNull())
             continue;
-        }
 
         if (data->table)
             t->setParentTable(data->table,
@@ -81,16 +80,15 @@ int AbstractTableSet::save(Database *db)
             || t->status() == Table::Deleted) {
             rowsAffected += t->save(db);
         }
+        data->weakChildren << w;
     }
 
-    QMutableListIterator<QSharedPointer<Table>> childs(data->children);
+    auto tmp2 = data->children;
+    data->children.clear();
 
-    while (childs.hasNext()) {
-        auto &row = childs.next();
-        if (!row) {
-            childs.remove();
+    for (auto &row : tmp2) {
+        if (!row)
             continue;
-        }
 
         if (data->table)
             row->setParentTable(data->table,
@@ -103,9 +101,9 @@ int AbstractTableSet::save(Database *db)
             rowsAffected += row->save(db);
             data->weakChildren.append(row.toWeakRef());
 
-            childs.remove();
             continue;
         }
+        data->children << row;
     }
 
 //    data->children.clear();

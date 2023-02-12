@@ -49,6 +49,7 @@ qt_internal_add_module(Nut
         NUT_SHARED_POINTER
         QT_DEPRECATED_WARNINGS
     INCLUDE_DIRECTORIES
+        .
         config
         core
         generators
