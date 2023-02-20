@@ -56,7 +56,7 @@ void Upgrades::version2()
 {
     DB2 db;
     initDb(db);
-    QVERIFY(db.open());
+    QTEST_ASSERT(db.open());
 
     auto t = Nut::create<Table2>();
     t->setStr("0");

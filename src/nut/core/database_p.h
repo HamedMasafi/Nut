@@ -79,6 +79,7 @@ public:
 
     QSet<AbstractTableSet *> tableSets;
 
+    bool isFirstOpen();
     bool isDatabaseNew;
 
     QString errorMessage;

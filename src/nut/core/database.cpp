@@ -136,8 +136,10 @@ bool DatabasePrivate::updateDatabase()
 
     QString databaseHistoryName = driver + QStringLiteral("\t") + databaseName + QStringLiteral("\t") + hostName;
 
-    if (updatedDatabases.contains(databaseHistoryName))
+    if (allTableMaps.contains(QString::fromUtf8(q->metaObject()->className()))) {
+        currentModel = allTableMaps[QString::fromUtf8(q->metaObject()->className())];
         return true;
+    }
 
     if (!getCurrentSchema())
         return true;
@@ -298,6 +300,12 @@ bool DatabasePrivate::getCurrentSchema()
 
     allTableMaps.insert(QString::fromUtf8(q->metaObject()->className()), currentModel);
     return true;
+}
+
+bool DatabasePrivate::isFirstOpen()
+{
+    Q_Q(Database);
+    return !allTableMaps.contains(QString::fromUtf8(q->metaObject()->className()));
 }
 
 DatabaseModel DatabasePrivate::getLastSchema()
@@ -555,10 +563,10 @@ bool Database::open(bool updateDatabase)
         d->sqlGenerator = new SqliteGenerator(this);
     else if (d->driver == QStringLiteral("QODBC") || d->driver == QStringLiteral("QODBC3")) {
         QString driverName = QString();
-        QStringList parts = d->databaseName.toLower().split(';');
+        QStringList parts = d->databaseName.toLower().split(QLatin1Char(';'));
         for (auto &p: parts)
             if (p.trimmed().startsWith(QStringLiteral("driver=")))
-                driverName = p.split('=').at(1).toLower().trimmed();
+                driverName = p.split(QLatin1Char('=')).at(1).toLower().trimmed();
 
 //        if (driverName == "{sql server}")
         d->sqlGenerator = new SqlServerGenerator(this);

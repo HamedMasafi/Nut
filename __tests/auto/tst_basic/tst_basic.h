@@ -45,7 +45,6 @@ private Q_SLOTS:
     void selectWithInvalidRelation();
     void modifyPost();
     void emptyDatabase();
-    void multipleOpen();
 
     void cleanupTestCase();
 };

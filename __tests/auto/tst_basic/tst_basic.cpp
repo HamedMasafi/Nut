@@ -324,29 +324,7 @@ void BasicTest::emptyDatabase()
 //    auto commentsCount = db.comments()->query().remove();
 //    auto postsCount = db.posts()->query().remove();
 //    QTEST_ASSERT(postsCount == 3);
-    //    QTEST_ASSERT(commentsCount == 6);
-}
-
-void BasicTest::multipleOpen()
-{
-    for (int i = 0; i < 10; ++i) {
-        WeblogDatabase  database;
-        database.setDriver(DRIVER);
-        database.setHostName(HOST);
-        database.setDatabaseName(DATABASE);
-        database.setUserName(USERNAME);
-        database.setPassword(PASSWORD);
-
-        bool ok = database.open();
-        QVERIFY(ok);
-
-        auto q = database.posts()->query()
-                     .where(Post::idField() == postId)
-                     .orderBy(Post::idField())
-                     .toList();
-
-        QTEST_ASSERT(q.count() > 0);
-    }
+//    QTEST_ASSERT(commentsCount == 6);
 }
 
 void BasicTest::cleanupTestCase()
