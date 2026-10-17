@@ -185,7 +185,7 @@ int Table::save(Database *db)
     if(status() == Added && model->isPrimaryKeyAutoIncrement())
         setProperty(model->primaryKey().toLatin1().data(), q.lastInsertId());
 
-    foreach(AbstractTableSet *ts, d->childTableSets)
+    for (AbstractTableSet *ts : std::as_const(d->childTableSets))
         ts->save(db);
     setStatus(FetchedFromDB);
 
