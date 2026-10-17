@@ -170,7 +170,7 @@ void Table::setParentTableSet(AbstractTableSet *parent)
 AbstractTableSet *Table::childTableSet(const QString &name) const
 {
     //Q_D(const Table);
-    for (auto &t: qAsConst(d->childTableSets))
+    for (auto &t: std::as_const(d->childTableSets))
         if (t->childClassName() == name)
             return t;
     return Q_NULLPTR;
