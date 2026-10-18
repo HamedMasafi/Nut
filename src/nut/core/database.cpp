@@ -615,7 +615,7 @@ int Database::saveChanges()
     }
 
     int rowsAffected = 0;
-    for (const auto &ts: qAsConst(d->tableSets))
+    for (const auto &ts: std::as_const(d->tableSets))
         rowsAffected += ts->save(this);
 
     return rowsAffected;
@@ -624,7 +624,7 @@ int Database::saveChanges()
 void Database::cleanUp()
 {
     Q_D(Database);
-    for (const auto &ts: qAsConst(d->tableSets))
+    for (const auto &ts: std::as_const(d->tableSets))
         ts->clearChildren();
 }
 

@@ -4,6 +4,11 @@
 ## Nut Module:
 #####################################################################
 
+set(NUT_MODULE_EXTRA_ARGS "")
+if(Qt6Core_VERSION VERSION_LESS 6.8)
+    list(APPEND NUT_MODULE_EXTRA_ARGS GENERATE_CPP_EXPORTS)
+endif()
+
 qt_internal_add_module(Nut
     SOURCES
         config/nut_config.h
@@ -63,7 +68,7 @@ qt_internal_add_module(Nut
         Qt::Core
         Qt::Gui
         Qt::Sql
-    GENERATE_CPP_EXPORTS
+    ${NUT_MODULE_EXTRA_ARGS}
 )
 
 #### Keys ignored in scope 1:.:.:nut.pro:<TRUE>:

@@ -706,7 +706,7 @@ Q_OUTOFLINE_TEMPLATE void Query<T>::toModel(QSqlQueryModel *model)
     int fieldIndex = 0;
 
     if (d->fieldPhrase.data.count()) {
-        for (const auto &pd : qAsConst(d->fieldPhrase.data)) {
+        for (const auto &pd : std::as_const(d->fieldPhrase.data)) {
             QString displayName = dbModel.tableByClassName(QString::fromUtf8(pd->className))
                                       ->field(QString::fromUtf8(pd->fieldName))
                                       ->displayName;

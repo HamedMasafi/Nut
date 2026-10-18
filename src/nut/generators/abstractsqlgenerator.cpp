@@ -610,7 +610,7 @@ QString AbstractSqlGenerator::selectCommand(const QString &tableName,
             tables << rel->masterTable << rel->slaveTable;
 
         selectText = QString();
-        for (auto &t: qAsConst(tables)) {
+        for (auto &t: std::as_const(tables)) {
             if (!selectText.isEmpty())
                 selectText.append(QStringLiteral(", "));
             selectText.append(recordsPhrase(t));
